@@ -1,0 +1,23 @@
+{
+  "name": "tutorin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChoonSiang/TutorIn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChoonSiang/TutorIn/issues"
+  },
+  "homepage": "https://github.com/ChoonSiang/TutorIn#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
