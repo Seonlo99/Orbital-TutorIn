@@ -111,7 +111,7 @@ const LoginPage = () => {
                 <button type="submit" disabled={!isValid || isLoading} className='bg-blue-500 text-white font-bold text-lg w-full rounded-lg py-2 mt-5 disabled:opacity-70 disabled:cursor-not-allowed'>
                     Submit
                 </button>
-                <span className='mt-5 text-xs text-right'>No account yet? <Link to="" className='text-blue-500'>Register Now</Link></span>
+                <span className='mt-5 text-xs text-right'>No account yet? <span onClick={()=>navigate('/register')} className='text-blue-500 hover:cursor-pointer'>Register Now</span></span>
               </div>
             </form>
           </div>

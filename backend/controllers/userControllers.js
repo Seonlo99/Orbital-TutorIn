@@ -2,7 +2,7 @@ import User from "../models/User"
 
 export const registerUser = async (req, res) => {
     try{
-        const { username, name, email, password } = req.body;
+        const { username, fullname, email, password } = req.body;
         // console.log(req);
         let user = await User.findOne({ username });
         if(user){
@@ -11,7 +11,7 @@ export const registerUser = async (req, res) => {
 
         user = await User.create({
             username,
-            name,
+            name:fullname,
             email,
             password,
         });
