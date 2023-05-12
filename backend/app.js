@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 
 //routes
 import userRoutes from "./routes/userRoutes"
+import postRoutes from "./routes/postRoutes"
 
 dotenv.config();
 connectDB();
@@ -17,6 +18,7 @@ app.get('/', (req,res)=>{
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/posts', postRoutes);
 
 const PORT = process.env.PORT || 5000
 
