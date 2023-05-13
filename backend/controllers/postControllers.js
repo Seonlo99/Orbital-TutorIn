@@ -3,12 +3,17 @@ import {v4 as uuid} from 'uuid'
 
 export const getAllPosts = async (req, res) => {
     try{
-        let posts = await Post.find().populate({
+        const {page=1} = req.query
+        // console.log(req)
+        const POSTLIMIT =10
+        let posts = await Post.find({}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).populate({
             path:"userId",
             select: ['username','tutor']
         });
 
-        return res.json(posts)
+        const totalCount = await Post.estimatedDocumentCount();
+        // console.log(posts)
+        return res.json({posts, totalCount})
 
     } catch (error){
         return res.status(500).json({message:error.message})
