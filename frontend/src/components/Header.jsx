@@ -21,7 +21,7 @@ const Header = () => {
 
   return (
     <section>
-        <header className='container mx-auto px-5 flex justify-between py-4 items-center'>
+        <header className='container mx-auto w-full max-w-screen-2xl px-5 flex justify-between py-4 items-center'>
             <div>
                 <span className='text-blue-800'>TutorIn</span>
             </div>
