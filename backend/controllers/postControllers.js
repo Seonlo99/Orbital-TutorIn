@@ -6,7 +6,7 @@ export const getAllPosts = async (req, res) => {
         const {page=1} = req.query
         // console.log(req)
         const POSTLIMIT =10
-        let posts = await Post.find({}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).populate({
+        let posts = await Post.find({}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
             path:"userId",
             select: ['username','tutor']
         });
@@ -22,12 +22,10 @@ export const getAllPosts = async (req, res) => {
 
 export const addPost = async (req, res) => {
     try{
+        const { title, content } = req.body;
         const post = await Post.create({
-            title: "Please send help for CS2105 CS2106 CS2107. I NEED HELPPPPPPPPPPPPPPP",
-            contents: {
-                type: "doc",
-                content: ["ABCDEFG"],
-            },
+            title: title,
+            contents: content,
             userId: req.user._id,
             upvoteCount: 0,
             slug: uuid(),

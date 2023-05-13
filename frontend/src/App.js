@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DiscussPage from './pages/DiscussPage';
+import CreatePostPage from './pages/CreatePostPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route index path="login" element={<LoginPage />} />
         <Route index path="register" element={<RegisterPage />} />
         <Route index path="discuss" element={<DiscussPage />} />
+        <Route index path="createPost" element={<CreatePostPage />} />
       </Routes>
       <Toaster />
     </div>

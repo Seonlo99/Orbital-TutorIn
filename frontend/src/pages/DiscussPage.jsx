@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import MainLayout from '../components/MainLayout'
 import { BiUpvote } from 'react-icons/bi'
 import {AiOutlineComment} from 'react-icons/ai'
 import {useQuery} from "@tanstack/react-query"
-import { getAllPosts } from '../services/index/posts'
 import moment from 'moment'
+import {useSelector} from "react-redux"
+import {useNavigate} from 'react-router-dom'
+import toast from 'react-hot-toast'
+
+import { getAllPosts } from '../services/index/posts'
+import MainLayout from '../components/MainLayout'
 
 const DiscussPage = () => {
     const POSTLIMIT = 10;
@@ -53,12 +57,25 @@ const DiscussPage = () => {
         }
     })
     // console.log(data)
+    const navigate = useNavigate();
+    const userState = useSelector(state => state.user);
+    const newPostHandler = ()=>{
+        if(!userState.userInfo){
+            toast.error("Login to create new post!")
+        }
+        else{
+            navigate("/createPost")
+        }
+    }
 
   return (
   <MainLayout>
     <div className='container mx-auto max-w-4xl mt-5'>
         <section className='flex flex-row rounded-md bg-slate-300 py-4 items-center gap-x-3 px-5 justify-between shadow-md'>
             <div className='flex flex-row items-center gap-x-4'>
+                <button onClick={newPostHandler}>
+                    New
+                </button>
                 <div>
                     Filter 1
                 </div>
