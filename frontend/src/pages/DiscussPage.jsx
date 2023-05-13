@@ -28,6 +28,23 @@ const DiscussPage = () => {
         });
     }
 
+    function mobilePrevPage(){
+        setCurPage((curState)=>{
+            return curState>0? curState-1:0;
+        });
+        setNum((curState)=>{
+            return curPage;
+        });
+    }
+    function mobileNextPage(totalPosts){
+        setCurPage((curState)=>{
+            return curState+1 < Math.ceil(totalPosts/POSTLIMIT) ? curState+1: curState;
+        });
+        setNum((curState)=>{
+            return curState;
+        });
+    }
+
     const {data, isLoading, isError} = useQuery({
         queryFn: () => getAllPosts(curPage+1),
         queryKey: ["posts",curPage],
@@ -96,8 +113,16 @@ const DiscussPage = () => {
         {!isLoading && !isError && (
             <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                 <div className="flex flex-1 justify-between sm:hidden">
-                    <a href="#" className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
-                    <a href="#" className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                    <button onClick={mobilePrevPage} disabled={curPage===0} 
+                        className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50
+                         ${curPage===0 && 'bg-gray-400 cursor-not-allowed hover:bg-gray-400'}`}>
+                            Previous
+                    </button>
+                    <button onClick={()=>mobileNextPage(data.totalCount)} disabled={curPage+1===Math.ceil(data.totalCount/POSTLIMIT)}
+                        className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        ${curPage+1===Math.ceil(data.totalCount/POSTLIMIT) && 'bg-gray-400 cursor-not-allowed hover:bg-gray-400'}`}>
+                            Next
+                    </button>
                 </div>
                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                     <div>
