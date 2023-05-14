@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { CgProfile } from 'react-icons/cg';
 import { useNavigate } from 'react-router-dom';
+import {AiOutlineMenu, AiOutlineClose} from "react-icons/ai"
 
 import { logout } from '../store/actions/user';
+import defaultPic from '../assets/images/default.png'
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -15,8 +16,16 @@ const Header = () => {
         dispatch(logout());
     }
     
-    const profileHandler = ()=>{
-        console.log("view profile");
+    // const profileHandler = ()=>{
+    //     console.log("view profile");
+    // }
+
+    const [navVisible, setNavVisible ] = useState(false);
+
+    const navVisibleHandler = () =>{
+        setNavVisible((curState)=>{
+            return !curState;
+        })
     }
 
   return (
@@ -25,28 +34,47 @@ const Header = () => {
             <div>
                 <span className='text-blue-800'>TutorIn</span>
             </div>
-            <div className='flex gap-x-9 items-center'>
-                <ul className='flex gap-x-5'>
+            <div className='z-50 lg:hidden'>
+                {navVisible? (<AiOutlineClose className='w-6 h-6' onClick={navVisibleHandler}/> )
+                : (<AiOutlineMenu className='w-6 h-6' onClick={navVisibleHandler}/>)
+                }
+            </div>
+            <div className={`${navVisible? "right-0" : "-right-full"} z-[49] bg-gray-700 lg:bg-transparent mt-[52px] lg:mt-0 flex flex-col lg:flex-row w-full lg:w-auto justify-center lg:justify-end fixed lg:static top-0 bottom-0 gap-x-9 items-center`}>
+                <ul className='flex flex-col items-center gap-y-5 lg:flex-row text-white lg:text-black gap-x-5 font-semibold'>
                     <li>
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/discuss">Discussion</Link>
+                        <Link to="/discuss">Forum</Link>
                     </li>
                     <li>
-                        <Link to="/">Services</Link>
+                        <Link to="/">Services</Link>                        
                     </li>
-                </ul>
+                
                 {userState.userInfo? 
                 (
-                <div className='flex flex-row items-center'>
-                    <CgProfile size={40} onClick={profileHandler} className='hover:cursor-pointer mr-3'/>
-                    <button onClick={logoutHandler} className='border-2 border-blue-500 px-4 py-1 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300'>Logout</button>
-                </div>
+                
+                    <li className='relative group'> 
+                        {/* <div>test</div> */}
+                        <img id="avatarButton" type="button" className="hidden lg:block w-10 h-10 rounded-full cursor-pointer border" src={defaultPic} alt="User dropdown"></img>
+                        <div className=' hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max'>
+                            <ul className='flex flex-col shadow-lg rounded-lg divide-y overflow-hidden'>
+                                <a href="#" className="hover:bg-blue-900 hover:text-white px-3 py-3">View Profile</a>
+                                <button onClick={logoutHandler} className="hover:bg-blue-900 hover:text-white px-3 py-3">Logout</button>
+                            </ul>
+                        </div>
+                        <div className='lg:hidden flex flex-col gap-y-3 justify-center items-center'>
+                            <li>
+                                <Link to="/">View Profile</Link>                        
+                            </li>
+                            <button onClick={logoutHandler} >Logout</button>
+                        </div>
+                    </li>
+                
                 
                 ):
                 (<button onClick={()=> navigate('/login')} className='border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300'>Sign In</button>)}
-                
+            </ul>
             </div>
         </header>
     </section>
