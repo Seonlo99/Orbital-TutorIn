@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import {AiOutlineMenu, AiOutlineClose} from "react-icons/ai"
+import {MdKeyboardArrowDown} from "react-icons/md"
 
 import { logout } from '../store/actions/user';
 import defaultPic from '../assets/images/default.png'
@@ -40,23 +41,25 @@ const Header = () => {
                 }
             </div>
             <div className={`${navVisible? "right-0" : "-right-full"} z-[49] bg-gray-700 lg:bg-transparent mt-[52px] lg:mt-0 flex flex-col lg:flex-row w-full lg:w-auto justify-center lg:justify-end fixed lg:static top-0 bottom-0 gap-x-9 items-center`}>
-                <ul className='flex flex-col items-center gap-y-5 lg:flex-row text-white lg:text-black gap-x-5 font-semibold'>
-                    <li>
+                <ul className='flex flex-col items-center gap-y-5 lg:flex-row text-white lg:text-black gap-x-5 font-semibold '>
+                    <li className='hover:underline'>
                         <Link to="/">Home</Link>
                     </li>
-                    <li>
+                    <li className='hover:underline'>
                         <Link to="/discuss">Forum</Link>
                     </li>
-                    <li>
+                    <li className='hover:underline'>
                         <Link to="/">Services</Link>                        
                     </li>
                 
                 {userState.userInfo? 
                 (
                 
-                    <li className='relative group'> 
+                    <li className='relative group flex flex-row items-center hover:cursor-pointer'> 
                         {/* <div>test</div> */}
+                        <div className='hidden lg:block mr-2 text-xl font-bold'>{userState.userInfo.username}</div>
                         <img id="avatarButton" type="button" className="hidden lg:block w-10 h-10 rounded-full cursor-pointer border" src={defaultPic} alt="User dropdown"></img>
+                        <div className='hidden lg:block'> <MdKeyboardArrowDown /> </div>
                         <div className=' hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max'>
                             <ul className='flex flex-col shadow-lg rounded-lg divide-y overflow-hidden'>
                                 <a href="#" className="hover:bg-blue-900 hover:text-white px-3 py-3">View Profile</a>

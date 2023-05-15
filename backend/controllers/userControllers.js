@@ -2,18 +2,19 @@ import User from "../models/User"
 
 export const registerUser = async (req, res) => {
     try{
-        const { username, fullname, email, password } = req.body;
+        const { username, fullname, email, password, isTutor: tutor } = req.body;
         // console.log(req);
         let user = await User.findOne({ username });
         if(user){
             return res.status(400).json({message:"User have already registered"})
         }
-
+        // console.log(tutor)
         user = await User.create({
             username,
             name:fullname,
             email,
             password,
+            tutor,
         });
 
         return res.status(201).json({

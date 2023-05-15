@@ -13,9 +13,9 @@ export const userLogin = async({username,password})=>{
     }
 }
 
-export const userRegister = async({username,fullname,email,password})=>{
+export const userRegister = async({username,fullname,email,password, isTutor})=>{
     try{
-        const {data} = await axios.post('/api/users/register', {username,fullname,email,password});
+        const {data} = await axios.post('/api/users/register', {username,fullname,email,password, isTutor});
         // console.log({username,fullname,email,password});
         return data;
         

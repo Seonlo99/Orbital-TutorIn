@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useForm } from 'react-hook-form'
 import {Link, useNavigate} from 'react-router-dom'
 import {useMutation} from "@tanstack/react-query"
@@ -14,9 +14,11 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const userState = useSelector(state => state.user);
 
+  const [isTutor, setIsTutor] = useState(false); //1 for student, 2 for tutor
+
   const {mutate, isLoading} = useMutation({
-    mutationFn: ({username,fullname,email,password})=>{
-      return userRegister({username,fullname,email,password});
+    mutationFn: ({username,fullname,email,password, isTutor})=>{
+      return userRegister({username,fullname,email,password, isTutor});
     },
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
@@ -53,11 +55,15 @@ const RegisterPage = () => {
   });
   const submitHandler = (data)=>{
     const {username,fullname,email,password} = data;
-    mutate({username,fullname,email,password});
+    mutate({username,fullname,email,password, isTutor});
   };
 
   const password= watch('password');
 
+  const radioHandler = (event)=>{
+    event.target.value === "student"? setIsTutor(false): setIsTutor(true)
+  }
+  // console.log(isTutor)
   // console.log(errors)
   return (
     <MainLayout>
@@ -68,6 +74,16 @@ const RegisterPage = () => {
             </h1>
             <form onSubmit={handleSubmit(submitHandler)}>
               <div className='flex flex-col w-full'>
+                <div className='flex flex-row mt-10 gap-x-20 justify-center'>
+                  <div className="flex items-center">
+                      <input checked={!isTutor} onChange={radioHandler}  id="student-radio" type="radio" value="student" name="role" className="w-4 h-4 bg-gray-100 border-gray-300"></input>
+                      <label  htmlFor="student-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Student</label>
+                  </div>
+                  <div className="flex items-center">
+                      <input checked={isTutor} onChange={radioHandler} id="tutor-radio" type="radio" value="tutor" name="role" className="w-4 h-4 bg-gray-100 border-gray-300"></input>
+                      <label htmlFor="tutor-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tutor</label>
+                  </div>
+                </div>
                 <label htmlFor="username" className='text-gray-500 font-semibold block mt-5'>
                   Username:
                 </label>
