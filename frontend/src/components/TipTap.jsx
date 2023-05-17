@@ -16,7 +16,7 @@ const MenuBar = ({ editor }) => {
   }
 
   return (
-    <div className='flex flex-row justify-between'>
+    <div className='flex flex-row justify-between overflow-auto'>
         
     <div className='flex flex-row mx-2 my-2 gap-x-3'>
       <button
@@ -28,7 +28,7 @@ const MenuBar = ({ editor }) => {
             .toggleBold()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('bold') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('bold') ? 'bg-gray-400' : ''}`}
       >
         <FaBold />
       </button>
@@ -41,7 +41,7 @@ const MenuBar = ({ editor }) => {
             .toggleItalic()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('italic') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('italic') ? 'bg-gray-400' : ''}`}
       >
         <FaItalic />
       </button>
@@ -54,7 +54,7 @@ const MenuBar = ({ editor }) => {
             .toggleUnderline()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('underline') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('underline') ? 'bg-gray-400' : ''}`}
       >
         <FaUnderline />
       </button>
@@ -67,7 +67,7 @@ const MenuBar = ({ editor }) => {
             .toggleStrike()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('strike') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('strike') ? 'bg-gray-400' : ''}`}
       >
         <FaStrikethrough />
       </button>
@@ -81,19 +81,19 @@ const MenuBar = ({ editor }) => {
 
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('bulletList') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('bulletList') ? 'bg-gray-400' : ''}`}
       >
         <FaListUl />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('orderedList') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('orderedList') ? 'bg-gray-400' : ''}`}
       >
         <FaListOl />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={`text-xl px-1 py-1 rounded-md ${editor.isActive('blockquote') ? 'bg-gray-400' : ''}`}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md ${editor.isActive('blockquote') ? 'bg-gray-400' : ''}`}
       >
         <FaQuoteLeft />
       </button>
@@ -109,7 +109,7 @@ const MenuBar = ({ editor }) => {
             .undo()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md `}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md `}
       >
         <FaUndo />
       </button>
@@ -122,7 +122,7 @@ const MenuBar = ({ editor }) => {
             .redo()
             .run()
         }
-        className={`text-xl px-1 py-1 rounded-md `}
+        className={`text-md lg:text-xl px-1 py-1 rounded-md `}
       >
         <FaRedo />
       </button>
