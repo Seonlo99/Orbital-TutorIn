@@ -20,6 +20,40 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
+export const getSinglePost = async (req, res) => {
+    try{
+        const {slug} = req.query
+
+        // let post = await Post.find({slug}).populate({
+        //     path:"comments",
+        //     select: ['userId','body']
+        // });
+
+        let post = await Post.findOne({slug}).populate([
+            {
+                path:"userId",
+                select: ['username','tutor']
+            },
+            {
+                path:"comments",
+                select: ['userId','body']
+            }
+    ]);
+        // console.log(post.comments)
+        if(post){
+            // console.log(post)
+            return res.json({post})
+        }
+        else{
+            return res.status(404).json({message:"Unable to find post!"})
+        }
+        
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
+
 export const addPost = async (req, res) => {
     try{
         const { title, content } = req.body;
@@ -41,4 +75,4 @@ export const addPost = async (req, res) => {
 
 
 
-export { getAllPosts, addPost };
+export { getAllPosts, getSinglePost, addPost };

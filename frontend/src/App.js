@@ -7,16 +7,20 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DiscussPage from './pages/DiscussPage';
 import CreatePostPage from './pages/CreatePostPage';
+import ProfilePage from './pages/ProfilePage';
+import PostPage from './pages/PostPage';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route index path="/" element={<HomePage />} />
-        <Route index path="login" element={<LoginPage />} />
-        <Route index path="register" element={<RegisterPage />} />
-        <Route index path="discuss" element={<DiscussPage />} />
-        <Route index path="createPost" element={<CreatePostPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="discuss" element={<DiscussPage />} />
+        <Route path="createPost" element={<CreatePostPage />} />
+        <Route path="profile/:id" element={<ProfilePage />} />
+        <Route path="post/:uuid" element={<PostPage />} />
       </Routes>
       <Toaster />
     </div>

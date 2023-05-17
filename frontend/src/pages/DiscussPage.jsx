@@ -4,7 +4,7 @@ import {AiOutlineComment} from 'react-icons/ai'
 import {useQuery} from "@tanstack/react-query"
 import moment from 'moment'
 import {useSelector} from "react-redux"
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 import { getAllPosts } from '../services/index/posts'
@@ -98,9 +98,9 @@ const DiscussPage = () => {
                         </div>
                         <div className='ml-6'>
                             <div className='font-semibold'>
-                                {post.title.substring(0, 50)} {post.title.length > 50 && '...'}
+                                <Link to={`/post/${post.slug}`}>{post.title.substring(0, 50)} {post.title.length > 50 && '...'}</Link>
                                 {post.tags && post.tags.slice(0,2).map((tag)=>(
-                                <div className='ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 rounded-full bg-gray-300 text-gray-700 border'>
+                                <div key={tag} className='ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 rounded-full bg-gray-300 text-gray-700 border'>
                                     {tag}
                                 </div>)
                                 )} {post.tags.length>2 && '...'}

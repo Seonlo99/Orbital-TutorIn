@@ -21,7 +21,7 @@ const CommentSchema = new Schema(
     { timestamps: true }
 );
 
-PostSchema.virtual("replies",{
+CommentSchema.virtual("replies",{
     ref: "Comment",
     localField: "_id",
     foreignField: "parent"

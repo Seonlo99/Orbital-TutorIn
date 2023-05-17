@@ -4,6 +4,7 @@
       min-height: 15rem;
       max-height: 15rem;
       overflow-y: auto;
+      outline:transparent
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {

@@ -53,8 +53,8 @@ const CreatePostPage = () => {
             <div className="icons flex text-gray-500 m-2"></div>
 
             <div className="buttons flex">
-            <button onClick={()=>navigate('/discuss')} className="border border-gray-300 p-1 px-4 font-semibold text-gray-500 ml-auto">Cancel</button>
-            <button onClick={handleClick} className="border border-indigo-500 p-1 px-4 font-semibold text-gray-200 ml-2 bg-indigo-500">Post</button>
+            <button onClick={()=>navigate('/discuss')} className="border border-gray-300 p-1 px-4 font-semibold text-black ml-auto">Cancel</button>
+            <button onClick={handleClick} className="border border-indigo-500 p-1 px-4 font-semibold text-white ml-2 bg-indigo-500">Post</button>
             </div>
         </div>
         

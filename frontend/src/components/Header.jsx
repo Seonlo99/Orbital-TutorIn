@@ -62,14 +62,12 @@ const Header = () => {
                         <div className='hidden lg:block'> <MdKeyboardArrowDown /> </div>
                         <div className=' hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max'>
                             <ul className='flex flex-col shadow-lg rounded-lg divide-y overflow-hidden'>
-                                <a href="#" className="hover:bg-blue-900 hover:text-white px-3 py-3">View Profile</a>
+                                <Link to={`/profile/${userState.userInfo._id}`} className="hover:bg-blue-900 hover:text-white px-3 py-3">View Profile</Link>
                                 <button onClick={logoutHandler} className="hover:bg-blue-900 hover:text-white px-3 py-3">Logout</button>
                             </ul>
                         </div>
                         <div className='lg:hidden flex flex-col gap-y-3 justify-center items-center'>
-                            <li>
-                                <Link to="/">View Profile</Link>                        
-                            </li>
+                            <Link to={`/profile/${userState.userInfo._id}`}>View Profile</Link>                        
                             <button onClick={logoutHandler} >Logout</button>
                         </div>
                     </li>

@@ -1,10 +1,9 @@
 import express from 'express';
 const router = express.Router();
-import { addPost, getAllPosts, getSinglePost } from '../controllers/postControllers';
+import { addComment } from '../controllers/commentControllers';
 import { authChecker } from '../middleware/authMiddleware';
 
 // router.post('/register', registerUser);
-router.route('/').post(authChecker, addPost).get(getAllPosts);
-router.route('/post').get(getSinglePost);
+router.route('/').post(authChecker, addComment);
 
 export default router;

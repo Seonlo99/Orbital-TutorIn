@@ -72,12 +72,12 @@ const MenuBar = ({ editor }) => {
         <FaStrikethrough />
       </button>
 
-      <button
+      {/* <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         className={`text-xl px-1 py-1 rounded-md ${editor.isActive('heading', { level: 3 }) ? 'bg-gray-400' : ''}`}
       >
         <FaHeading />
-      </button>
+      </button> */}
 
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -145,7 +145,7 @@ const Tiptap = ({setContent}) => {
           keepMarks: true,
           keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
-      }),,
+      }),
       Underline,
       Placeholder.configure({
         placeholder: 'Write your description here…',
