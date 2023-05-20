@@ -23,10 +23,14 @@ import MainLayout from '../components/MainLayout'
 import { getSinglePost } from '../services/index/posts'
 import AddComment from '../components/Comment/AddComment'
 import {newComment} from '../services/index/comments'
+import Comment  from '../components/Comment/Comment'
+import AllComments from '../components/Comment/AllComments'
 
 const PostPage = () => {
     const [body, setBody] = useState("")
     const {uuid} = useParams();
+    const [reload, setReload] = useState(false)
+    // const [comments, setComments] = useState({})
     const userState = useSelector((state) => state.user);
 
     const {data, isLoading, isError} = useQuery({
@@ -65,6 +69,9 @@ const PostPage = () => {
         toast.success(
           "Comment Added!"
         );
+        setReload((cur)=>{
+          return !cur
+        })
       },
       onError: (error) => {
         toast.error(error.message);
@@ -94,7 +101,7 @@ const PostPage = () => {
                         {data.post.title}
                     </div>
                     <div className='font-light text-sm'>
-                                    by {data.post.userId.username}, {moment(data.post.createdAt).format('DD/MM/yyyy')} | {moment(data.post.createdAt).format('HH:mm')}
+                        by {data.post.userId.username}, {moment(data.post.createdAt).format('DD/MM/yyyy')} | {moment(data.post.createdAt).format('HH:mm')}
                     </div>
                 </div>
                 
@@ -110,6 +117,11 @@ const PostPage = () => {
 
             <div className='mt-10'>
                 <AddComment label="Comment" formHandler={(text) =>addCommentHandler(text)} loading={false} />
+            </div>
+
+            <div className='mt-10'>
+                <div className='Font-semi text-xl mb-5'>Comments:</div>
+                <AllComments reload={reload} uuid={data.post.slug}/>
             </div>
             
         </div>

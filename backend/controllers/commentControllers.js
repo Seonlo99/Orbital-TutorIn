@@ -27,6 +27,31 @@ export const addComment = async (req, res) => {
     }
 }
 
+export const getComments = async (req, res) => {
+    try{
+        const {slug, parentId=null} = req.query
+        // console.log(parentId)
+        const post = await Post.findOne({slug:slug})
+        let comments = await Comment.find({postId:post._id, parent:parentId}).populate(
+            [
+                {
+                    path:"userId",
+                    select: ['username','tutor']
+                },
+                {
+                    path:"parent"
+                }
+            ]
+        );
+
+        // console.log(posts)
+        return res.json({comments})
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
 
 
-export { addComment };
+
+export { addComment, getComments };
