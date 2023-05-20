@@ -65,7 +65,7 @@ const Comment = ({singleComment, uuid}) => {
     }
     );
     // setAffectedComment(null);
-    console.log(text);
+    // console.log(text);
 };
 
   return (

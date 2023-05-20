@@ -51,6 +51,7 @@ const PostPage = () => {
                   // other extensions …
                 ])
               }, [data.post.contents])
+              // console.log(parse(body))
         },
         onError: (error) =>{
             toast.error(error.message)
@@ -58,7 +59,7 @@ const PostPage = () => {
         }
     })
 
-    !isLoading && console.log(data)
+    // !isLoading && console.log(data)
 
     const { mutate: mutateNewComment, isLoading: isLoadingNewComment } =
     useMutation({
@@ -88,12 +89,12 @@ const PostPage = () => {
           slug: data.post.slug,
         });
         // setAffectedComment(null);
-        console.log(text);
+        // console.log(text);
     };
 
   return (
     <MainLayout>
-        {!isLoading && !isError &&(
+        {!isLoading && !isError && body &&(
         <div className='container mx-auto max-w-4xl mt-10 px-5 py-5'>
             <div className='flex flex-col divide-y bg-gray-50 rounded-lg p-5'>
                 <div className='mb-3'>

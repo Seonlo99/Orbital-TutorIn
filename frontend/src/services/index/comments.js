@@ -18,7 +18,7 @@ export const newComment = async({token, desc, slug, parent, replyUser})=>{
 
 export const getComments = async(uuid, commentId=null)=>{
     try{
-        console.log(commentId)
+        // console.log(commentId)
         const {data} = await axios.get('/api/comments', { params: { slug: uuid, parentId: commentId }});
         return data;
         
