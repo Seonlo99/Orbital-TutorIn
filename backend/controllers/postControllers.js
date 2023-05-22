@@ -1,7 +1,7 @@
-import Post from "../models/Post"
+import Post from "../models/Post.js"
 import {v4 as uuid} from 'uuid'
 
-export const getAllPosts = async (req, res) => {
+const getAllPosts = async (req, res) => {
     try{
         const {page=1} = req.query
         // console.log(req)
@@ -20,7 +20,7 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
-export const getSinglePost = async (req, res) => {
+const getSinglePost = async (req, res) => {
     try{
         const {slug} = req.query
 
@@ -54,7 +54,7 @@ export const getSinglePost = async (req, res) => {
     }
 }
 
-export const addPost = async (req, res) => {
+const addPost = async (req, res) => {
     try{
         const { title, content } = req.body;
         const post = await Post.create({

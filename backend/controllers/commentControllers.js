@@ -1,7 +1,7 @@
-import Comment from "../models/Comment"
-import Post from "../models/Post"
+import Comment from "../models/Comment.js"
+import Post from "../models/Post.js"
 
-export const addComment = async (req, res) => {
+const addComment = async (req, res) => {
     try{
         const { desc:body, slug, parent, replyUser } = req.body;
         // console.log(slug)
@@ -27,7 +27,7 @@ export const addComment = async (req, res) => {
     }
 }
 
-export const getComments = async (req, res) => {
+const getComments = async (req, res) => {
     try{
         const {slug, parentId=null} = req.query
         // console.log(parentId)

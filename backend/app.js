@@ -1,13 +1,12 @@
 import express from "express";
 import dotenv from "dotenv"
-import connectDB from "./config/db";
+import connectDB from "./config/db.js";
 import cors from 'cors'
-// const bodyParser = require("body-parser")
 
 //routes
-import userRoutes from "./routes/userRoutes"
-import postRoutes from "./routes/postRoutes"
-import commentRoutes from "./routes/commentRoutes"
+import userRoutes from "./routes/userRoutes.js"
+import postRoutes from "./routes/postRoutes.js"
+import commentRoutes from "./routes/commentRoutes.js"
 
 dotenv.config();
 connectDB();

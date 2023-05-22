@@ -1,5 +1,5 @@
 import {verify} from "jsonwebtoken"
-import User from "../models/User"
+import User from "../models/User.js"
 
 export const authChecker = async (req,res, next) =>{
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){

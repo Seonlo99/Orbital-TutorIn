@@ -1,6 +1,6 @@
-import User from "../models/User"
+import User from "../models/User.js"
 
-export const registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
     try{
         const { username, fullname, email, password, isTutor: tutor } = req.body;
         // console.log(req);
@@ -32,7 +32,7 @@ export const registerUser = async (req, res) => {
     }
 }
 
-export const userLogin = async (req, res) => {
+const userLogin = async (req, res) => {
     try{
         const { username, password } = req.body;
         // console.log(req.body);
