@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://tutorin-api.vercel.app/:path*"
+      },
+      {
+        "source": "/api/:path*/",
+        "destination": "https://tutorin-api.vercel.app/:path*/"
+      }
+    ]
+}
