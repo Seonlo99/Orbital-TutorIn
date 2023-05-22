@@ -1,8 +1,9 @@
 import axios from "axios";
+import { rootUrl } from "../../config/config";
 
 export const getAllPosts = async(curPage)=>{
     try{
-        const {data} = await axios.get('/api/posts', { params: { page: curPage }});
+        const {data} = await axios.get(`${rootUrl}/api/posts`, { params: { page: curPage }});
         return data;
         
     } catch(error){
@@ -15,7 +16,7 @@ export const getAllPosts = async(curPage)=>{
 
 export const getSinglePost = async(uuid)=>{
     try{
-        const {data} = await axios.get('/api/posts/post', { params: { slug: uuid }});
+        const {data} = await axios.get(`${rootUrl}/api/posts/post`, { params: { slug: uuid }});
         return data;
         
     } catch(error){
@@ -31,7 +32,7 @@ export const newPost = async({title,content,token})=>{
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const {data} = await axios.post('/api/posts', {title,content}, config);
+        const {data} = await axios.post(`${rootUrl}/api/posts`, {title,content}, config);
         return data;
         
     } catch(error){

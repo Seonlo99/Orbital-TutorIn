@@ -1,11 +1,12 @@
 import axios from "axios";
+import { rootUrl } from "../../config/config";
 
 export const newComment = async({token, desc, slug, parent, replyUser})=>{
     try{
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const {data} = await axios.post('/api/comments', {desc, slug, parent, replyUser}, config);
+        const {data} = await axios.post(`${rootUrl}/api/comments`, {desc, slug, parent, replyUser}, config);
         return data;
         
     } catch(error){
@@ -19,7 +20,7 @@ export const newComment = async({token, desc, slug, parent, replyUser})=>{
 export const getComments = async(uuid, commentId=null)=>{
     try{
         // console.log(commentId)
-        const {data} = await axios.get('/api/comments', { params: { slug: uuid, parentId: commentId }});
+        const {data} = await axios.get(`${rootUrl}/api/comments`, { params: { slug: uuid, parentId: commentId }});
         return data;
         
     } catch(error){

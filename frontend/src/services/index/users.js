@@ -1,8 +1,9 @@
 import axios from "axios";
+import { rootUrl } from "../../config/config";
 
 export const userLogin = async({username,password})=>{
     try{
-        const {data} = await axios.post('/api/users/login', {username,password});
+        const {data} = await axios.post(`${rootUrl}/api/users/login`, {username,password});
         return data;
         
     } catch(error){
@@ -15,7 +16,7 @@ export const userLogin = async({username,password})=>{
 
 export const userRegister = async({username,fullname,email,password, isTutor})=>{
     try{
-        const {data} = await axios.post('/api/users/register', {username,fullname,email,password, isTutor});
+        const {data} = await axios.post(`${rootUrl}/api/users/register`, {username,fullname,email,password, isTutor});
         // console.log({username,fullname,email,password});
         return data;
         
