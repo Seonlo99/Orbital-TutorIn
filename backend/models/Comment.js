@@ -2,14 +2,15 @@ import { Schema, model } from "mongoose";
 
 const CommentSchema = new Schema(
     {
-        userId: { type: Schema.Types.ObjectId, ref:'User', required: true },
+        userId: { type: Schema.Types.ObjectId, ref:'User', required: true, index: true },
         body: { type: String, required: true },
-        postId: { type: Schema.Types.ObjectId, ref:'Post', required: true },
+        postId: { type: Schema.Types.ObjectId, ref:'Post', required: true, index: true, },
         upvoteCount: { type: Number, default: 0 },
         parent: {
             type: Schema.Types.ObjectId,
             ref: "Comment",
-            default: null
+            default: null,
+            index: true
         },
         replyUser:{
             type: Schema.Types.ObjectId,

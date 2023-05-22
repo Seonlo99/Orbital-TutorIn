@@ -7,7 +7,7 @@ const PostSchema = new Schema(
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
         upvoteCount: { type: Number, default: 0 },
         slug: {type:String, required:true, unique:true},
-        tags: {type: [String]},
+        tags: {type: [String], index: true},
     },
     { timestamps: true }
 );
