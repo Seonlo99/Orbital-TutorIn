@@ -19,7 +19,7 @@ const ProfilePage = () => {
           </section>
 
           <section className='rounded-md border shadow-md bg-gray-100 px-7 py-5'>
-            Tutor Only Section to show their grades?
+            <div className='font-bold text-xl'>Tutor Only Section</div>
             <div>a</div>
             <div>a</div>
             <div>a</div>

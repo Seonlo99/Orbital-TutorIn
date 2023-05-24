@@ -27,7 +27,7 @@ export const CommunityStats = () => {
                   Upvote Count:
                 </div>
                 <div className='mt-0'>
-                  -10
+                  10
                 </div>
               </div>
             </div>
