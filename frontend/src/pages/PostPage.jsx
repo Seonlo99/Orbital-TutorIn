@@ -121,7 +121,7 @@ const PostPage = () => {
             </div>
 
             <div className='mt-10'>
-                <div className='Font-semi text-xl mb-5'>Comments:</div>
+                <div className='Font-semi text-xl mb-5'>Comments ({data.commentCount}):</div>
                 <AllComments reload={reload} uuid={data.post.slug}/>
             </div>
             

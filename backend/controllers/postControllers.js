@@ -50,7 +50,9 @@ const getSinglePost = async (req, res) => {
         // console.log(post.comments)
         if(post){
             // console.log(post)
-            return res.json({post})
+            let count = await getCommentCount(post._id)
+
+            return res.json({post,commentCount:count})
         }
         else{
             return res.status(404).json({message:"Unable to find post!"})
