@@ -36,9 +36,20 @@ const CreatePostPage = () => {
       });
 
     const handleClick = ()=>{
-        console.log({title:titleRef.current.value, content})
+
+      if(titleRef.current.value.length <=0){
+        toast.error("Enter title!")
+        return
+      }
+
+      if(!content.content || !content.content[0].content){
+          toast.error("Enter description!")
+          return
+      }
+        // console.log({title:titleRef.current.value, content})
         mutate({title: titleRef.current.value, content, token: userState.userInfo.token})
     }
+    // console.log(content)
   return (
   <MainLayout>
     <div className='container mx-auto max-w-2xl mt-10 '>
@@ -46,7 +57,7 @@ const CreatePostPage = () => {
         <div className="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
 
         <div className="editor mx-auto flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-            <input ref={titleRef} className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" type="text"></input>
+            <input ref={titleRef} className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellCheck="false" placeholder="Title" type="text"></input>
             
             <Tiptap setContent={setContent}/>
 
