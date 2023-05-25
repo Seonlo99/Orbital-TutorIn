@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useQuery} from "@tanstack/react-query"
 import moment from 'moment'
-import { useParams } from 'react-router-dom'
+import { useParams,useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import parse from 'html-react-parser'
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ import Comment  from '../components/Comment/Comment'
 import AllComments from '../components/Comment/AllComments'
 
 const PostPage = () => {
+    const navigate = useNavigate()
     const [body, setBody] = useState("")
     const {uuid} = useParams();
     const [reload, setReload] = useState(false)
@@ -111,8 +112,15 @@ const PostPage = () => {
                         {parse(body)}
                     </div>
                 </div>
-                <div className='pt-3'>
-                    UPVOTE BUTTON
+                <div className='pt-3 justify-between flex flex-row'>
+                    <div>UPVOTE BUTTON</div>
+                    {data.post.userId._id === userState.userInfo._id && (
+                    <div className='flex flex-row gap-x-5'>
+                      <button onClick={()=> {return navigate(`/editPost/${data.post.slug}`)}}>Edit</button>
+                      <button>Delete</button>
+                    </div>
+                    )}
+                    
                 </div>
             </div>
 

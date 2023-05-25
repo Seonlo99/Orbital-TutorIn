@@ -131,7 +131,7 @@ const MenuBar = ({ editor }) => {
   )
 }
 
-const Tiptap = ({setContent}) => {
+const Tiptap = ({setContent, initialContent=``}) => {
   const editor = useEditor({
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -151,7 +151,7 @@ const Tiptap = ({setContent}) => {
         placeholder: 'Write your description here…',
       }),
     ],
-    content: ``,
+    content: initialContent,
     onUpdate: ({ editor }) => {
         setContent(editor.getJSON());
         // send the content to an API here

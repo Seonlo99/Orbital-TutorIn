@@ -46,7 +46,7 @@ const getSinglePost = async (req, res) => {
                 path:"comments",
                 select: ['userId','body']
             }
-    ]);
+        ]);
         // console.log(post.comments)
         if(post){
             // console.log(post)
@@ -83,6 +83,28 @@ const addPost = async (req, res) => {
     }
 }
 
+const editPost = async (req, res) => {
+    try{
+        const { title, content,slug } = req.body;
+
+        let post = await Post.findOne({slug});
+        if(!post){
+            return res.status(404).json({message:"Unable to find post!"})
+        }
+        // console.log(post.userId)
+        // console.log(req.user._id)
+        if(!post.userId.equals(req.user._id)){ //check if the user is owner of the post
+            return res.status(404).json({message:"Not the owner!"})
+        }
+        post = await Post.findOneAndUpdate({slug}, {title,contents:content});
+
+        return res.json({post})
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
 
 
-export { getAllPosts, getSinglePost, addPost };
+
+export { getAllPosts, getSinglePost, addPost,editPost };
