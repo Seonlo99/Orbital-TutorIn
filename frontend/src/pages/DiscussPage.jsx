@@ -119,7 +119,7 @@ const DiscussPage = () => {
                             <BiUpvote size={24}/> {post.upvoteCount}
                         </div>
                         <div className='flex flex-row'>
-                            <AiOutlineComment size={24}/> 2
+                            <AiOutlineComment size={24}/> {post.commentCount}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 import Post from "../models/Post.js"
 import {v4 as uuid} from 'uuid'
 
+import { getCommentCount } from "./commentControllers.js"
+
 const getAllPosts = async (req, res) => {
     try{
         const {page=1} = req.query
@@ -10,6 +12,12 @@ const getAllPosts = async (req, res) => {
             path:"userId",
             select: ['username','tutor']
         });
+        posts = await Promise.all(posts.map( async (post) => {
+            let count = await getCommentCount(post._id)
+            return ({...post._doc, commentCount:count})
+        }))
+        // console.log(posts)
+        
 
         const totalCount = await Post.estimatedDocumentCount();
         // console.log(posts)

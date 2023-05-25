@@ -52,6 +52,17 @@ const getComments = async (req, res) => {
     }
 }
 
+const getCommentCount = async (postId) => {
+    try{
+        let count = await Comment.countDocuments({postId:postId})
+
+        return count;
+
+    } catch (error){
+        return 0;
+    }
+}
 
 
-export { addComment, getComments };
+
+export { addComment, getComments, getCommentCount };
