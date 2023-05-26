@@ -135,7 +135,7 @@ const PostPage = () => {
                 </div>
                 <div className='pt-3 justify-between flex flex-row'>
                     <div>UPVOTE BUTTON</div>
-                    {data.post.userId._id === userState.userInfo._id && (
+                    {userState.userInfo && data.post.userId._id === userState.userInfo._id && (
                     <div className='flex flex-row gap-x-5'>
                       <button onClick={()=> {return navigate(`/editPost/${data.post.slug}`)}}>Edit</button>
                       <button onClick={deleteHandler}>Delete</button>
