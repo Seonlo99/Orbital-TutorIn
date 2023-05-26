@@ -20,7 +20,7 @@ import StarterKit from '@tiptap/starter-kit'
 
 
 import MainLayout from '../components/MainLayout'
-import { getSinglePost } from '../services/index/posts'
+import { getSinglePost,deletePost } from '../services/index/posts'
 import AddComment from '../components/Comment/AddComment'
 import {newComment} from '../services/index/comments'
 import Comment  from '../components/Comment/Comment'
@@ -93,6 +93,27 @@ const PostPage = () => {
         // console.log(text);
     };
 
+    const { mutate: mutateDeletePost } =
+    useMutation({
+      mutationFn: () => {
+        return deletePost({ token: userState.userInfo.token, slug: data.post.slug});
+      },
+      onSuccess: () => {
+        toast.success(
+          "Post Deleted!"
+        );
+        navigate('/discuss')
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
+
+    const deleteHandler = ()=>{
+      mutateDeletePost();
+    }
+
   return (
     <MainLayout>
         {!isLoading && !isError && body &&(
@@ -117,7 +138,7 @@ const PostPage = () => {
                     {data.post.userId._id === userState.userInfo._id && (
                     <div className='flex flex-row gap-x-5'>
                       <button onClick={()=> {return navigate(`/editPost/${data.post.slug}`)}}>Edit</button>
-                      <button>Delete</button>
+                      <button onClick={deleteHandler}>Delete</button>
                     </div>
                     )}
                     

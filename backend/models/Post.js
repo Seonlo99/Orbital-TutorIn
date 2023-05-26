@@ -8,6 +8,7 @@ const PostSchema = new Schema(
         upvoteCount: { type: Number, default: 0 },
         slug: {type:String, required:true, unique:true},
         tags: {type: [String], index: true},
+        isDeleted: {type:Boolean, default:false}
     },
     { timestamps: true }
 );
