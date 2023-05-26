@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import MainLayout from '../components/MainLayout'
 import Tiptap from '../components/TipTap'
 import { newPost } from '../services/index/posts'
+import PostForm from '../components/PostForm'
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -16,18 +17,14 @@ const CreatePostPage = () => {
             navigate("/login");
         }
     },[navigate, userState.userInfo])
-    
 
-    const [content, setContent] = useState({})
-    const titleRef = useRef(null);
-    // const [title, setTitle] = useState("")
-    
     const {mutate, isLoading} = useMutation({
         mutationFn: ({title,content,token})=>{
           return newPost({title,content,token});
         },
         onSuccess: (data) => {
-            navigate("/discuss"); // change to single post page later on
+            toast.success("Post Created!")
+            navigate(`/post/${data.post.slug}`); // change to single post page later on
         },
         onError: (error) =>{
           toast.error(error.message)
@@ -35,45 +32,14 @@ const CreatePostPage = () => {
         }
       });
 
-    const handleClick = ()=>{
-
-      if(titleRef.current.value.length <=0){
-        toast.error("Enter title!")
-        return
+      const handleMutate = (title,content)=>{
+          mutate({title,content,token:userState.userInfo.token})
       }
 
-      if(!content.content || !content.content[0].content){
-          toast.error("Enter description!")
-          return
-      }
-        // console.log({title:titleRef.current.value, content})
-        mutate({title: titleRef.current.value, content, token: userState.userInfo.token})
-    }
     // console.log(content)
   return (
   <MainLayout>
-    <div className='container mx-auto max-w-2xl mt-10 '>
-
-        <div className="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
-
-        <div className="editor mx-auto flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-            <input ref={titleRef} className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellCheck="false" placeholder="Title" type="text"></input>
-            
-            <Tiptap setContent={setContent}/>
-
-            <div className="icons flex text-gray-500 m-2"></div>
-
-            <div className="buttons flex">
-            <button onClick={()=>navigate('/discuss')} className="border border-gray-300 p-1 px-4 font-semibold text-black ml-auto">Cancel</button>
-            <button onClick={handleClick} className="border border-indigo-500 p-1 px-4 font-semibold text-white ml-2 bg-indigo-500">Post</button>
-            </div>
-        </div>
-        
-        <section>
-            
-        </section>
-    </div>
-
+    <PostForm handleMutate={({title,content})=>{handleMutate(title,content)}} btnName="Post" />
   </MainLayout>
   )
 }

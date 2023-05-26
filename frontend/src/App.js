@@ -9,6 +9,7 @@ import DiscussPage from './pages/DiscussPage';
 import CreatePostPage from './pages/CreatePostPage';
 import ProfilePage from './pages/ProfilePage';
 import PostPage from './pages/PostPage';
+import EditPostPage from './pages/EditPostPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="discuss" element={<DiscussPage />} />
         <Route path="createPost" element={<CreatePostPage />} />
+        <Route path="editPost/:uuid" element={<EditPostPage />} />
         <Route path="profile/:id" element={<ProfilePage />} />
         <Route path="post/:uuid" element={<PostPage />} />
       </Routes>
