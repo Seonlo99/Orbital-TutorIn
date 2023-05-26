@@ -145,7 +145,7 @@ const DiscussPage = () => {
                     <div>
                     <p className="text-sm text-gray-700">
                         Showing
-                        <span className="font-medium px-1">{curPage*POSTLIMIT + 1}</span>
+                        <span className="font-medium px-1">{data.totalCount? curPage*POSTLIMIT + 1 : 0}</span>
                         to
                         <span className="font-medium px-1">{(curPage+1)*POSTLIMIT > data.totalCount? data.totalCount:(curPage+1)*POSTLIMIT}</span>
                         of

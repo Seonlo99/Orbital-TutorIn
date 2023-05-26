@@ -8,7 +8,7 @@ const getAllPosts = async (req, res) => {
         const {page=1} = req.query
         // console.log(req)
         const POSTLIMIT =10
-        let posts = await Post.find({}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
+        let posts = await Post.find({isDeleted:false}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
             path:"userId",
             select: ['username','tutor']
         });
@@ -19,7 +19,7 @@ const getAllPosts = async (req, res) => {
         // console.log(posts)
         
 
-        const totalCount = await Post.estimatedDocumentCount();
+        const totalCount = await Post.countDocuments({isDeleted:false})
         // console.log(posts)
         return res.json({posts, totalCount})
 
@@ -37,7 +37,7 @@ const getSinglePost = async (req, res) => {
         //     select: ['userId','body']
         // });
 
-        let post = await Post.findOne({slug}).populate([
+        let post = await Post.findOne({slug, isDeleted:false}).populate([
             {
                 path:"userId",
                 select: ['username','tutor']
@@ -87,7 +87,7 @@ const editPost = async (req, res) => {
     try{
         const { title, content,slug } = req.body;
 
-        let post = await Post.findOne({slug});
+        let post = await Post.findOne({slug, isDeleted:false});
         if(!post){
             return res.status(404).json({message:"Unable to find post!"})
         }
@@ -105,6 +105,27 @@ const editPost = async (req, res) => {
     }
 }
 
+const deletePost = async (req, res) => {
+    try{
+        const { slug } = req.query;
+        // console.log(slug)
+        let post = await Post.findOne({slug, isDeleted:false});
+        // console.log(post)
+        if(!post){
+            return res.status(404).json({message:"Unable to find post!"})
+        }
+        if(!post.userId.equals(req.user._id)){ //check if the user is owner of the post
+            return res.status(404).json({message:"Not the owner!"})
+        }
+        post = await Post.findOneAndUpdate({slug}, {isDeleted:true});
+
+        return res.json({post})
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
 
 
-export { getAllPosts, getSinglePost, addPost,editPost };
+
+export { getAllPosts, getSinglePost, addPost, editPost, deletePost };
