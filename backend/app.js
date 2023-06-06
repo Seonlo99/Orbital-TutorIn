@@ -7,6 +7,7 @@ import cors from 'cors'
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
+import upvoteRoutes from "./routes/upvoteRoutes.js"
 
 dotenv.config();
 connectDB();
@@ -22,6 +23,7 @@ app.get('/', (req,res)=>{
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/votes', upvoteRoutes);
 
 const PORT = process.env.PORT || 5000
 

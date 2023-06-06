@@ -14,9 +14,10 @@ export const getAllPosts = async(curPage)=>{
     }
 }
 
-export const getSinglePost = async(uuid)=>{
+export const getSinglePost = async(uuid, userId=null)=>{
     try{
-        const {data} = await axios.get(`${rootUrl}/api/posts/post`, { params: { slug: uuid }});
+        // console.log(userId)
+        const {data} = await axios.get(`${rootUrl}/api/posts/post`, { params: { slug: uuid, userId:userId }});
         return data;
         
     } catch(error){
