@@ -1,5 +1,6 @@
 import Comment from "../models/Comment.js"
 import Post from "../models/Post.js"
+import {v4 as uuid} from 'uuid'
 
 const addComment = async (req, res) => {
     try{
@@ -18,6 +19,7 @@ const addComment = async (req, res) => {
             postId: post._id,
             parent,
             replyUser,
+            commentSlug: uuid(),
         });
 
         return res.json({comment})

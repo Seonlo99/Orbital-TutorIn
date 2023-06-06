@@ -2,6 +2,7 @@ import Post from "../models/Post.js"
 import {v4 as uuid} from 'uuid'
 
 import { getCommentCount } from "./commentControllers.js"
+import { getUserVotesbyPost, getVoteCount } from "./upvoteController.js"
 
 const getAllPosts = async (req, res) => {
     try{
@@ -14,7 +15,8 @@ const getAllPosts = async (req, res) => {
         });
         posts = await Promise.all(posts.map( async (post) => {
             let count = await getCommentCount(post._id)
-            return ({...post._doc, commentCount:count})
+            const voteCount = await getVoteCount(post._id, null)
+            return ({...post._doc, commentCount:count, voteCount:voteCount})
         }))
         // console.log(posts)
         
@@ -30,12 +32,13 @@ const getAllPosts = async (req, res) => {
 
 const getSinglePost = async (req, res) => {
     try{
-        const {slug} = req.query
+        const {slug, userId} = req.query
 
         // let post = await Post.find({slug}).populate({
         //     path:"comments",
         //     select: ['userId','body']
         // });
+        // console.log(userId)
 
         let post = await Post.findOne({slug, isDeleted:false}).populate([
             {
@@ -51,8 +54,19 @@ const getSinglePost = async (req, res) => {
         if(post){
             // console.log(post)
             let count = await getCommentCount(post._id)
+            let votes = {}
+            let formattedVotes ={}
+            if(userId){ //user is logged in
+                votes = await getUserVotesbyPost(userId, post._id)
+                
+                votes.forEach(vote => formattedVotes[vote.commentId? vote.commentId: vote.postId] = vote); //format it such that either the postId or commentId is the key for easier searching later on
+                
+                // console.log(formattedVotes)
+            }
 
-            return res.json({post,commentCount:count})
+            const voteCount = await getVoteCount(post._id, null)
+            // console.log(voteCount)
+            return res.json({post,commentCount:count, votes:formattedVotes, voteCount:voteCount})
         }
         else{
             return res.status(404).json({message:"Unable to find post!"})

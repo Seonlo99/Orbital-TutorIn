@@ -116,7 +116,7 @@ const DiscussPage = () => {
                     
                     <div className='flex flex-row gap-x-3 items-center'>
                         <div className='flex flex-row'>
-                            <BiUpvote size={24}/> {post.upvoteCount}
+                            <BiUpvote size={24}/> {post.voteCount}
                         </div>
                         <div className='flex flex-row'>
                             <AiOutlineComment size={24}/> {post.commentCount}

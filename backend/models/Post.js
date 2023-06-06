@@ -5,6 +5,7 @@ const PostSchema = new Schema(
         title: { type: String, required: true },
         contents: { type: Object, required: true },
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
+        upvotes: [{ type: Schema.Types.ObjectId, ref: 'Upvote' }],
         upvoteCount: { type: Number, default: 0 },
         slug: {type:String, required:true, unique:true},
         tags: {type: [String], index: true},
