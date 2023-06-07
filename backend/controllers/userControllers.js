@@ -20,6 +20,7 @@ const registerUser = async (req, res) => {
 
     return res.status(201).json({
       _id: user._id,
+      avatar: user.avatar,
       username: user.username,
       name: user.name,
       email: user.email,
@@ -45,6 +46,7 @@ const userLogin = async (req, res) => {
     if (await user.verifyPassword(password)) {
       return res.status(201).json({
         _id: user._id,
+        avatar: user.avatar,
         username: user.username,
         name: user.name,
         email: user.email,
@@ -57,6 +59,38 @@ const userLogin = async (req, res) => {
         .status(400)
         .json({ message: "User does not exist or invalid password." });
     }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const { avatar, username, fullname, email, password } = req.body;
+    // console.log(req.body);
+    const user = await User.findOne({ username });
+    const updatedUser = await User.findOneAndUpdate(
+      { username },
+      {
+        avatar: avatar,
+        name: fullname,
+        email: email,
+        password: password || user.password,
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(201).json({
+      _id: updatedUser._id,
+      avatar: updatedUser.avatar,
+      username: updatedUser.username,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      verified: updatedUser.verified,
+      tutor: updatedUser.tutor,
+      token: await updatedUser.generateJWT(),
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -112,4 +146,4 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
-export { registerUser, userLogin, updateProfilePicture };
+export { registerUser, userLogin, updateProfile };
