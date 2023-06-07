@@ -64,6 +64,11 @@ const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVo
     });
 
   const addCommentHandler = (text, parent = null, replyUser = null) => {
+    if(!userState.userInfo){
+      toast.error("Login to comment!");
+      return;
+    }
+    
     mutateNewComment({
       desc: text,
       parent: singleComment._id,
