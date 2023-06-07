@@ -8,6 +8,7 @@ import Comment from './Comment'
 const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCount}) => {
 
     // const [comments, setComments] = useState({})
+    const [newReload, setNewReload] = useState(false)
 
     const {data, isLoading, isError} = useQuery({
         queryFn: () => getComments(uuid),
@@ -20,6 +21,7 @@ const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCoun
                   voteCount[comment._id]=comment.voteCount
                 })
                 setVoteCount(voteCount)
+                setNewReload(cur=>{return !cur})
               }
         },
         onError: (error) =>{
