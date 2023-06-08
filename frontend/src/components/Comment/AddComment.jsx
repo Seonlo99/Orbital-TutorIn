@@ -9,7 +9,7 @@ const AddComment = ({label, formHandler, initialText="",loading=false, cancelHan
     const submitHandler = (e) =>{
         e.preventDefault();
         formHandler(text);
-        setText("");
+        // setText(text);
     }
     // console.log(initialText)
     return (
