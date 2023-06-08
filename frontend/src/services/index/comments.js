@@ -30,3 +30,34 @@ export const getComments = async(uuid, commentId=null)=>{
         throw new Error(error.message)
     }
 }
+
+
+export const editComment = async({desc,token,id})=>{
+    try{
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const {data} = await axios.patch(`${rootUrl}/api/comments`, {desc,id}, config);
+        return data;
+        
+    } catch(error){
+        if(error.response && error.response.data.message){
+            throw new Error(error.response.data.message);
+        }
+        throw new Error(error.message)
+    }
+}
+
+export const deleteComment = async({token, id})=>{
+    try{
+        
+        const {data} = await axios.delete(`${rootUrl}/api/comments`, { params: { id: id }, headers: { Authorization: `Bearer ${token}` }});
+        return data;
+        
+    } catch(error){
+        if(error.response && error.response.data.message){
+            throw new Error(error.response.data.message);
+        }
+        throw new Error(error.message)
+    }
+}

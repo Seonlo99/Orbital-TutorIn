@@ -7,20 +7,38 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {useQuery} from "@tanstack/react-query"
 
 import AddComment from './AddComment';
-import { getComments } from '../../services/index/comments'
+import { getComments, editComment, deleteComment } from '../../services/index/comments'
 import { Upvote } from '../Upvote';
 
-const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVoteCount}) => {
+const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVoteCount, invalidate}) => {
 
   const [showReply, setShowReply] = useState(false)
   const userState = useSelector((state) => state.user);
   const [reload,setReload] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
+  const [commentBody, setCommentBody] = useState(singleComment.body)
+
+  // const queryClient = useQueryClient()
 
   const replyHandler = ()=>{
     setShowReply((cur)=>{
       return !cur
     })
     // console.log(showReply)
+  }
+
+  const editHandler = ()=>{
+    console.log()
+    setShowEdit((cur)=>{
+      return !cur
+    })
+    // console.log(showReply)
+  }
+
+  const cancelHandler = ()=>{
+    setShowEdit((cur)=>{
+      return false
+    })
   }
 
   const {data, isLoading, isError} = useQuery({
@@ -81,24 +99,127 @@ const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVo
     // console.log(text);
 };
 
+
+const { mutate: mutateEditComment, isLoading: isLoadingEditComment } =
+useMutation({
+  mutationFn: ({ token, desc, id }) => {
+    return editComment({ token, desc, id });
+  },
+  onSuccess: () => {
+    toast.success(
+      "Comment Edited!"
+    );
+    setShowEdit(false)
+    // setReload((cur)=>!cur)
+    // queryClient.invalidateQueries({queryKey:['comments']})
+    invalidate()
+    // setcommentBody(desc)
+    // setReload((cur)=>!cur)
+  },
+  onError: (error) => {
+    toast.error(error.message);
+    console.log(error);
+  },
+});
+
+const editCommentHandler = (text) => {
+  if(!userState.userInfo){
+    toast.error("Login to edit comment!");
+    return;
+  }
+  setCommentBody(text)
+  mutateEditComment({
+    desc: text,
+    id: singleComment._id,
+    token: userState.userInfo.token,
+  }
+  );
+};
+
+const { mutate: mutateDeleteComment, isLoading: isLoadingDeleteComment } =
+useMutation({
+  mutationFn: ({ token, id }) => {
+    return deleteComment({ token, id });
+  },
+  onSuccess: () => {
+    toast.success(
+      "Comment Deleted!"
+    );
+    setShowEdit(false)
+    // setReload((cur)=>!cur)
+    invalidate()
+    // setReload((cur)=>!cur)
+  },
+  onError: (error) => {
+    toast.error(error.message);
+    console.log(error);
+  },
+});
+
+const deleteCommentHandler = () => {
+  if(!userState.userInfo){
+    toast.error("Login to edit comment!");
+    return;
+  }
+
+  mutateDeleteComment({
+    id: singleComment._id,
+    token: userState.userInfo.token,
+  }
+  );
+};
+
+// console.log(commentBody)
+
+
+
   return (
     
     <div className='bg-gray-50 rounded-md px-3 py-2 mt-3 border-l'>
         <div className='text-xs'>{singleComment.userId.username} • {moment(singleComment.createdAt).format('DD/MM/yyyy')} {moment(singleComment.createdAt).format('HH:mm')}</div>
-        <div className='mt-2'>{singleComment.body}</div>
-        <div className='font-light text-sm flex flex-row gap-x-5'>
-          <div className='bg-gray-300 rounded-2xl px-2 py-1 flex flex-row items-center gap-x-1'>
-            <Upvote userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} id={singleComment._id} postSlug={uuid} commentSlug={singleComment.commentSlug} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+        
+        {singleComment.isDeleted? (
+          <div className='text-sm italic font-light'>
+            Deleted Message
           </div>
-          <button onClick={replyHandler}>Reply</button>
+        ): (
+          <>
+        
+          <div hidden={showEdit} className='mt-2'>{singleComment.body}</div>
+  
+          <div hidden={!showEdit} className='my-2'>
+            <AddComment initialText={commentBody} label="Edit" formHandler={(text)=>{editCommentHandler(text)}} cancelHandler={()=>cancelHandler()} />
+          </div>
+          
+          <div className='font-light text-sm flex flex-row gap-x-5'>
+            <div className='bg-gray-300 rounded-2xl px-2 py-1 flex flex-row items-center gap-x-1'>
+              <Upvote userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} id={singleComment._id} postSlug={uuid} commentSlug={singleComment.commentSlug} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+            </div>
+            <button onClick={replyHandler}>Reply</button>
+            { userState.userInfo?._id === singleComment.userId._id &&
+              (
+              <>
+                <button onClick={editHandler}>Edit</button>
+                <button onClick={deleteCommentHandler}>Delete</button>
+              </>
+              )
+            }
             
-        </div>
-        <div hidden={!showReply} className='mt-3'>
+              
+          </div>
+          
+          <div hidden={!showReply} className='mt-3'>
             <AddComment label="Comment" formHandler={(text) =>addCommentHandler(text)} loading={false} />
-        </div>
+          </div>
+
+          </>
+          )
+        }
+        
+        
         {!isLoading && !isError && data.comments.map((comment)=>{
             
-            return <Comment key={comment._id} uuid={uuid} singleComment={comment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)}/>
+            return <Comment invalidate={()=>invalidate()} key={comment._id} uuid={uuid} singleComment={comment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)}/>
         })}
         
     </div>
