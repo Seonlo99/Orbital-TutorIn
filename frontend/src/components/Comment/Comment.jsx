@@ -8,8 +8,9 @@ import {useQuery} from "@tanstack/react-query"
 
 import AddComment from './AddComment';
 import { getComments } from '../../services/index/comments'
+import { Upvote } from '../Upvote';
 
-const Comment = ({singleComment, uuid}) => {
+const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVoteCount}) => {
 
   const [showReply, setShowReply] = useState(false)
   const userState = useSelector((state) => state.user);
@@ -28,6 +29,13 @@ const Comment = ({singleComment, uuid}) => {
     onSuccess: (data)=>{
         // setComments(data)
         // console.log(data)
+        if(data.comments){
+          data.comments.forEach(comment=>{
+            voteCount[comment._id]=comment.voteCount
+          })
+          setVoteCount(voteCount)
+          // setReload((cur)=>!cur)
+        }
     },
     onError: (error) =>{
         toast.error(error.message)
@@ -74,7 +82,9 @@ const Comment = ({singleComment, uuid}) => {
         <div className='text-xs'>{singleComment.userId.username} • {moment(singleComment.createdAt).format('DD/MM/yyyy')} {moment(singleComment.createdAt).format('HH:mm')}</div>
         <div className='mt-2'>{singleComment.body}</div>
         <div className='font-light text-sm flex flex-row gap-x-5'>
-          <div>Upvote</div>
+          <div className='bg-gray-300 rounded-2xl px-2 py-1 flex flex-row items-center gap-x-1'>
+            <Upvote userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} id={singleComment._id} postSlug={uuid} commentSlug={singleComment.commentSlug} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+          </div>
           <button onClick={replyHandler}>Reply</button>
             
         </div>
@@ -83,7 +93,7 @@ const Comment = ({singleComment, uuid}) => {
         </div>
         {!isLoading && !isError && data.comments.map((comment)=>{
             
-            return <Comment key={comment._id} uuid={uuid} singleComment={comment} />
+            return <Comment key={comment._id} uuid={uuid} singleComment={comment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)}/>
         })}
         
     </div>

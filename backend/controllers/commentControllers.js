@@ -2,6 +2,8 @@ import Comment from "../models/Comment.js"
 import Post from "../models/Post.js"
 import {v4 as uuid} from 'uuid'
 
+import { getVoteCount } from "./upvoteController.js"
+
 const addComment = async (req, res) => {
     try{
         const { desc:body, slug, parent, replyUser } = req.body;
@@ -45,6 +47,14 @@ const getComments = async (req, res) => {
                 }
             ]
         );
+        
+        comments = await Promise.all(comments.map( async (comment) => {
+            const voteCount = await getVoteCount(post._id, comment._id)
+            // console.log({...comment._doc, voteCount:voteCount})
+            return ({...comment._doc, voteCount:voteCount})
+        }))
+
+        // console.log(comments)
 
         // console.log(posts)
         return res.json({comments})
