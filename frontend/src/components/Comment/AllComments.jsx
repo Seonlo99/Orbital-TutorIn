@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useQuery} from "@tanstack/react-query"
+import {useQuery, useQueryClient} from "@tanstack/react-query"
 import toast from 'react-hot-toast'
 
 import { getComments } from '../../services/index/comments'
@@ -9,6 +9,12 @@ const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCoun
 
     // const [comments, setComments] = useState({})
     const [newReload, setNewReload] = useState(false)
+
+    const queryClient = useQueryClient()
+
+    const invalidate = ()=>{
+      queryClient.invalidateQueries({queryKey:["comments"]})
+    }
 
     const {data, isLoading, isError} = useQuery({
         queryFn: () => getComments(uuid),
@@ -33,7 +39,7 @@ const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCoun
   return (
     <div>
         {!isLoading && !isError && data.comments.map((singleComment)=>{
-            return <Comment reload={reload} key={singleComment._id} uuid={uuid} singleComment={singleComment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+            return <Comment invalidate={()=>invalidate()} reload={reload} key={singleComment._id} uuid={uuid} singleComment={singleComment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
         })}
 
     </div>

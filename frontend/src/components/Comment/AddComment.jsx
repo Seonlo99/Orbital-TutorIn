@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 
-const AddComment = ({label, formHandler, initialText="",loading=false}) => {
+const AddComment = ({label, formHandler, initialText="",loading=false, cancelHandler=null}) => {
   
     const [text, setText] = useState(initialText)
 
@@ -10,7 +11,7 @@ const AddComment = ({label, formHandler, initialText="",loading=false}) => {
         formHandler(text);
         setText("");
     }
-  
+    // console.log(initialText)
     return (
     <form onSubmit={submitHandler}>
       <div className="flex flex-col items-end border border-primary rounded-lg p-4">
@@ -23,15 +24,15 @@ const AddComment = ({label, formHandler, initialText="",loading=false}) => {
         />
         <div className="flex flex-col-reverse gap-y-2 items-center gap-x-2 pt-2 min-[420px]:flex-row">
           {label!=="Comment" && (
-            <button
-            //   onClick=
-              className="px-6 py-2.5 rounded-lg border border-red-500 text-red-500"
+            <div
+              onClick={cancelHandler}
+              className="px-6 py-2.5 rounded-lg border border-red-500 text-red-500 hover:cursor-pointer"
             >
               Cancel
-            </button>
+            </div>
           )}
           <button
-            disabled={loading}
+            disabled={loading || text.length<1}
             type="submit"
             className="px-6 py-2.5 rounded-lg bg-blue-500
          text-white font-semibold disabled:opacity-70 disabled:cursor-not-allowed"

@@ -64,6 +64,51 @@ const getComments = async (req, res) => {
     }
 }
 
+
+const editComment = async (req, res) => {
+    try{
+        const { desc, id } = req.body;
+
+        let comment = await Comment.findOne({_id:id, isDeleted:false});
+        if(!comment){
+            return res.status(404).json({message:"Unable to find comment!"})
+        }
+        if(!comment.userId.equals(req.user._id)){ //check if the user is owner of the post
+            return res.status(404).json({message:"Not the owner!"})
+        }
+        comment = await Comment.findOneAndUpdate({_id:id}, {body:desc});
+
+        return res.json({comment})
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
+
+const deleteComment = async (req, res) => {
+    try{
+        const { id } = req.query;
+        // console.log(slug)
+        let comment = await Comment.findOne({_id:id, isDeleted:false});
+        // console.log(post)
+        if(!comment){
+            return res.status(404).json({message:"Unable to find comment!"})
+        }
+        if(!comment.userId.equals(req.user._id)){ //check if the user is owner of the post
+            return res.status(404).json({message:"Not the owner!"})
+        }
+        comment = await Comment.findOneAndUpdate({_id:id}, {isDeleted:true});
+
+        return res.json({comment})
+
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
+
+
+
+
 const getCommentCount = async (postId) => {
     try{
         let count = await Comment.countDocuments({postId:postId})
@@ -77,4 +122,4 @@ const getCommentCount = async (postId) => {
 
 
 
-export { addComment, getComments, getCommentCount };
+export { addComment, getComments, editComment, deleteComment, getCommentCount };
