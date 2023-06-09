@@ -9,11 +9,15 @@ import toast from 'react-hot-toast'
 
 import { getAllPosts } from '../services/index/posts'
 import MainLayout from '../components/MainLayout'
+import { SearchBar } from '../components/Filters/SearchBar'
 
 const DiscussPage = () => {
     const POSTLIMIT = 10;
     let [curPage, setCurPage] = useState(0);
     let [num, setNum] = useState(0);
+
+    const [search, setSearch] = useState("");
+    // console.log(search)
 
     const pages = [
         {page:num},
@@ -50,8 +54,8 @@ const DiscussPage = () => {
     }
 
     const {data, isLoading, isError} = useQuery({
-        queryFn: () => getAllPosts(curPage+1),
-        queryKey: ["posts",curPage],
+        queryFn: () => getAllPosts(curPage+1, search),
+        queryKey: ["posts",curPage, search],
         onError: (error) =>{
             console.log(error);
         }
@@ -86,7 +90,9 @@ const DiscussPage = () => {
                     Filter 3
                 </div>
             </div>
-            <div>SEARCH BAR</div>
+            <div>
+                <SearchBar setSearch={(text)=> setSearch(text)}/>
+            </div>
         </section>
         <section className='divide-y divide-slate-300'>
             
