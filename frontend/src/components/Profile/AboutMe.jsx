@@ -1,14 +1,22 @@
-import React from "react";
-import defaultPic from "../../assets/images/default.png";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import defaultPic from "../../assets/images/default.png";
+import stables from "../../constants/stables";
+
 export const AboutMe = () => {
+  const userState = useSelector((state) => state.user);
+  const profilePic =
+    userState.userInfo.avatar === ""
+      ? defaultPic
+      : stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar;
   return (
     <>
       <img
         id="avatar"
         className=" w-20 h-20 rounded-full border border-black"
-        src={defaultPic}
+        src={profilePic}
         alt="Img"
       ></img>
       <Link to="edit-profile">

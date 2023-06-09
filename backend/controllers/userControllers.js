@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import { uploadPicture } from "../middleware/uploadPictureMiddleware.js";
+import { fileRemover } from "../utils/fileRemover.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -66,13 +67,13 @@ const userLogin = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { avatar, username, fullname, email, password } = req.body;
+    const { _id, fullname, email, password } = req.body;
+    console.log(req.body);
     // console.log(req.body);
-    const user = await User.findOne({ username });
-    const updatedUser = await User.findOneAndUpdate(
-      { username },
+    const user = await User.findById({ _id });
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id },
       {
-        avatar: avatar,
         name: fullname,
         email: email,
         password: password || user.password,
@@ -98,24 +99,27 @@ const updateProfile = async (req, res) => {
 
 const updateProfilePicture = async (req, res, next) => {
   try {
-    const upload = uploadPicture.single("profilePicture");
+    const upload = uploadPicture.single("avatar");
     upload(req, res, async function (err) {
       if (err) {
-        const error = new Error("An unknown error occured when uploading");
+        const error = new Error(
+          "An unknown error occured when uploading " + err.message
+        );
         next(error);
       } else {
-        // everything went well
+        // every thing went well
         if (req.file) {
-          const updatedUser = await User.findByIdAndUpdate(
-            req.user._id,
-            {
-              avatar: req.file.filename,
-            },
-            { new: true }
-          );
+          let filename;
+          let updatedUser = await User.findById(req.body._id);
+          filename = updatedUser.avatar;
+          if (filename) {
+            fileRemover(filename);
+          }
+          updatedUser.avatar = req.file.filename;
+          await updatedUser.save();
           res.json({
             _id: updatedUser._id,
-            username: updatedUser.username,
+            avatar: updatedUser.avatar,
             name: updatedUser.name,
             email: updatedUser.email,
             verified: updatedUser.verified,
@@ -124,7 +128,7 @@ const updateProfilePicture = async (req, res, next) => {
           });
         } else {
           let filename;
-          let updatedUser = await User.findById(req.user._id);
+          let updatedUser = await User.findById(req.body._id);
           filename = updatedUser.avatar;
           updatedUser.avatar = "";
           await updatedUser.save();
@@ -132,6 +136,7 @@ const updateProfilePicture = async (req, res, next) => {
           res.json({
             _id: updatedUser._id,
             username: updatedUser.username,
+            avatar: updatedUser.avatar,
             name: updatedUser.name,
             email: updatedUser.email,
             verified: updatedUser.verified,
@@ -146,4 +151,4 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
-export { registerUser, userLogin, updateProfile };
+export { registerUser, userLogin, updateProfile, updateProfilePicture };

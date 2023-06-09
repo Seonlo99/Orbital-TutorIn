@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import MainLayout from "../components/MainLayout";
 import { userActions } from "../store/reducers/userReducers";
-import { editProfilePicture } from "../services/index/users";
+import { editProfile } from "../services/index/users";
+import { ProfilePictureForUpload } from "../components/Profile/ProfilePictureForUpload";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -15,10 +16,9 @@ const RegisterPage = () => {
   const userState = useSelector((state) => state.user);
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: ({ avatar, username, fullname, email, password }) => {
-      return editProfilePicture({
-        avatar,
-        username,
+    mutationFn: ({ _id, fullname, email, password }) => {
+      return editProfile({
+        _id,
         fullname,
         email,
         password,
@@ -27,6 +27,7 @@ const RegisterPage = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
+      toast.success("Profile is updated");
       // console.log(data);
     },
     onError: (error) => {
@@ -49,8 +50,7 @@ const RegisterPage = () => {
     watch,
   } = useForm({
     defaultValues: {
-      avatar: "",
-      username: userState.userInfo.username,
+      _id: userState.userInfo._id,
       fullname: userState.userInfo.name,
       email: userState.userInfo.email,
       password: "",
@@ -59,8 +59,8 @@ const RegisterPage = () => {
     mode: "onChange",
   });
   const submitHandler = (data) => {
-    const { avatar, username, fullname, email, password } = data;
-    mutate({ avatar, username, fullname, email, password });
+    const { _id, fullname, email, password } = data;
+    mutate({ _id, fullname, email, password });
   };
 
   const password = watch("password");
@@ -75,17 +75,7 @@ const RegisterPage = () => {
           <form onSubmit={handleSubmit(submitHandler)}>
             <div className="flex flex-col w-full">
               <div className="flex flex-col mt-5 gap-x-20 justify-center">
-                <label
-                  htmlFor="avatar"
-                  className="text-gray-500 font-semibold block mt-5"
-                >
-                  Profile Picture
-                </label>
-                <input
-                  type="file"
-                  id="avatar"
-                  {...register("avatar", {})}
-                />
+                <ProfilePictureForUpload avatar={userState.userInfo.avatar} />
               </div>
               <label
                 htmlFor="fullname"
@@ -166,7 +156,7 @@ const RegisterPage = () => {
                     value: false,
                   },
                 })}
-                placeholder="Enter Password"
+                placeholder="Enter New Password to Change"
                 className={`placeholder:text-gray-400 text-black mt-1 rounded-lg font-semibold block px-3 py-2 outline-none border  ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
@@ -213,7 +203,7 @@ const RegisterPage = () => {
                 disabled={!isValid || isLoading}
                 className="bg-blue-500 text-white font-bold text-lg w-full rounded-lg py-2 mt-5 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Submit
+                Update
               </button>
             </div>
           </form>

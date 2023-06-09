@@ -19,5 +19,8 @@
   "homepage": "https://github.com/ChoonSiang/TutorIn#readme",
   "devDependencies": {
     "concurrently": "^8.0.1"
+  },
+  "dependencies": {
+    "react-easy-crop": "^4.7.4"
   }
 }

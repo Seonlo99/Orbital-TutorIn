@@ -1,7 +1,6 @@
-import { userActions } from "../reducers/userReducers"
+import { userActions } from "../reducers/userReducers";
 
-export const logout = () => (dispatch) =>{
-    dispatch(userActions.resetUserInfo());
-    localStorage.removeItem("account");
-
-}
+export const logout = () => (dispatch) => {
+  dispatch(userActions.resetUserInfo());
+  localStorage.removeItem("account");
+};
