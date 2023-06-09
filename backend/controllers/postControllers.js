@@ -6,10 +6,14 @@ import { getUserVotesbyPost, getVoteCount } from "./upvoteController.js"
 
 const getAllPosts = async (req, res) => {
     try{
-        const {page=1} = req.query
+        let {page=1, search} = req.query
+        search = search || "";
+        // console.log(search)
+
+        const searchFilter = {$regex: search, $options:"i"}
         // console.log(req)
         const POSTLIMIT =10
-        let posts = await Post.find({isDeleted:false}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
+        let posts = await Post.find({isDeleted:false, title:searchFilter}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
             path:"userId",
             select: ['username','tutor']
         });
@@ -21,7 +25,7 @@ const getAllPosts = async (req, res) => {
         // console.log(posts)
         
 
-        const totalCount = await Post.countDocuments({isDeleted:false})
+        const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter})
         // console.log(posts)
         return res.json({posts, totalCount})
 

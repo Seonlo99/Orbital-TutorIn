@@ -1,9 +1,9 @@
 import axios from "axios";
 import { rootUrl } from "../../config/config";
 
-export const getAllPosts = async(curPage)=>{
+export const getAllPosts = async(curPage, search=null)=>{
     try{
-        const {data} = await axios.get(`${rootUrl}/api/posts`, { params: { page: curPage }});
+        const {data} = await axios.get(`${rootUrl}/api/posts`, { params: { page: curPage, search:search }});
         return data;
         
     } catch(error){
