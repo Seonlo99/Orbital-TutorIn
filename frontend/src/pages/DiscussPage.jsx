@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BiUpvote } from 'react-icons/bi'
 import {AiOutlineComment} from 'react-icons/ai'
-import {useQuery} from "@tanstack/react-query"
+import {useQuery, useQueryClient} from "@tanstack/react-query"
 import moment from 'moment'
 import {useSelector} from "react-redux"
 import {useNavigate, Link} from 'react-router-dom'
@@ -11,12 +11,17 @@ import { getAllPosts } from '../services/index/posts'
 import MainLayout from '../components/MainLayout'
 import { SearchBar } from '../components/Filters/SearchBar'
 
+import {Sort} from '../components/Filters/Sort'
+
 const DiscussPage = () => {
     const POSTLIMIT = 10;
     let [curPage, setCurPage] = useState(0);
     let [num, setNum] = useState(0);
 
     const [search, setSearch] = useState("");
+    const [sortBy, setSortBy]= useState("")
+
+    const queryClient = useQueryClient()
     // console.log(search)
 
     const pages = [
@@ -54,8 +59,8 @@ const DiscussPage = () => {
     }
 
     const {data, isLoading, isError} = useQuery({
-        queryFn: () => getAllPosts(curPage+1, search),
-        queryKey: ["posts",curPage, search],
+        queryFn: () => getAllPosts(curPage+1, search, sortBy),
+        queryKey: ["posts",curPage, search, sortBy],
         onError: (error) =>{
             console.log(error);
         }
@@ -72,6 +77,11 @@ const DiscussPage = () => {
         }
     }
 
+    const setSortByHandler = (text)=>{
+        setSortBy(text)
+        // queryClient.invalidateQueries({queryKey:["posts"]})
+    }
+
   return (
   <MainLayout>
     <div className='container mx-auto max-w-4xl mt-5'>
@@ -81,7 +91,7 @@ const DiscussPage = () => {
                     New
                 </button>
                 <div>
-                    Filter 1
+                    <Sort sortBy={sortBy} setSortByHandler={(text)=>{setSortByHandler(text)}}/>
                 </div>
                 <div>
                     Filter 2
@@ -114,7 +124,7 @@ const DiscussPage = () => {
                                 
                             </div>
                             <div className='font-light text-sm'>
-                                Created by: {post.userId.username}, {moment(post.createdAt).format('DD/MM/yyyy')} | {moment(post.createdAt).format('HH:mm')}
+                                Created by: {post.user.username}, {moment(post.createdAt).format('DD/MM/yyyy')} | {moment(post.createdAt).format('HH:mm')}
                             </div>
                         
                         </div>

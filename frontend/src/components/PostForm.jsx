@@ -8,9 +8,9 @@ import Tiptap from '../components/TipTap'
 
 const PostForm = ({handleMutate, btnName, initialContent={}}) => {
     const navigate = useNavigate();
-    const [title, setTitle] = useState(initialContent.title)
+    const [title, setTitle] = useState(initialContent.title || "")
     
-    const [content, setContent] = useState(initialContent.contents)
+    const [content, setContent] = useState(initialContent.contents || "")
     // console.log(content)
     // const titleRef = useRef(initialContent.title);
     // const [title, setTitle] = useState("")
