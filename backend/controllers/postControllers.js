@@ -3,20 +3,31 @@ import {v4 as uuid} from 'uuid'
 
 import { getCommentCount } from "./commentControllers.js"
 import { getUserVotesbyPost, getVoteCount } from "./upvoteController.js"
+import { getAllTagsArray } from "./tagController.js"
 // import { ObjectId } from 'mongoose'
 import mongoose from "mongoose"
 import Upvote from "../models/Upvote.js"
 
 const getAllPosts = async (req, res) => {
     try{
-        let {page=1, search, sortBy} = req.query
+        let {page=1, search, sortBy, selectedTags=[]} = req.query
         // console.log(sortBy)
+        let filteredSelectedTags
+        const availableTags = await getAllTagsArray()
+        if(selectedTags.length===0){ //user did not filter for any tag
+          filteredSelectedTags = availableTags 
+        }
+        else{
+          filteredSelectedTags = selectedTags.map((tag)=>{if(availableTags.includes(tag.value)){return tag.value}} ) //check to ensure the tags exists in the database
+        }
+        
         search = search || "";
         const searchFilter = {$regex: search, $options:"i"}
 
         const POSTLIMIT =10
         // console.log(search)
 
+        // tags=["CS2103"]
         
         let lookup={};
         let addField={};
@@ -90,6 +101,11 @@ const getAllPosts = async (req, res) => {
         let aggregate = [] 
         if(sortBy==="Upvote" || sortBy==="Comment"){
             aggregate = [
+                {
+                  $match: {
+                    tags: { $in: filteredSelectedTags }
+                  }
+                },
                 lookup,
                 {
                     $match: {
@@ -123,7 +139,8 @@ const getAllPosts = async (req, res) => {
                 {
                     $match: {
                       isDeleted:false,
-                      title:searchFilter
+                      title:searchFilter,
+                      tags: { $in: filteredSelectedTags }
                     }
                 },
                 sort,
@@ -169,7 +186,7 @@ const getAllPosts = async (req, res) => {
             // console.log(posts)
             
     
-            const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter})
+            const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter, tags: {$in: filteredSelectedTags}})
             // console.log(posts)
             return res.json({posts, totalCount})
           });
@@ -242,14 +259,16 @@ const getSinglePost = async (req, res) => {
 
 const addPost = async (req, res) => {
     try{
-        const { title, content } = req.body;
+        const { title, content, selectedTags } = req.body;
+        const availableTags = await getAllTagsArray()
+        const allTags = selectedTags.map((tag)=>{if(availableTags.includes(tag.value)){return tag.value}} ) //check to ensure the tags exists in the database
         const post = await Post.create({
             title: title,
             contents: content,
             userId: req.user._id,
             upvoteCount: 0,
             slug: uuid(),
-            tags: ["CS2105","CS2106","CS2107","CS2102"],
+            tags: allTags,
         });
 
         // const upvote = await Upvote.create({  //add a dummy upvote for aggregation purpose during filtering
@@ -269,7 +288,7 @@ const addPost = async (req, res) => {
 
 const editPost = async (req, res) => {
     try{
-        const { title, content,slug } = req.body;
+        const { title, content,slug, selectedTags } = req.body;
 
         let post = await Post.findOne({slug, isDeleted:false});
         if(!post){
@@ -280,7 +299,9 @@ const editPost = async (req, res) => {
         if(!post.userId.equals(req.user._id)){ //check if the user is owner of the post
             return res.status(404).json({message:"Not the owner!"})
         }
-        post = await Post.findOneAndUpdate({slug}, {title,contents:content});
+        const availableTags = await getAllTagsArray()
+        const allTags = selectedTags.map((tag)=>{if(availableTags.includes(tag.value)){return tag.value}} )
+        post = await Post.findOneAndUpdate({slug}, {title,contents:content, tags:allTags});
 
         return res.json({post})
 

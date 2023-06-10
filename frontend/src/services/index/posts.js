@@ -1,9 +1,9 @@
 import axios from "axios";
 import { rootUrl } from "../../config/config";
 
-export const getAllPosts = async(curPage, search=null, sortBy="New")=>{
+export const getAllPosts = async(curPage, search=null, sortBy="New", selectedTags)=>{
     try{
-        const {data} = await axios.get(`${rootUrl}/api/posts`, { params: { page: curPage, search:search, sortBy:sortBy }});
+        const {data} = await axios.get(`${rootUrl}/api/posts`, { params: { page: curPage, search:search, sortBy:sortBy, selectedTags }});
         return data;
         
     } catch(error){
@@ -28,12 +28,12 @@ export const getSinglePost = async(uuid, userId=null)=>{
     }
 }
 
-export const newPost = async({title,content,token})=>{
+export const newPost = async({title,content,token, selectedTags})=>{
     try{
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const {data} = await axios.post(`${rootUrl}/api/posts`, {title,content}, config);
+        const {data} = await axios.post(`${rootUrl}/api/posts`, {title,content, selectedTags}, config);
         return data;
         
     } catch(error){
@@ -44,12 +44,12 @@ export const newPost = async({title,content,token})=>{
     }
 }
 
-export const editPost = async({title,content,token, uuid})=>{
+export const editPost = async({title,content,token, uuid, selectedTags})=>{
     try{
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const {data} = await axios.patch(`${rootUrl}/api/posts`, {title,content,slug:uuid}, config);
+        const {data} = await axios.patch(`${rootUrl}/api/posts`, {title,content,slug:uuid, selectedTags}, config);
         return data;
         
     } catch(error){

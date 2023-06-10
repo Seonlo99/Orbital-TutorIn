@@ -17,6 +17,9 @@ const EditPostPage = () => {
     
     const navigate = useNavigate();
     const userState = useSelector(state => state.user);
+
+    const [defaultTags, setDefaultTags]=useState([])
+
     useEffect(()=>{
         if(!userState.userInfo){ //user not logged in
             navigate("/login");
@@ -28,10 +31,14 @@ const EditPostPage = () => {
       queryKey: ["post"],
       onSuccess:(data)=>{
         // setInitialContent(data.post)
-        // console.log(data.post)
         if(userState.userInfo._id !== data.post.userId._id){ //check if the user is owner of the post
           navigate(-1);
         }
+        // console.log(data.post.tags)
+        
+        const formattedTags = data.post.tags.map((tag)=>({value:tag, label:tag}))
+        setDefaultTags(formattedTags)
+        
       },
       onError: (error) =>{
           toast.error(error.message)
@@ -40,8 +47,8 @@ const EditPostPage = () => {
   })
 
     const {mutate, isLoading} = useMutation({
-        mutationFn: ({title,content})=>{
-          return editPost({title, content, token:userState.userInfo.token, uuid});
+        mutationFn: ({title,content,selectedTags})=>{
+          return editPost({title, content, token:userState.userInfo.token, uuid, selectedTags});
         },
         onSuccess: (data) => {
             toast.success("Post Edited!")
@@ -53,15 +60,15 @@ const EditPostPage = () => {
         }
       });
 
-      const handleMutate = (title,content)=>{
-          mutate({title,content})
+      const handleMutate = (title,content,selectedTags)=>{
+          mutate({title,content,selectedTags})
       }
 
     // console.log(content)
   return (
   <MainLayout>
     {!isDataLoading && !isDataError && (
-      <PostForm handleMutate={({title,content})=>{handleMutate(title,content)}} btnName="Edit" initialContent={data.post} />
+      <PostForm handleMutate={({title,content, selectedTags})=>{handleMutate(title,content,selectedTags)}} btnName="Edit" initialContent={data.post} defaultTags={defaultTags} />
     )}
     
   </MainLayout>
