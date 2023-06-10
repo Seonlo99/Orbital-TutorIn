@@ -1,21 +1,60 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { HiOutlineCamera } from "react-icons/hi";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 
 import stables from "../../constants/stables";
 import CropEasy from "../crop/CropEasy";
+import { UpdateProfilePicture } from "../../services/index/users";
+import { userActions } from "../../store/reducers/userReducers";
 
 export const ProfilePictureForUpload = (avatar) => {
   const isAvatar = avatar.avatar !== "";
   const [photo, setPhoto] = useState(null);
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
 
   const [openCrop, setOpenCrop] = useState(false);
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ formData }) => {
+      return UpdateProfilePicture({
+        formData,
+      });
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("account", JSON.stringify(data));
+      toast.success("Profile Picture is removed");
+      // console.log(data);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      // console.log(error);
+    },
+  });
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
       const file = e.target.files[0];
       setPhoto({ url: URL.createObjectURL(file), file });
       setOpenCrop(true);
+    }
+  };
+
+  const handleDeleteImage = () => {
+    if (window.confirm("Do you want to delete your profile picture?")) {
+      try {
+        const formData = new FormData();
+        formData.append("avatar", undefined);
+        formData.append("_id", userState.userInfo._id);
+        mutate({ formData: formData });
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error);
+      }
     }
   };
 
@@ -54,6 +93,7 @@ export const ProfilePictureForUpload = (avatar) => {
           />
         </div>
         <button
+          onClick={handleDeleteImage}
           type="button"
           className="border border-red-500 rounded-lg px-4 py-2 text-red-500"
         >

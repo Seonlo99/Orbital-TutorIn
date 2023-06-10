@@ -13,15 +13,21 @@ export const AboutMe = () => {
       : stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar;
   return (
     <>
-      <img
-        id="avatar"
-        className=" w-20 h-20 rounded-full border border-black"
-        src={profilePic}
-        alt="Img"
-      ></img>
-      <Link to="edit-profile">
-        <button>Edit Profile</button>
-      </Link>
+      <div className="flex flex-row">
+        <img
+          id="avatar"
+          className=" w-20 h-20 rounded-full border border-black"
+          src={profilePic}
+          alt="Img"
+        ></img>
+        <div className=" mt-5 ml-10">
+          <Link to="edit-profile">
+            <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
+              Edit Profile
+            </button>
+          </Link>
+        </div>
+      </div>
       <div className="mt-3 flex flex-col gap-y-2">
         <div className="font-bold">Choon Siang</div>
         <div>
