@@ -1,4 +1,6 @@
-const UPLOAD_FOLDER_BASE_URL = "http://localhost:5000/uploads/";
+import { rootUrl } from "../config/config";
+
+const UPLOAD_FOLDER_BASE_URL = `${rootUrl}/uploads/"`
 
 const stables = { UPLOAD_FOLDER_BASE_URL };
 
