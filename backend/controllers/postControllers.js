@@ -3,31 +3,189 @@ import {v4 as uuid} from 'uuid'
 
 import { getCommentCount } from "./commentControllers.js"
 import { getUserVotesbyPost, getVoteCount } from "./upvoteController.js"
+// import { ObjectId } from 'mongoose'
+import mongoose from "mongoose"
+import Upvote from "../models/Upvote.js"
 
 const getAllPosts = async (req, res) => {
     try{
-        let {page=1, search} = req.query
+        let {page=1, search, sortBy} = req.query
+        // console.log(sortBy)
         search = search || "";
+        const searchFilter = {$regex: search, $options:"i"}
+
+        const POSTLIMIT =10
         // console.log(search)
 
-        const searchFilter = {$regex: search, $options:"i"}
-        // console.log(req)
-        const POSTLIMIT =10
-        let posts = await Post.find({isDeleted:false, title:searchFilter}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
-            path:"userId",
-            select: ['username','tutor']
-        });
-        posts = await Promise.all(posts.map( async (post) => {
-            let count = await getCommentCount(post._id)
-            const voteCount = await getVoteCount(post._id, null)
-            return ({...post._doc, commentCount:count, voteCount:voteCount})
-        }))
-        // console.log(posts)
+        
+        let lookup={};
+        let addField={};
+        let sort = {};
+        if(sortBy==="Upvote"){
+            lookup = {
+                $lookup: {
+                  from: 'upvotes',
+                  let: { postId: '$_id' },
+                  pipeline: [
+                      {
+                      $match: {
+                          $expr: { $eq: ['$postId', '$$postId'] },
+                          commentId:null //ensure that only posts is included, not comments
+                      }
+                      }
+                  ],
+                  as: 'votes'
+                }
+            }
+
+            addField = {
+                $addFields: {
+                  dummyVotes: { //dummy variable so that those posts with 0 likes will also be included in the results
+                    $ifNull: [{ $size: '$votes' }, 0]
+                  },
+                  totalVotes: { //actual variable storing the sum of upvotes
+                    $sum: '$votes.value'
+                  }
+                }
+            }
+
+            sort ={
+                $sort: { totalVotes: -1, _id:-1 }
+            }
+        }
+        else if (sortBy==="Comment"){
+            lookup = {
+                $lookup: {
+                  from: 'comments',
+                  let: { postId: '$_id' },
+                  pipeline: [
+                      {
+                      $match: {
+                          $expr: { $eq: ['$postId', '$$postId'] },
+                      }
+                      }
+                  ],
+                  as: 'cmts'
+                }
+            }
+
+            addField = {
+                $addFields: {
+                  totalComments: {
+                    $ifNull: [{ $size: '$cmts' }, 0]
+                  },
+                }
+            }
+
+            sort ={
+                $sort: { totalComments: -1, _id:-1 }
+            }
+        }
+        else{
+            sort ={
+                $sort: { _id:-1 } //-1 is desc, 1 is asc
+              }
+        }
+        
+        let aggregate = [] 
+        if(sortBy==="Upvote" || sortBy==="Comment"){
+            aggregate = [
+                lookup,
+                {
+                    $match: {
+                      isDeleted:false,
+                      title:searchFilter
+                    }
+                },
+                addField,
+                sort,
+                {
+                  $skip: (parseInt(page)-1) * POSTLIMIT  // Number of documents to skip
+                },
+                {
+                  $limit: POSTLIMIT // Number of documents to return
+                },
+                {
+                  $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user'
+                  }
+                },
+                {
+                  $unwind: '$user'
+                }
+              ]
+        }
+        else{
+            aggregate = [
+                {
+                    $match: {
+                      isDeleted:false,
+                      title:searchFilter
+                    }
+                },
+                sort,
+                {
+                  $skip: (parseInt(page)-1) * POSTLIMIT
+                },
+                {
+                  $limit: POSTLIMIT
+                },
+                {
+                  $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user'
+                  }
+                },
+                {
+                  $unwind: '$user'
+                }
+              ]
+        }
+        
+        // let posts = await Post.find({isDeleted:false, title:searchFilter}, null, {skip: (parseInt(page)-1) * POSTLIMIT, limit:POSTLIMIT}).sort({ _id: -1 }).populate({
+        //     path:"userId",
+        //     select: ['username','tutor']
+        // });
+        let posts;
+
+        Post.aggregate(aggregate)
+          .exec(async (err, results) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            posts=results
+            // console.log(posts)
+            posts = await Promise.all(posts.map( async (post) => {
+                let count = await getCommentCount(post._id)
+                const voteCount = await getVoteCount(post._id, null)
+                return ({...post, commentCount:count, voteCount:voteCount})
+            }))
+            // console.log(posts)
+            
+    
+            const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter})
+            // console.log(posts)
+            return res.json({posts, totalCount})
+          });
+
+
+        // posts = await Promise.all(posts.map( async (post) => {
+        //     let count = await getCommentCount(post._id)
+        //     const voteCount = await getVoteCount(post._id, null)
+        //     return ({...post, commentCount:count, voteCount:voteCount})
+        // }))
+        // // console.log(posts)
         
 
-        const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter})
+        // const totalCount = await Post.countDocuments({isDeleted:false, title:searchFilter})
         // console.log(posts)
-        return res.json({posts, totalCount})
+        // return res.json({posts, totalCount})
 
     } catch (error){
         return res.status(500).json({message:error.message})
@@ -93,6 +251,14 @@ const addPost = async (req, res) => {
             slug: uuid(),
             tags: ["CS2105","CS2106","CS2107","CS2102"],
         });
+
+        // const upvote = await Upvote.create({  //add a dummy upvote for aggregation purpose during filtering
+        //     userId: mongoose.Types.ObjectId("645caa1b46a261e43e33f592"),
+        //     authorId: mongoose.Types.ObjectId("645caa1b46a261e43e33f592"),
+        //     postId: post._id,
+        //     commentId: null,
+        //     value: 0,
+        // });
 
         return res.json({post})
 
