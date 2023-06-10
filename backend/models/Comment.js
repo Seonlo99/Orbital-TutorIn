@@ -5,8 +5,8 @@ const CommentSchema = new Schema(
         userId: { type: Schema.Types.ObjectId, ref:'User', required: true, index: true },
         body: { type: String, required: true },
         postId: { type: Schema.Types.ObjectId, ref:'Post', required: true, index: true, },
-        upvotes: [{ type: Schema.Types.ObjectId, ref: 'Upvote' }],
-        upvoteCount: { type: Number, default: 0 },
+        // upvotes: [{ type: Schema.Types.ObjectId, ref: 'Upvote' }],
+        // upvoteCount: { type: Number, default: 0 },
         commentSlug: {type:String, required:true, unique:true},
         parent: {
             type: Schema.Types.ObjectId,
