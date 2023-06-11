@@ -58,6 +58,10 @@ export const ProfilePictureForUpload = (avatar) => {
     }
   };
 
+  console.log(stables.UPLOAD_FOLDER_BASE_URL + avatar.avatar);
+  console.log(stables.UPLOAD_FOLDER_BASE_URL);
+  console.log(avatar.avatar);
+
   return (
     <>
       {openCrop &&
