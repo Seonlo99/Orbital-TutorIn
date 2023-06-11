@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import {useMutation} from "@tanstack/react-query"
+import {useMutation, useQuery} from "@tanstack/react-query"
 import {useSelector} from "react-redux"
 import {useNavigate} from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -8,6 +8,7 @@ import MainLayout from '../components/MainLayout'
 import Tiptap from '../components/TipTap'
 import { newPost } from '../services/index/posts'
 import PostForm from '../components/PostForm'
+import {getAllTags} from "../services/index/tags"
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -19,8 +20,8 @@ const CreatePostPage = () => {
     },[navigate, userState.userInfo])
 
     const {mutate, isLoading} = useMutation({
-        mutationFn: ({title,content,token})=>{
-          return newPost({title,content,token});
+        mutationFn: ({title, content, token, selectedTags})=>{
+          return newPost({title, content, token, selectedTags});
         },
         onSuccess: (data) => {
             toast.success("Post Created!")
@@ -32,14 +33,16 @@ const CreatePostPage = () => {
         }
       });
 
-      const handleMutate = (title,content)=>{
-          mutate({title,content,token:userState.userInfo.token})
+      const handleMutate = (title,content, selectedTags)=>{
+          mutate({title, content, token:userState.userInfo.token, selectedTags})
       }
+
+
 
     // console.log(content)
   return (
   <MainLayout>
-    <PostForm handleMutate={({title,content})=>{handleMutate(title,content)}} btnName="Post" />
+    <PostForm handleMutate={({title,content,selectedTags})=>{handleMutate(title,content,selectedTags)}} btnName="Post" />
   </MainLayout>
   )
 }

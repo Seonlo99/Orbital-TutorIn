@@ -10,6 +10,8 @@ import toast from 'react-hot-toast'
 import { getAllPosts } from '../services/index/posts'
 import MainLayout from '../components/MainLayout'
 import { SearchBar } from '../components/Filters/SearchBar'
+import { getAllTags } from '../services/index/tags'
+import { TagSelector } from '../components/TagSelector'
 
 import {Sort} from '../components/Filters/Sort'
 
@@ -20,6 +22,10 @@ const DiscussPage = () => {
 
     const [search, setSearch] = useState("");
     const [sortBy, setSortBy]= useState("")
+    const [selectedTags, setSelectedTags]= useState([])
+
+    // const [availableTags, setAvailableTags] = useState([]) // array of tags from db
+
 
     const queryClient = useQueryClient()
     // console.log(search)
@@ -59,8 +65,8 @@ const DiscussPage = () => {
     }
 
     const {data, isLoading, isError} = useQuery({
-        queryFn: () => getAllPosts(curPage+1, search, sortBy),
-        queryKey: ["posts",curPage, search, sortBy],
+        queryFn: () => getAllPosts(curPage+1, search, sortBy, selectedTags),
+        queryKey: ["posts",curPage, search, sortBy, selectedTags],
         onError: (error) =>{
             console.log(error);
         }
@@ -82,23 +88,41 @@ const DiscussPage = () => {
         // queryClient.invalidateQueries({queryKey:["posts"]})
     }
 
+    // const {data: allTags, isLoading:isTagLoading, isError:isTagError} = useQuery({
+    //     queryFn: () => getAllTags(),
+    //     queryKey: ["tags"],
+    //     onSuccess:(data)=>{
+    //         // console.log(data.formattedTags)
+    //         // setAvailableTags(data.formattedTags.map((tag)=> {return tag.value}))
+    //     },
+    //     onError: (error) =>{
+    //         console.log(error);
+    //     }
+    // })
+
+    // console.log(availableTags)
+
+    const selectTagHandler = (selectedTags)=>{
+        setSelectedTags(selectedTags)
+    }
+
   return (
   <MainLayout>
     <div className='container mx-auto max-w-4xl mt-5'>
         <section className='flex flex-row rounded-md bg-slate-300 py-4 items-center gap-x-3 px-5 justify-between shadow-md'>
             <div className='flex flex-row items-center gap-x-4'>
-                <button onClick={newPostHandler}>
+                <button className="rounded-full p-3 hover:bg-slate-200" onClick={newPostHandler}>
                     New
                 </button>
                 <div>
                     <Sort sortBy={sortBy} setSortByHandler={(text)=>{setSortByHandler(text)}}/>
                 </div>
                 <div>
-                    Filter 2
+                    <TagSelector selectTagHandler={(selectedTags)=>selectTagHandler(selectedTags)} />
                 </div>
-                <div>
+                {/* <div>
                     Filter 3
-                </div>
+                </div> */}
             </div>
             <div>
                 <SearchBar setSearch={(text)=> setSearch(text)}/>
