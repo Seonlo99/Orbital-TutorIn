@@ -29,10 +29,12 @@ export const AboutMe = () => {
         </div>
       </div>
       <div className="mt-3 flex flex-col gap-y-2">
-        <div className="font-bold">Choon Siang</div>
+        <div className="font-bold">{userState.userInfo.name}</div>
         <div>
           <div className="font-extralight text-sm">Role</div>
-          <div className="mt-0">Tutor</div>
+          <div className="mt-0">
+            {userState.userInfo.tutor ? "Tutor" : "Student"}
+          </div>
         </div>
         <div>
           <div className="font-extralight text-sm">Year of study</div>
@@ -40,7 +42,7 @@ export const AboutMe = () => {
         </div>
         <div>
           <div className="font-extralight text-sm">Email Address</div>
-          <div className="mt-0">choonsiang@email.com</div>
+          <div className="mt-0">{userState.userInfo.email}</div>
         </div>
       </div>
     </>
