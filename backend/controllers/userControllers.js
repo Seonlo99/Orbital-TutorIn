@@ -105,7 +105,7 @@ const updateProfilePicture = async (req, res, next) => {
         const error = new Error(
           "An unknown error occured when uploading " + err.message
         );
-        next(error);
+        return res.status(500).json({ message: error.message });
       } else {
         // every thing went well
         if (req.file) {
