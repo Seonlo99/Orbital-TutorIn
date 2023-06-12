@@ -113,7 +113,7 @@ const updateProfilePicture = async (req, res, next) => {
           let updatedUser = await User.findById(req.body._id);
           filename = updatedUser.avatar;
           if(process.env.NODE_ENV === "production"){ //use cloud image storage
-            const cloudImgUrl = uploadPictureCloud(req.file)
+            const cloudImgUrl = await uploadPictureCloud(req.file)
             updatedUser.avatar = cloudImgUrl
           }
           else{ //stored locally on backend

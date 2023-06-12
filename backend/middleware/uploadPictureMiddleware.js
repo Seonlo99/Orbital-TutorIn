@@ -10,8 +10,8 @@ const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let filePath;
-    // process.env.NODE_ENV === "production" ? filePath = "/tmp" : filePath = path.join(__dirname, "../uploads")
-    filePath = path.join(__dirname, "../uploads")
+    process.env.NODE_ENV === "production" ? filePath = "/tmp" : filePath = path.join(__dirname, "../uploads")
+    // filePath = path.join(__dirname, "../uploads")
     cb(null, filePath);
   },
   filename: (req, file, cb) => {
@@ -34,9 +34,15 @@ const uploadPicture = multer({
 });
 
 const uploadPictureCloud = async (file)=>{
-  const cloudinary = cloudinaryFn()
-  const upload = await cloudinary.v2.uploader.upload(file.path);
-  return upload.secure_url
+  try{
+    const cloudinary = cloudinaryFn()
+    const upload = await cloudinary.v2.uploader.upload(file.path);
+    return upload.secure_url
+  }
+  catch(error){
+    console.log
+  }
+  
 }
 
 export { uploadPicture, uploadPictureCloud };
