@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 import Upvote from "../models/Upvote.js";
-import { uploadPicture } from "../middleware/uploadPictureMiddleware.js";
+import { uploadPicture, uploadPictureCloud } from "../middleware/uploadPictureMiddleware.js";
 import { fileRemover } from "../utils/fileRemover.js";
 
 const registerUser = async (req, res) => {
@@ -106,17 +106,23 @@ const updateProfilePicture = async (req, res, next) => {
         const error = new Error(
           "An unknown error occured when uploading " + err.message
         );
-        next(error);
+        return res.status(500).json({ message: error.message });
       } else {
         // every thing went well
         if (req.file) {
           let filename;
           let updatedUser = await User.findById(req.body._id);
           filename = updatedUser.avatar;
-          if (filename) {
-            fileRemover(filename);
+          if(process.env.NODE_ENV === "production"){ //use cloud image storage
+            const cloudImgUrl = await uploadPictureCloud(req.file)
+            updatedUser.avatar = cloudImgUrl
           }
-          updatedUser.avatar = req.file.filename;
+          else{ //stored locally on backend
+            if (filename) {
+              fileRemover(filename);
+            }
+            updatedUser.avatar = req.file.filename
+          }
           await updatedUser.save();
           res.json({
             _id: updatedUser._id,
@@ -133,7 +139,9 @@ const updateProfilePicture = async (req, res, next) => {
           filename = updatedUser.avatar;
           updatedUser.avatar = "";
           await updatedUser.save();
-          fileRemover(filename);
+          if(process.env.NODE_ENV !== "production"){ //remove file from local backend server
+            fileRemover(filename);
+          }
           res.json({
             _id: updatedUser._id,
             username: updatedUser.username,
@@ -148,7 +156,7 @@ const updateProfilePicture = async (req, res, next) => {
       }
     });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ message: error.message });
   }
 };
 

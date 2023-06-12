@@ -1,4 +1,6 @@
 import multer from "multer";
+import cloudinaryFn from "../config/cloud.js";
+
 
 import { fileURLToPath } from "url";
 import path from "path";
@@ -7,7 +9,10 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
+    let filePath;
+    process.env.NODE_ENV === "production" ? filePath = "/tmp" : filePath = path.join(__dirname, "../uploads")
+    // filePath = path.join(__dirname, "../uploads")
+    cb(null, filePath);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -28,4 +33,16 @@ const uploadPicture = multer({
   },
 });
 
-export { uploadPicture };
+const uploadPictureCloud = async (file)=>{
+  try{
+    const cloudinary = cloudinaryFn()
+    const upload = await cloudinary.v2.uploader.upload(file.path);
+    return upload.secure_url
+  }
+  catch(error){
+    console.log
+  }
+  
+}
+
+export { uploadPicture, uploadPictureCloud };
