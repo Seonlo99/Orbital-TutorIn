@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import { getCommunityStats } from "../../services/index/users";
@@ -20,7 +20,7 @@ export const CommunityStats = () => {
   });
   const postCount = data?.postCount;
   const commentCount = data?.commentCount;
-  const upVoteCount = data?.upVoteCount;
+  const VoteCount = data?.VoteCount;
   return (
     <>
       <div className="font-bold text-xl">Community Stats</div>
@@ -35,7 +35,7 @@ export const CommunityStats = () => {
         </div>
         <div>
           <div className="font-extralight text-sm">Upvote Count:</div>
-          <div className="mt-0">{upVoteCount}</div>
+          <div className="mt-0">{VoteCount}</div>
         </div>
       </div>
     </>

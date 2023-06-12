@@ -160,11 +160,19 @@ const getCommunityStats = async (req, res) => {
     };
     const postCount = await Post.countDocuments(filter);
     const commentCount = await Comment.countDocuments(filter);
-    const upVoteCount = await Upvote.countDocuments(filter);
+    const UpVoteCount = await Upvote.countDocuments({
+      authorId: _id,
+      value: "1",
+    });
+    const DownVoteCount = await Upvote.countDocuments({
+      authorId: _id,
+      value: "-1",
+    });
+    const VoteCount = UpVoteCount - DownVoteCount;
     return res.status(201).json({
       postCount: postCount,
       commentCount: commentCount,
-      upVoteCount: upVoteCount,
+      VoteCount: VoteCount,
     });
   } catch (error) {
     console.log(error.message);
