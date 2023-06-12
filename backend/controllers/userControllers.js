@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import Post from "../models/Post.js";
+import Comment from "../models/Comment.js";
+import Upvote from "../models/Upvote.js";
 import { uploadPicture } from "../middleware/uploadPictureMiddleware.js";
 import { fileRemover } from "../utils/fileRemover.js";
 
@@ -68,8 +71,6 @@ const userLogin = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { _id, fullname, email, password } = req.body;
-    console.log(req.body);
-    // console.log(req.body);
     const user = await User.findById({ _id });
     const updatedUser = await User.findByIdAndUpdate(
       { _id },
@@ -151,4 +152,29 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
-export { registerUser, userLogin, updateProfile, updateProfilePicture };
+const getCommunityStats = async (req, res) => {
+  try {
+    const _id = req.body._id;
+    const filter = {
+      userId: _id,
+    };
+    const postCount = await Post.countDocuments(filter);
+    const commentCount = await Comment.countDocuments(filter);
+    const upVoteCount = await Upvote.countDocuments(filter);
+    return res.status(201).json({
+      postCount: postCount,
+      commentCount: commentCount,
+      upVoteCount: upVoteCount,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export {
+  registerUser,
+  userLogin,
+  updateProfile,
+  updateProfilePicture,
+  getCommunityStats,
+};

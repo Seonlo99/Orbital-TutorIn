@@ -79,3 +79,21 @@ export const UpdateProfilePicture = async ({ formData }) => {
     throw new Error(error.message);
   }
 };
+
+export const getCommunityStats = async ({ _id }) => {
+  try {
+    const { data } = await axios.post(
+      `${rootUrl}/api/users/getCommunityStats`,
+      {
+        _id,
+      }
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};
