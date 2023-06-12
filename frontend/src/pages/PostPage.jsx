@@ -36,6 +36,7 @@ const PostPage = () => {
     const [reload, setReload] = useState(false)
     const [votes, setVotes] = useState({})
     const [voteCount, setVoteCount] = useState({})
+    const [commentCount, setCommentCount] = useState(0)
     // const [comments, setComments] = useState({})
     const userState = useSelector((state) => state.user);
 
@@ -46,6 +47,7 @@ const PostPage = () => {
             setVotes(()=>{return data.votes} )
             voteCount[data.post._id]=data.voteCount
             setVoteCount(voteCount)
+            setCommentCount(data.commentCount)
             setBody( () => {
                 return generateHTML(data.post.contents, [
                 //   Document,
@@ -79,6 +81,7 @@ const PostPage = () => {
         toast.success(
           "Comment Added!"
         );
+        setCommentCount(cur=>{return cur+1})
         setReload((cur)=>{
           return !cur
         })
@@ -169,8 +172,8 @@ const PostPage = () => {
             </div>
 
             <div className='mt-10'>
-                <div className='Font-semi text-xl mb-5'>Comments ({data.commentCount}):</div>
-                <AllComments reload={reload} uuid={data.post.slug} userVotes={votes} setUserVotes={(userVotes)=>setVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+                <div className='Font-semi text-xl mb-5'>Comments ({commentCount}):</div>
+                <AllComments reload={reload} uuid={data.post.slug} userVotes={votes} setUserVotes={(userVotes)=>setVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} setCommentCount={setCommentCount}/>
             </div>
             
         </div>

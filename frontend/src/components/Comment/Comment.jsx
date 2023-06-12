@@ -10,7 +10,7 @@ import AddComment from './AddComment';
 import { getComments, editComment, deleteComment } from '../../services/index/comments'
 import { Upvote } from '../Upvote';
 
-const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVoteCount, invalidate}) => {
+const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVoteCount, invalidate, setCommentCount}) => {
 
   const [showReply, setShowReply] = useState(false)
   const userState = useSelector((state) => state.user);
@@ -72,6 +72,7 @@ const Comment = ({singleComment, uuid, userVotes, setUserVotes, voteCount, setVo
         toast.success(
           "Comment Added!"
         );
+        setCommentCount(cur=>{return cur+1})
         setShowReply(false)
         setReload((cur)=>!cur)
       },
@@ -219,7 +220,7 @@ const deleteCommentHandler = () => {
         
         {!isLoading && !isError && data.comments.map((comment)=>{
             
-            return <Comment invalidate={()=>invalidate()} key={comment._id} uuid={uuid} singleComment={comment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)}/>
+            return <Comment invalidate={()=>invalidate()} key={comment._id} uuid={uuid} singleComment={comment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} setCommentCount={setCommentCount}/>
         })}
         
     </div>
