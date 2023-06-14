@@ -107,7 +107,10 @@ const getAllPosts = async (req, res) => {
       aggregate = [
         {
           $match: {
-            tags: { $in: filteredSelectedTags },
+            $or:[
+              {tags: { $in: filteredSelectedTags }},
+              {tags: []},
+            ]
           },
         },
         lookup,
@@ -143,7 +146,10 @@ const getAllPosts = async (req, res) => {
           $match: {
             isDeleted: false,
             title: searchFilter,
-            tags: { $in: filteredSelectedTags },
+            $or : [
+              {tags: { $in: filteredSelectedTags }},
+              {tags: []}
+            ]
           },
         },
         sort,
