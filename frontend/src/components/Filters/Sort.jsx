@@ -18,7 +18,7 @@ export const Sort = ({sortBy="", setSortByHandler}) => {
         <div>Sort</div>
         <MdKeyboardArrowDown />
         <div className='hidden transition-all duration-500 absolute bottom-0 left-0 transform translate-y-full group-hover:block w-max'>
-            <ul className='flex flex-col shadow-lg rounded-lg divide-y overflow-hidden bg-white'>
+            <ul className='mt-5 flex flex-col shadow-lg rounded-lg divide-y overflow-hidden bg-white'>
                 <button onClick={handleSort} value="New" className={`hover:bg-gray-300 hover:text-black py-1 px-1 ${sortBy==="New" && 'bg-blue-500 text-white'}`}>Newest</button>
                 <button onClick={handleSort} value="Upvote" className={`hover:bg-gray-300 hover:text-black py-1 px-1 ${sortBy==="Upvote" && 'bg-blue-500 text-white'}`}>Most Upvotes</button>
                 <button onClick={handleSort} value="Comment" className={`hover:bg-gray-300 hover:text-black py-1 px-1 ${sortBy==="Comment" && 'bg-blue-500 text-white'}`}>Most Comments</button>

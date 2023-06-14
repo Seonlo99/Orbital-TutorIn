@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { getComments } from '../../services/index/comments'
 import Comment from './Comment'
 
-const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCount}) => {
+const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCount, setCommentCount}) => {
 
     // const [comments, setComments] = useState({})
     const [newReload, setNewReload] = useState(false)
@@ -39,7 +39,7 @@ const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCoun
   return (
     <div>
         {!isLoading && !isError && data.comments.map((singleComment)=>{
-            return <Comment invalidate={()=>invalidate()} reload={reload} key={singleComment._id} uuid={uuid} singleComment={singleComment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
+            return <Comment invalidate={()=>invalidate()} reload={reload} key={singleComment._id} uuid={uuid} singleComment={singleComment} userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} setCommentCount={setCommentCount}/>
         })}
 
     </div>
