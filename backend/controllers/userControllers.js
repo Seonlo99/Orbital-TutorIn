@@ -231,7 +231,8 @@ const getRecentCommentedPosts = async (req, res) => {
     const recentPostIdSet = new Set();
     for (let i = 0; i < comments.length; ++i) {
       recentPostIdSet.add(comments[i].postId.toString());
-      if (recentPostIdSet.length >= RECENTCOUNT) {
+      console.log(recentPostIdSet.size);
+      if (recentPostIdSet.size >= RECENTCOUNT) {
         break;
       }
     }
