@@ -17,27 +17,31 @@ export const RecentCommentedPosts = () => {
       // console.log(error)
     },
   });
-  console.log(recentCommentedPostsData);
-  const recentCommentedPosts = recentCommentedPostsData?.recentPosts;
+  const recentPostsAndComments =
+    recentCommentedPostsData?.recentPostsAndComments;
 
   return (
     <>
       <div className="font-bold text-xl">My Comments</div>
-      {recentCommentedPosts ? (
-        <div className="ml-5 font-extralight text-m">
-          <ul className="list-disc">
-            {recentCommentedPosts.map((post) => (
-              <Link
-                to={`/post/${post.slug}`}
-                className="hover:underline"
-              >
-                <li>{post.title}</li>
-              </Link>
-            ))}
-          </ul>
-        </div>
+      {recentPostsAndComments ? (
+        recentPostsAndComments.map((curr) => (
+          <Link to={`/post/${curr.posts.slug}`}>
+            <div className="border rounded-lg border-black my-2 px-2 hover:text-white hover:bg-black">
+              <div className="font-semibold ">
+                {`${curr.posts.title.substring(0, 50)} ${
+                  curr.posts.title.length > 50 && "..."
+                }`}
+              </div>
+              <div className="">
+                {`${curr.comments.body.substring(0, 50)} ${
+                  curr.comments.body.length > 50 && "..."
+                }`}
+              </div>
+            </div>
+          </Link>
+        ))
       ) : (
-        <div>"No recent post available!"</div>
+        <div>"You have yet to leave any comments"</div>
       )}
     </>
   );

@@ -223,27 +223,27 @@ const getRecentCommentedPosts = async (req, res) => {
     };
 
     // Find recent comment
-    const comments = await Comment.find(filter).sort({
-      updatedAt: -1,
-    });
+    const comments = await Comment.find(filter)
+      .sort({
+        updatedAt: -1,
+      })
+      .limit(RECENTCOUNT);
 
     // Remove duplicate post
-    const recentPostIdSet = new Set();
-    for (let i = 0; i < comments.length; ++i) {
-      recentPostIdSet.add(comments[i].postId.toString());
-      console.log(recentPostIdSet.size);
-      if (recentPostIdSet.size >= RECENTCOUNT) {
-        break;
-      }
-    }
-
-    const recentPosts = Array.from(recentPostIdSet);
+    const recentPosts = comments.map((comment) => comment.postId.toString());
     for (let i = 0; i < recentPosts.length; ++i) {
       recentPosts[i] = await Post.findById(recentPosts[i]);
     }
 
+    const recentPostsAndComments = Object.keys(recentPosts).map((key) => {
+      return {
+        key,
+        posts: recentPosts[key],
+        comments: comments[key],
+      };
+    });
     return res.status(200).json({
-      recentPosts: recentPosts,
+      recentPostsAndComments: recentPostsAndComments,
     });
   } catch (error) {
     console.log(error.message);
