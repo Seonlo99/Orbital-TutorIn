@@ -12,6 +12,7 @@ export const CommunityStats = () => {
     isLoading: isDataLoading,
     isError: isDataError,
   } = useQuery({
+    queryKey: "communityStats",
     queryFn: () => getCommunityStats({ _id: userState.userInfo._id }),
     onError: (error) => {
       toast.error(error.message);

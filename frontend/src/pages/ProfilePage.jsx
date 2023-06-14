@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 import MainLayout from "../components/MainLayout";
 import { CommunityStats } from "../components/Profile/CommunityStats";
 import { AboutMe } from "../components/Profile/AboutMe";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { RecentCreatedPosts } from "../components/Profile/RecentCreatedPosts";
+import { RecentCommentedPosts } from "../components/Profile/RecentCommentedPosts";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -26,34 +29,26 @@ const ProfilePage = () => {
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
               <CommunityStats />
             </section>
-
-            <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-              <div className="font-bold text-xl">Tutor Only Section</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-            </section>
+            {userState.userInfo.tutor ? (
+              <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
+                <div className="font-bold text-xl">Tutor Only Section</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+              </section>
+            ) : (
+              <></>
+            )}
           </div>
 
           <div className="flex flex-col lg:w-[60%] mt-5 lg:mt-0 gap-y-5">
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-              <div className="font-bold text-xl">Most Recent Posts</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
+              <RecentCreatedPosts />
+            </section>
+            <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
+              <RecentCommentedPosts />
             </section>
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
               <div className="font-bold text-xl">Reviews</div>
