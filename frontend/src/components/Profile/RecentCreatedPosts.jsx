@@ -16,8 +16,10 @@ export const RecentCreatedPosts = () => {
       // console.log(error)
     },
   });
-  const recentCreatedPosts = recentCreatedPostsData?.recentPosts;
-
+  const recentCreatedPosts =
+    recentCreatedPostsData?.recentPosts.length == 0
+      ? null
+      : recentCreatedPostsData?.recentPosts;
   return (
     <>
       <div className="font-bold text-xl">My Posts</div>

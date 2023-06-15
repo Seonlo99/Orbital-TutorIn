@@ -12,8 +12,9 @@ import MainLayout from "../components/MainLayout";
 import { SearchBar } from "../components/Filters/SearchBar";
 import { getAllTags } from "../services/index/tags";
 import { TagSelector } from "../components/TagSelector";
-
 import { Sort } from "../components/Filters/Sort";
+import defaultPic from "../assets/images/default.png";
+import stables from "../constants/stables";
 
 const DiscussPage = () => {
   const POSTLIMIT = 10;
@@ -61,14 +62,19 @@ const DiscussPage = () => {
     });
   }
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: postsData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: () => getAllPosts(curPage + 1, search, sortBy, selectedTags),
     queryKey: ["posts", curPage, search, sortBy, selectedTags],
     onError: (error) => {
       console.log(error);
     },
   });
-  // console.log(data)
+
+  // console.log(postsData);
   const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const newPostHandler = () => {
@@ -139,16 +145,21 @@ const DiscussPage = () => {
         <section className="divide-y divide-slate-300">
           {!isLoading &&
             !isError &&
-            data.posts.map((post) => (
+            postsData.posts.map((post) => (
               <div
                 key={post._id}
                 className="flex flex-row px-5 py-5 justify-between"
               >
                 <div className="flex flex-row">
-                  <div className="text-3xl">
+                  <div className="text-3xl ">
                     <img
-                      src=""
+                      src={
+                        post.avatar === ""
+                          ? defaultPic
+                          : stables.UPLOAD_FOLDER_BASE_URL + post.avatar
+                      }
                       alt="Author Profile Picture"
+                      className="h-20 w-20 transition-all duration-300 rounded-lg filter grayscale hover:grayscale-0"
                     />
                   </div>
                   <div className="ml-6">
@@ -203,14 +214,14 @@ const DiscussPage = () => {
                   Previous
                 </button>
                 <button
-                  onClick={() => mobileNextPage(data.totalCount)}
+                  onClick={() => mobileNextPage(postsData.totalCount)}
                   disabled={
-                    curPage + 1 === Math.ceil(data.totalCount / POSTLIMIT)
+                    curPage + 1 === Math.ceil(postsData.totalCount / POSTLIMIT)
                   }
                   className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                         ${
                           curPage + 1 ===
-                            Math.ceil(data.totalCount / POSTLIMIT) &&
+                            Math.ceil(postsData.totalCount / POSTLIMIT) &&
                           "bg-gray-400 cursor-not-allowed hover:bg-gray-400"
                         }`}
                 >
@@ -222,16 +233,18 @@ const DiscussPage = () => {
                   <p className="text-sm text-gray-700">
                     Showing
                     <span className="font-medium px-1">
-                      {data.totalCount ? curPage * POSTLIMIT + 1 : 0}
+                      {postsData.totalCount ? curPage * POSTLIMIT + 1 : 0}
                     </span>
                     to
                     <span className="font-medium px-1">
-                      {(curPage + 1) * POSTLIMIT > data.totalCount
-                        ? data.totalCount
+                      {(curPage + 1) * POSTLIMIT > postsData.totalCount
+                        ? postsData.totalCount
                         : (curPage + 1) * POSTLIMIT}
                     </span>
                     of
-                    <span className="font-medium px-1">{data.totalCount}</span>
+                    <span className="font-medium px-1">
+                      {postsData.totalCount}
+                    </span>
                     results
                   </p>
                 </div>
@@ -260,7 +273,8 @@ const DiscussPage = () => {
                     </button>
                     {pages.map((page, i) => {
                       return (
-                        page.page < Math.ceil(data.totalCount / POSTLIMIT) && (
+                        page.page <
+                          Math.ceil(postsData.totalCount / POSTLIMIT) && (
                           <button
                             key={i}
                             onClick={() => setCurPage((curState) => page.page)}
@@ -276,7 +290,7 @@ const DiscussPage = () => {
                     })}
 
                     <button
-                      onClick={() => nextPage(data.totalCount)}
+                      onClick={() => nextPage(postsData.totalCount)}
                       className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                     >
                       <span className="sr-only">Next</span>

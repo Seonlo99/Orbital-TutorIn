@@ -7,6 +7,7 @@ import { CommunityStats } from "../components/Profile/CommunityStats";
 import { AboutMe } from "../components/Profile/AboutMe";
 import { RecentCreatedPosts } from "../components/Profile/RecentCreatedPosts";
 import { RecentCommentedPosts } from "../components/Profile/RecentCommentedPosts";
+import Review from "../components/Profile/Review";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -52,12 +53,7 @@ const ProfilePage = () => {
             </section>
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
               <div className="font-bold text-xl">Reviews</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
-              <div>a</div>
+              <Review />
             </section>
           </div>
         </div>

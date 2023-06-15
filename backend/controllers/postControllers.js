@@ -1,4 +1,5 @@
 import Post from "../models/Post.js";
+import User from "../models/User.js";
 import { v4 as uuid } from "uuid";
 
 import { getCommentCount } from "./commentControllers.js";
@@ -107,10 +108,7 @@ const getAllPosts = async (req, res) => {
       aggregate = [
         {
           $match: {
-            $or:[
-              {tags: { $in: filteredSelectedTags }},
-              {tags: []},
-            ]
+            $or: [{ tags: { $in: filteredSelectedTags } }, { tags: [] }],
           },
         },
         lookup,
@@ -146,10 +144,7 @@ const getAllPosts = async (req, res) => {
           $match: {
             isDeleted: false,
             title: searchFilter,
-            $or : [
-              {tags: { $in: filteredSelectedTags }},
-              {tags: []}
-            ]
+            $or: [{ tags: { $in: filteredSelectedTags } }, { tags: [] }],
           },
         },
         sort,
@@ -193,13 +188,23 @@ const getAllPosts = async (req, res) => {
           return { ...post, commentCount: count, voteCount: voteCount };
         })
       );
-      // console.log(posts)
+      // console.log(posts);
 
       const totalCount = await Post.countDocuments({
         isDeleted: false,
         title: searchFilter,
         tags: { $in: filteredSelectedTags },
       });
+
+      const postsWithPic = await Promise.all(
+        posts.map(async (post) => {
+          const user = await User.findById(post.userId.toString());
+          const avatar = user.avatar;
+          return { ...post, avatar };
+        })
+      );
+      posts = postsWithPic;
+
       // console.log(posts)
       return res.json({ posts, totalCount });
     });

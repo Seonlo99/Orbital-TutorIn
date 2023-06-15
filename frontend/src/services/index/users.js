@@ -116,14 +116,12 @@ export const getRecentCreatedPosts = async ({ _id }) => {
 
 export const getRecentCommentedPosts = async ({ _id }) => {
   try {
-    console.log(_id);
     const { data } = await axios.post(
       `${rootUrl}/api/users/getRecentCommentedPosts`,
       {
         _id,
       }
     );
-    console.log(data);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {

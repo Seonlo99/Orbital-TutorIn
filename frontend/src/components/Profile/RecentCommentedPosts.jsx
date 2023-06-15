@@ -18,8 +18,11 @@ export const RecentCommentedPosts = () => {
     },
   });
   const recentPostsAndComments =
-    recentCommentedPostsData?.recentPostsAndComments;
+    recentCommentedPostsData?.recentPostsAndComments.length == 0
+      ? null
+      : recentCommentedPostsData?.recentPostsAndComments;
 
+  console.log(recentPostsAndComments);
   return (
     <>
       <div className="font-bold text-xl">My Comments</div>
@@ -28,14 +31,12 @@ export const RecentCommentedPosts = () => {
           <Link to={`/post/${curr.posts.slug}`}>
             <div className="border rounded-lg border-black my-2 px-2 hover:text-white hover:bg-black">
               <div className="font-semibold ">
-                {`${curr.posts.title.substring(0, 50)} ${
-                  curr.posts.title.length > 50 && "..."
-                }`}
+                {curr.posts.title.substring(0, 50)}
+                {curr.posts.title.length > 50 && " ..."}
               </div>
               <div className="">
-                {`${curr.comments.body.substring(0, 50)} ${
-                  curr.comments.body.length > 50 && "..."
-                }`}
+                {curr.comments.body.substring(0, 50)}
+                {curr.comments.body.length > 50 && " ..."}
               </div>
             </div>
           </Link>
