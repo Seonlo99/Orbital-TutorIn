@@ -1,11 +1,9 @@
 import React from 'react'
 import MainLayout from '../components/MainLayout'
-import { StarRating } from '../components/Review/StarRating'
+
 
 const HomePage = () => {
-  return <MainLayout>
-    <StarRating />
-  </MainLayout>
+  return <MainLayout></MainLayout>
 }
 
 export default HomePage
