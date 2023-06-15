@@ -165,39 +165,52 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
-const getCommunityStats = async (req, res) => {
-  try {
-    const _id = req.body._id;
+const getUserProfile = async (req,res) =>{
+  try{
+    const {userId} = req.query
+    // console.log(userId)
+    const user = await User.findOne({_id:userId}).select('-password')
+    if(!user){
+      return res.status(404).json({message:"User not found"})
+    }
+
+    const {postCount, commentCount, VoteCount} = await getCommunityStats(userId)
+    const {recentPosts} = await getRecentCreatedPosts(userId)
+    const {recentPostsAndComments} = await getRecentCommentedPosts(userId)
+    // console.log({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
+    return res.json({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
+  }
+  catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+const getCommunityStats = async (id) => {
     const filter = {
-      userId: _id,
+      userId: id,
     };
     const postCount = await Post.countDocuments(filter);
     const commentCount = await Comment.countDocuments(filter);
     const UpVoteCount = await Upvote.countDocuments({
-      authorId: _id,
+      authorId: id,
       value: "1",
     });
     const DownVoteCount = await Upvote.countDocuments({
-      authorId: _id,
+      authorId: id,
       value: "-1",
     });
     const VoteCount = UpVoteCount - DownVoteCount;
-    return res.status(200).json({
+    return {
       postCount: postCount,
       commentCount: commentCount,
       VoteCount: VoteCount,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+    };
 };
 
-const getRecentCreatedPosts = async (req, res) => {
-  try {
+const getRecentCreatedPosts = async (id) => {
     const RECENTCOUNT = 5;
-    const _id = req.body._id;
     const filter = {
-      userId: _id,
+      userId: id,
     };
 
     // Find recent created post
@@ -206,20 +219,17 @@ const getRecentCreatedPosts = async (req, res) => {
         updatedAt: -1,
       })
       .limit(RECENTCOUNT);
-    return res.status(200).json({
+    return {
       recentPosts: recentPosts,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+    };
 };
 
-const getRecentCommentedPosts = async (req, res) => {
-  try {
+const getRecentCommentedPosts = async (id) => {
+
     const RECENTCOUNT = 5;
-    const _id = req.body._id;
+    // const _id = req.body._id;
     const filter = {
-      userId: _id,
+      userId: id,
     };
 
     // Find recent comment
@@ -242,12 +252,7 @@ const getRecentCommentedPosts = async (req, res) => {
         comments: comments[key],
       };
     });
-    return res.status(200).json({
-      recentPostsAndComments: recentPostsAndComments,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+    return {recentPostsAndComments}
 };
 
 export {
@@ -255,7 +260,5 @@ export {
   userLogin,
   updateProfile,
   updateProfilePicture,
-  getCommunityStats,
-  getRecentCreatedPosts,
-  getRecentCommentedPosts,
+  getUserProfile
 };

@@ -3,25 +3,9 @@ import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { getCommunityStats } from "../../services/index/users";
-
-export const CommunityStats = () => {
+export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
   const userState = useSelector((state) => state.user);
-  const {
-    data,
-    isLoading: isDataLoading,
-    isError: isDataError,
-  } = useQuery({
-    queryKey: "communityStats",
-    queryFn: () => getCommunityStats({ _id: userState.userInfo._id }),
-    onError: (error) => {
-      toast.error(error.message);
-      // console.log(error)
-    },
-  });
-  const postCount = data?.postCount;
-  const commentCount = data?.commentCount;
-  const VoteCount = data?.VoteCount;
+ 
   return (
     <>
       <div className="font-bold text-xl">Community Stats</div>

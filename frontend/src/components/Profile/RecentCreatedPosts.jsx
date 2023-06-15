@@ -4,22 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { getRecentCreatedPosts } from "../../services/index/users";
-
-export const RecentCreatedPosts = () => {
+export const RecentCreatedPosts = ({recentPosts}) => {
   const userState = useSelector((state) => state.user);
-  const { data: recentCreatedPostsData } = useQuery({
-    queryKey: "recentCreatedPosts",
-    queryFn: () => getRecentCreatedPosts({ _id: userState.userInfo._id }),
-    onError: (error) => {
-      toast.error(error.message);
-      // console.log(error)
-    },
-  });
+
   const recentCreatedPosts =
-    recentCreatedPostsData?.recentPosts.length == 0
+    recentPosts.length == 0
       ? null
-      : recentCreatedPostsData?.recentPosts;
+      : recentPosts;
   return (
     <>
       <div className="font-bold text-xl">My Posts</div>

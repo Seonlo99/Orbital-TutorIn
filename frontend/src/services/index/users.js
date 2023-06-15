@@ -80,53 +80,15 @@ export const UpdateProfilePicture = async ({ formData }) => {
   }
 };
 
-export const getCommunityStats = async ({ _id }) => {
-  try {
-    const { data } = await axios.post(
-      `${rootUrl}/api/users/getCommunityStats`,
-      {
-        _id,
+export const getUserProfile = async(id)=>{
+  try{
+      const {data} = await axios.get(`${rootUrl}/api/users`, { params: { userId:id }});
+      return data;
+      
+  } catch(error){
+      if(error.response && error.response.data.message){
+          throw new Error(error.response.data.message);
       }
-    );
-    return data;
-  } catch (error) {
-    if (error.response && error.response.data.message) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error(error.message);
+      throw new Error(error.message)
   }
-};
-
-export const getRecentCreatedPosts = async ({ _id }) => {
-  try {
-    const { data } = await axios.post(
-      `${rootUrl}/api/users/getRecentCreatedPosts`,
-      {
-        _id,
-      }
-    );
-    return data;
-  } catch (error) {
-    if (error.response && error.response.data.message) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error(error.message);
-  }
-};
-
-export const getRecentCommentedPosts = async ({ _id }) => {
-  try {
-    const { data } = await axios.post(
-      `${rootUrl}/api/users/getRecentCommentedPosts`,
-      {
-        _id,
-      }
-    );
-    return data;
-  } catch (error) {
-    if (error.response && error.response.data.message) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error(error.message);
-  }
-};
+}
