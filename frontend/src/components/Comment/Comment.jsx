@@ -186,7 +186,7 @@ const deleteCommentHandler = () => {
         ): (
           <>
         
-          <div hidden={showEdit} className='mt-2'>{singleComment.body}</div>
+          <div hidden={showEdit} className='mt-2 overflow-y-auto'>{singleComment.body}</div>
   
           <div hidden={!showEdit} className='my-2'>
             <AddComment initialText={commentBody} label="Edit" formHandler={(text)=>{editCommentHandler(text)}} cancelHandler={()=>cancelHandler()} />
