@@ -159,7 +159,7 @@ const DiscussPage = () => {
                           : stables.UPLOAD_FOLDER_BASE_URL + post.avatar
                       }
                       alt="Author Profile Picture"
-                      className="h-20 w-20 transition-all duration-300 rounded-lg filter grayscale hover:grayscale-0"
+                      className="h-10 w-10 transition-all duration-300 rounded-full"
                     />
                   </div>
                   <div className="ml-6">
