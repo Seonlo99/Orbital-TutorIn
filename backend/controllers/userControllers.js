@@ -2,7 +2,10 @@ import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 import Upvote from "../models/Upvote.js";
-import { uploadPicture, uploadPictureCloud } from "../middleware/uploadPictureMiddleware.js";
+import {
+  uploadPicture,
+  uploadPictureCloud,
+} from "../middleware/uploadPictureMiddleware.js";
 import { fileRemover } from "../utils/fileRemover.js";
 
 const registerUser = async (req, res) => {
@@ -113,15 +116,16 @@ const updateProfilePicture = async (req, res, next) => {
           let filename;
           let updatedUser = await User.findById(req.body._id);
           filename = updatedUser.avatar;
-          if(process.env.NODE_ENV === "production"){ //use cloud image storage
-            const cloudImgUrl = await uploadPictureCloud(req.file)
-            updatedUser.avatar = cloudImgUrl
-          }
-          else{ //stored locally on backend
+          if (process.env.NODE_ENV === "production") {
+            //use cloud image storage
+            const cloudImgUrl = await uploadPictureCloud(req.file);
+            updatedUser.avatar = cloudImgUrl;
+          } else {
+            //stored locally on backend
             if (filename) {
               fileRemover(filename);
             }
-            updatedUser.avatar = req.file.filename
+            updatedUser.avatar = req.file.filename;
           }
           await updatedUser.save();
           res.json({
@@ -139,7 +143,8 @@ const updateProfilePicture = async (req, res, next) => {
           filename = updatedUser.avatar;
           updatedUser.avatar = "";
           await updatedUser.save();
-          if(process.env.NODE_ENV !== "production"){ //remove file from local backend server
+          if (process.env.NODE_ENV !== "production") {
+            //remove file from local backend server
             fileRemover(filename);
           }
           res.json({
@@ -177,10 +182,68 @@ const getCommunityStats = async (req, res) => {
       value: "-1",
     });
     const VoteCount = UpVoteCount - DownVoteCount;
-    return res.status(201).json({
+    return res.status(200).json({
       postCount: postCount,
       commentCount: commentCount,
       VoteCount: VoteCount,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const getRecentCreatedPosts = async (req, res) => {
+  try {
+    const RECENTCOUNT = 5;
+    const _id = req.body._id;
+    const filter = {
+      userId: _id,
+    };
+
+    // Find recent created post
+    const recentPosts = await Post.find(filter)
+      .sort({
+        updatedAt: -1,
+      })
+      .limit(RECENTCOUNT);
+    return res.status(200).json({
+      recentPosts: recentPosts,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const getRecentCommentedPosts = async (req, res) => {
+  try {
+    const RECENTCOUNT = 5;
+    const _id = req.body._id;
+    const filter = {
+      userId: _id,
+    };
+
+    // Find recent comment
+    const comments = await Comment.find(filter)
+      .sort({
+        updatedAt: -1,
+      })
+      .limit(RECENTCOUNT);
+
+    // Remove duplicate post
+    const recentPosts = comments.map((comment) => comment.postId.toString());
+    for (let i = 0; i < recentPosts.length; ++i) {
+      recentPosts[i] = await Post.findById(recentPosts[i]);
+    }
+
+    const recentPostsAndComments = Object.keys(recentPosts).map((key) => {
+      return {
+        key,
+        posts: recentPosts[key],
+        comments: comments[key],
+      };
+    });
+    return res.status(200).json({
+      recentPostsAndComments: recentPostsAndComments,
     });
   } catch (error) {
     console.log(error.message);
@@ -193,4 +256,6 @@ export {
   updateProfile,
   updateProfilePicture,
   getCommunityStats,
+  getRecentCreatedPosts,
+  getRecentCommentedPosts,
 };

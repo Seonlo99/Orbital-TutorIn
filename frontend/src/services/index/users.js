@@ -88,7 +88,40 @@ export const getCommunityStats = async ({ _id }) => {
         _id,
       }
     );
-    console.log(data);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};
+
+export const getRecentCreatedPosts = async ({ _id }) => {
+  try {
+    const { data } = await axios.post(
+      `${rootUrl}/api/users/getRecentCreatedPosts`,
+      {
+        _id,
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};
+
+export const getRecentCommentedPosts = async ({ _id }) => {
+  try {
+    const { data } = await axios.post(
+      `${rootUrl}/api/users/getRecentCommentedPosts`,
+      {
+        _id,
+      }
+    );
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
