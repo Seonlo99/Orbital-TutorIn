@@ -6,8 +6,7 @@ const TransactionSchema = new Schema(
         tutorId: { type: Schema.Types.ObjectId, ref: 'User' },
         studentAccepted: {type:Boolean, default:null},
         tutorAccepted: {type:Boolean, default:null},
-        studentReviewId: { type: Schema.Types.ObjectId, ref: 'Review', default:null },
-        tutorReviewId: { type: Schema.Types.ObjectId, ref: 'Review', default:null },
+        transactionCompleted: {type:Boolean, default:false},
     },
     { timestamps: true }
 );

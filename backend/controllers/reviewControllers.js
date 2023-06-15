@@ -11,39 +11,30 @@ const addReview = async (req, res) => {
         if(!transaction){
             return res.status(404).json({ message: "Transaction not found!" }); 
         }
-        if( transaction.studentId.equals(revieweeId) && transaction.tutorId.equals(reviewerId)){ // tutor review student
-            if(transaction.tutorReviewId===null){ //ensure tutor haven't review before
-                const reviewCreated = await Review.create({
-                    reviewerId,
-                    revieweeId,
-                    stars:rating,
-                    reviewComment:review
-                });
-                Transaction.findOneAndUpdate({_id:transactionId}, {tutorReviewId:reviewCreated._id});
-            }
-            else{
-                return res.status(404).json({ message: "Tutor already reviewed!" });
-            }
+        if(!transaction.transactionCompleted){
+            return res.status(404).json({ message: "Transaction not completed yet!" }); 
         }
-        else if( transaction.studentId.equals(reviewerId) && transaction.tutorId.equals(revieweeId)){ // student review tutor
-            if(transaction.studentReviewId===null){ //ensure student haven't review before
-                const reviewCreated = await Review.create({
-                    reviewerId,
-                    revieweeId,
-                    stars:rating,
-                    reviewComment:review
-                });
-                Transaction.findOneAndUpdate({_id:transactionId}, {studentReviewId:reviewCreated._id});
-            }
-            else{
-                return res.status(404).json({ message: "Student already reviewed!" });
-            }
+
+        const checkReview = Review.findOne({transactionId, reviewerId,revieweeId})
+        if(checkReview){
+            return res.status(404).json({ message: "Already reviewed before!" }); 
         }
-        else{
-            return res.status(404).json({ message: "Invalid Student / Tutor" });
+
+        if( !(transaction.studentId.equals(revieweeId) && transaction.tutorId.equals(reviewerId))
+            && !(transaction.studentId.equals(reviewerId) && transaction.tutorId.equals(revieweeId))
+        ){
+            return res.status(404).json({ message: "Invalid Student / Tutor!" });  
         }
+
+        const reviewCreated = await Review.create({
+            transactionId,
+            reviewerId,
+            revieweeId,
+            stars:rating,
+            reviewComment:review
+        });
   
-      return res.json();
+      return res.json({reviewCreated});
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
