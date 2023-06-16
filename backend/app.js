@@ -16,6 +16,7 @@ import commentRoutes from "./routes/commentRoutes.js";
 import upvoteRoutes from "./routes/upvoteRoutes.js";
 import tagRoutes from "./routes/tagRoutes.js"
 import reviewRoutes from "./routes/reviewRoutes.js"
+import transactionRoutes from "./routes/transactionRoutes.js"
 
 dotenv.config();
 connectDB();
@@ -34,6 +35,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/votes", upvoteRoutes);
 app.use("/api/tags", tagRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 // static assets
 app.use("/uploads", express.static(path.join(__dirname, "/uploads/")));
