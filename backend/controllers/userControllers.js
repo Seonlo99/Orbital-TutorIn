@@ -188,6 +188,7 @@ const getUserProfile = async (req,res) =>{
 const getCommunityStats = async (id) => {
     const filter = {
       userId: id,
+      isDeleted:false,
     };
     const postCount = await Post.countDocuments(filter);
     const commentCount = await Comment.countDocuments(filter);
@@ -211,6 +212,7 @@ const getRecentCreatedPosts = async (id) => {
     const RECENTCOUNT = 5;
     const filter = {
       userId: id,
+      isDeleted: false,
     };
 
     // Find recent created post
@@ -230,6 +232,7 @@ const getRecentCommentedPosts = async (id) => {
     // const _id = req.body._id;
     const filter = {
       userId: id,
+      isDeleted: false,
     };
 
     // Find recent comment
