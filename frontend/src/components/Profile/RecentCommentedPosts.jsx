@@ -4,25 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { getRecentCommentedPosts } from "../../services/index/users";
 
-export const RecentCommentedPosts = () => {
-  const userState = useSelector((state) => state.user);
+export const RecentCommentedPosts = ({recentCommentedPostsData}) => {
 
-  const { data: recentCommentedPostsData } = useQuery({
-    queryKey: "recentCommentedPosts",
-    queryFn: () => getRecentCommentedPosts({ _id: userState.userInfo._id }),
-    onError: (error) => {
-      toast.error(error.message);
-      // console.log(error)
-    },
-  });
   const recentPostsAndComments =
-    recentCommentedPostsData?.recentPostsAndComments.length == 0
+    recentCommentedPostsData.length == 0
       ? null
-      : recentCommentedPostsData?.recentPostsAndComments;
+      : recentCommentedPostsData;
 
-  console.log(recentPostsAndComments);
+//   console.log(recentPostsAndComments);
   return (
     <>
       <div className="font-bold text-xl">My Comments</div>
