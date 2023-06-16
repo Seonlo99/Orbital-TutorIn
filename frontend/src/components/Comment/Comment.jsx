@@ -186,13 +186,13 @@ const deleteCommentHandler = () => {
         ): (
           <>
         
-          <div hidden={showEdit} className='mt-2 overflow-y-auto'>{singleComment.body}</div>
-  
+          <div hidden={showEdit} className='mt-2 overflow-x-auto'>{singleComment.body}</div>
+
           <div hidden={!showEdit} className='my-2'>
             <AddComment initialText={commentBody} label="Edit" formHandler={(text)=>{editCommentHandler(text)}} cancelHandler={()=>cancelHandler()} />
           </div>
           
-          <div className='font-light text-sm flex flex-row gap-x-5'>
+          <div className='font-light text-sm flex flex-row gap-x-5 mt-3'>
             <div className='bg-gray-300 rounded-2xl px-2 py-1 flex flex-row items-center gap-x-1'>
               <Upvote userVotes={userVotes} setUserVotes={(userVotes)=>setUserVotes(userVotes)} id={singleComment._id} postSlug={uuid} commentSlug={singleComment.commentSlug} voteCount={voteCount} setVoteCount={(count)=>setVoteCount(count)} />
             </div>
