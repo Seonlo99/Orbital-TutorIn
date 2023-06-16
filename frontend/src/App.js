@@ -11,48 +11,22 @@ import ProfilePage from "./pages/ProfilePage";
 import PostPage from "./pages/PostPage";
 import EditPostPage from "./pages/EditPostPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import ServicePage from "./pages/ServicePage";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route
-          index
-          path="/"
-          element={<HomePage />}
-        />
-        <Route
-          path="login"
-          element={<LoginPage />}
-        />
-        <Route
-          path="register"
-          element={<RegisterPage />}
-        />
-        <Route
-          path="discuss"
-          element={<DiscussPage />}
-        />
-        <Route
-          path="createPost"
-          element={<CreatePostPage />}
-        />
-        <Route
-          path="editPost/:uuid"
-          element={<EditPostPage />}
-        />
-        <Route
-          path="profile/:id"
-          element={<ProfilePage />}
-        />
-        <Route
-          path="post/:uuid"
-          element={<PostPage />}
-        />
-        <Route
-          path="profile/:id/edit-profile"
-          element={<EditProfilePage />}
-        />
+        <Route index path="/" element={<HomePage/>} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="discuss" element={<DiscussPage />} />
+        <Route path="createPost" element={<CreatePostPage />} />
+        <Route path="editPost/:uuid" element={<EditPostPage />} />
+        <Route path="profile/:id" element={<ProfilePage />} />
+        <Route path="post/:uuid" element={<PostPage />} />
+        <Route path="profile/:id/edit-profile" element={<EditProfilePage />} />
+        <Route path="services" element={<ServicePage />} />
       </Routes>
       <Toaster />
     </div>
