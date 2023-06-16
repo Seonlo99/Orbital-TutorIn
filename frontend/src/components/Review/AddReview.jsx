@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from 'react-hot-toast';
 import { addReview } from '../../services/index/reviews';
 
-export const StarRating = ({transactionId, reviewerId, revieweeId}) => {
+export const AddReview = ({transactionId, reviewerId, revieweeId}) => {
 
     const [rating, setRating] = useState(0)
     const [hoverRating, setHoverRating] = useState(0)

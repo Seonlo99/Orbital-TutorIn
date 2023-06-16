@@ -105,9 +105,9 @@ const Header = () => {
                   </ul>
                 </div>
                 <div className="lg:hidden flex flex-col gap-y-3 justify-center items-center">
-                  <Link to={`/profile/${userState.userInfo._id}`}>
+                  <button onClick={()=>navigate(`/profile/${userState.userInfo._id}`)}>
                     View Profile
-                  </Link>
+                  </button>
                   <button onClick={logoutHandler}>Logout</button>
                 </div>
               </li>

@@ -7,6 +7,7 @@ const TransactionSchema = new Schema(
         studentAccepted: {type:Boolean, default:null},
         tutorAccepted: {type:Boolean, default:null},
         transactionCompleted: {type:Boolean, default:false},
+        transactionCancelled: {type:Boolean, default:false},
     },
     { timestamps: true }
 );
