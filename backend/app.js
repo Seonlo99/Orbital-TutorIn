@@ -14,9 +14,9 @@ import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import upvoteRoutes from "./routes/upvoteRoutes.js";
-import tagRoutes from "./routes/tagRoutes.js"
-import reviewRoutes from "./routes/reviewRoutes.js"
-import transactionRoutes from "./routes/transactionRoutes.js"
+import tagRoutes from "./routes/tagRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 dotenv.config();
 connectDB();

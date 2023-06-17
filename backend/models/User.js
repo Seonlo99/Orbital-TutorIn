@@ -14,6 +14,7 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     tutor: { type: Boolean, default: false },
     verified: { type: Boolean, default: false },
+    rating: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -165,97 +165,121 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
-const getUserProfile = async (req,res) =>{
-  try{
-    const {userId} = req.query
+const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.query;
     // console.log(userId)
-    const user = await User.findOne({_id:userId}).select('-password')
-    if(!user){
-      return res.status(404).json({message:"User not found"})
+    const user = await User.findOne({ _id: userId }).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const {postCount, commentCount, VoteCount} = await getCommunityStats(userId)
-    const {recentPosts} = await getRecentCreatedPosts(userId)
-    const {recentPostsAndComments} = await getRecentCommentedPosts(userId)
+    const { postCount, commentCount, VoteCount } = await getCommunityStats(
+      userId
+    );
+    const { recentPosts } = await getRecentCreatedPosts(userId);
+    const { recentPostsAndComments } = await getRecentCommentedPosts(userId);
     // console.log({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
-    return res.json({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
-  }
-  catch (error) {
+    return res.json({
+      user,
+      postCount,
+      commentCount,
+      VoteCount,
+      recentPosts,
+      recentPostsAndComments,
+    });
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 const getCommunityStats = async (id) => {
-    const filter = {
-      userId: id,
-      isDeleted:false,
-    };
-    const postCount = await Post.countDocuments(filter);
-    const commentCount = await Comment.countDocuments(filter);
-    const UpVoteCount = await Upvote.countDocuments({
-      authorId: id,
-      value: "1",
-    });
-    const DownVoteCount = await Upvote.countDocuments({
-      authorId: id,
-      value: "-1",
-    });
-    const VoteCount = UpVoteCount - DownVoteCount;
-    return {
-      postCount: postCount,
-      commentCount: commentCount,
-      VoteCount: VoteCount,
-    };
+  const filter = {
+    userId: id,
+    isDeleted: false,
+  };
+  const postCount = await Post.countDocuments(filter);
+  const commentCount = await Comment.countDocuments(filter);
+  const UpVoteCount = await Upvote.countDocuments({
+    authorId: id,
+    value: "1",
+  });
+  const DownVoteCount = await Upvote.countDocuments({
+    authorId: id,
+    value: "-1",
+  });
+  const VoteCount = UpVoteCount - DownVoteCount;
+  return {
+    postCount: postCount,
+    commentCount: commentCount,
+    VoteCount: VoteCount,
+  };
 };
 
 const getRecentCreatedPosts = async (id) => {
-    const RECENTCOUNT = 5;
-    const filter = {
-      userId: id,
-      isDeleted: false,
-    };
+  const RECENTCOUNT = 5;
+  const filter = {
+    userId: id,
+    isDeleted: false,
+  };
 
-    // Find recent created post
-    const recentPosts = await Post.find(filter)
-      .sort({
-        updatedAt: -1,
-      })
-      .limit(RECENTCOUNT);
-    return {
-      recentPosts: recentPosts,
-    };
+  // Find recent created post
+  const recentPosts = await Post.find(filter)
+    .sort({
+      updatedAt: -1,
+    })
+    .limit(RECENTCOUNT);
+  console.log(recentPosts);
+  return {
+    recentPosts: recentPosts,
+  };
 };
 
 const getRecentCommentedPosts = async (id) => {
+  const RECENTCOUNT = 5;
+  // const _id = req.body._id;
+  const filter = {
+    userId: id,
+    isDeleted: false,
+  };
 
-    const RECENTCOUNT = 5;
-    // const _id = req.body._id;
-    const filter = {
-      userId: id,
-      isDeleted: false,
+  // Find recent comment
+  const comments = await Comment.find(filter)
+    .sort({
+      updatedAt: -1,
+    })
+    .limit(RECENTCOUNT);
+
+  // Remove duplicate post
+  const recentPosts = comments.map((comment) => comment.postId.toString());
+  for (let i = 0; i < recentPosts.length; ++i) {
+    recentPosts[i] = await Post.findById(recentPosts[i]);
+  }
+
+  const recentPostsAndComments = Object.keys(recentPosts).map((key) => {
+    return {
+      key,
+      posts: recentPosts[key],
+      comments: comments[key],
     };
+  });
+  return { recentPostsAndComments };
+};
 
-    // Find recent comment
-    const comments = await Comment.find(filter)
+const getTopTutors = async (req, res) => {
+  try {
+    // console.log(userId)
+    const topTutors = await User.find({ tutor: true })
       .sort({
-        updatedAt: -1,
+        rating: -1,
       })
-      .limit(RECENTCOUNT);
-
-    // Remove duplicate post
-    const recentPosts = comments.map((comment) => comment.postId.toString());
-    for (let i = 0; i < recentPosts.length; ++i) {
-      recentPosts[i] = await Post.findById(recentPosts[i]);
-    }
-
-    const recentPostsAndComments = Object.keys(recentPosts).map((key) => {
-      return {
-        key,
-        posts: recentPosts[key],
-        comments: comments[key],
-      };
+      .select("-password");
+    return res.json({
+      topTutors: topTutors,
     });
-    return {recentPostsAndComments}
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 export {
@@ -263,5 +287,6 @@ export {
   userLogin,
   updateProfile,
   updateProfilePicture,
-  getUserProfile
+  getUserProfile,
+  getTopTutors,
 };
