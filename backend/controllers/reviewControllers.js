@@ -7,7 +7,7 @@ const addReview = async (req, res) => {
         if(rating<0 || rating>5){
             rating=5
         }
-        const transaction = Transaction.find({id:transactionId})
+        const transaction = await Transaction.find({id:transactionId})
         if(!transaction){
             return res.status(404).json({ message: "Transaction not found!" }); 
         }
@@ -15,7 +15,7 @@ const addReview = async (req, res) => {
             return res.status(404).json({ message: "Transaction not completed yet!" }); 
         }
 
-        const checkReview = Review.findOne({transactionId, reviewerId,revieweeId})
+        const checkReview = await Review.findOne({transactionId, reviewerId,revieweeId})
         if(checkReview){
             return res.status(404).json({ message: "Already reviewed before!" }); 
         }
@@ -38,8 +38,21 @@ const addReview = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
-  };
+};
+
+
+const getReviewByUserAndTransactionId = async ({transactionId, reviewerId}) => {
+    const review = await Review.findOne({transactionId, reviewerId}) //check if user reviewed before
+    // console.log(review)
+    if(review){
+        return true
+    }
+    else{
+        return false
+    }
+};
 
 
 
-export {addReview}
+
+export {addReview, getReviewByUserAndTransactionId}

@@ -67,9 +67,14 @@ const Header = () => {
             <li className="hover:underline">
               <Link to="/discuss">Forum</Link>
             </li>
-            <li className="hover:underline">
-              <Link to="/">Services</Link>
-            </li>
+            {
+              userState.userInfo && 
+              <li className="hover:underline">
+                <Link to="/services">Services</Link>
+              </li>
+
+            }
+            
 
             {userState.userInfo ? (
               <li className="relative group flex flex-row items-center hover:cursor-pointer">
