@@ -23,7 +23,7 @@ export const DisplayService = ({selected}) => {
           },
     })
 
-    console.log(data)
+    // console.log(data)
 
     const {mutate:mutateCancel, isLoading: isCancelLoading} = useMutation({
         mutationFn: ({transactionId, tutorId, studentId})=>{
