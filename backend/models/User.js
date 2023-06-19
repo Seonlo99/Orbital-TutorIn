@@ -15,6 +15,8 @@ const UserSchema = new Schema(
     tutor: { type: Boolean, default: false },
     verified: { type: Boolean, default: false },
     rating: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 },
+    tutoringCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

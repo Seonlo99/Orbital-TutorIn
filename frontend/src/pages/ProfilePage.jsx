@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import Rating from "react-rating";
 
 import MainLayout from "../components/MainLayout";
 import { CommunityStats } from "../components/Profile/CommunityStats";
@@ -33,7 +35,7 @@ const ProfilePage = () => {
       // console.log(error)
     },
   });
-  // console.log(data)
+  // console.log(data);
 
   return (
     <MainLayout>
@@ -86,8 +88,30 @@ const ProfilePage = () => {
                 />
               </section>
               <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                <div className="font-bold text-xl">Reviews</div>
-                {/* <Review /> */}
+                <div className="flex flex-row ">
+                  <div className="font-bold text-xl">Reviews</div>
+                  <div className="ml-5 mt-1 flex flex-row">
+                    <div className="">
+                      <Rating
+                        readonly
+                        initialRating={data.user.rating}
+                        emptySymbol={<BsStar />}
+                        fullSymbol={<BsStarFill />}
+                        className="text-blue-500"
+                      />
+                    </div>
+                    <div className="ml-2 text-blue-500 font-bold">
+                      {`${Math.round(data.user.rating * 100) / 100} (${
+                        data.user.tutoringCount
+                      })`}
+                    </div>
+                  </div>
+                </div>
+                {data.recentReviews.length > 0 ? (
+                  <Review reviews={data.recentReviews} />
+                ) : (
+                  "No review to display"
+                )}
               </section>
             </div>
           </div>

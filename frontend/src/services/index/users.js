@@ -3,7 +3,7 @@ import { rootUrl } from "../../config/config";
 
 export const userLogin = async ({ username, password }) => {
   try {
-    const { data } = await axios.post(`${rootUrl}/api/home/getTopTutors`, {
+    const { data } = await axios.post(`${rootUrl}/api/users/login`, {
       username,
       password,
     });
@@ -94,9 +94,11 @@ export const getUserProfile = async (id) => {
   }
 };
 
-export const getTopTutors = async () => {
+export const getTopTutors = async (selected) => {
   try {
-    const { data } = await axios.get(`${rootUrl}/api/users/getTopTutors`);
+    const { data } = await axios.get(`${rootUrl}/api/users/getTopTutors`, {
+      params: { selected: selected },
+    });
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {

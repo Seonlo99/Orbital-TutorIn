@@ -6,15 +6,16 @@ import toast from "react-hot-toast";
 import TutorCard from "../components/TutorCard";
 import { getTopTutors } from "../services/index/users";
 
-const Tutors = () => {
+const Tutors = (selected) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["topTutors"],
-    queryFn: () => getTopTutors(),
+    queryFn: () => getTopTutors(selected),
     onError: (error) => {
       toast.error(error.message);
       // console.log(error)
     },
   });
+  console.log(data);
   return (
     <>
       {!isLoading && !isError && (

@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
   const recentPostsAndComments =
     recentCommentedPostsData.length == 0 ? null : recentCommentedPostsData;
-  console.log(recentCommentedPostsData);
 
   //   console.log(recentPostsAndComments);
   return (
@@ -29,7 +28,9 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
           </Link>
         ))
       ) : (
-        <div className="italic font-light">You have yet to leave any comments</div>
+        <div className="italic font-light">
+          You have yet to leave any comments
+        </div>
       )}
     </>
   );

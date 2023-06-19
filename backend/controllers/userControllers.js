@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 import Upvote from "../models/Upvote.js";
+import Review from "../models/Review.js";
 import {
   uploadPicture,
   uploadPictureCloud,
@@ -179,6 +180,7 @@ const getUserProfile = async (req, res) => {
     );
     const { recentPosts } = await getRecentCreatedPosts(userId);
     const { recentPostsAndComments } = await getRecentCommentedPosts(userId);
+    const { recentReviews } = await getRecentReview(userId);
     // console.log({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
     return res.json({
       user,
@@ -187,6 +189,7 @@ const getUserProfile = async (req, res) => {
       VoteCount,
       recentPosts,
       recentPostsAndComments,
+      recentReviews,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -229,7 +232,6 @@ const getRecentCreatedPosts = async (id) => {
       updatedAt: -1,
     })
     .limit(RECENTCOUNT);
-  console.log(recentPosts);
   return {
     recentPosts: recentPosts,
   };
@@ -266,13 +268,42 @@ const getRecentCommentedPosts = async (id) => {
   return { recentPostsAndComments };
 };
 
+const getRecentReview = async (id) => {
+  const RECENTCOUNT = 5;
+  const filter = {
+    revieweeId: id,
+  };
+
+  const recentReviews = await Review.find(filter)
+    .sort({ updatedAt: -1 })
+    .limit(RECENTCOUNT)
+    .lean(); // Convert Mongoose documents to plain JavaScript objects
+
+  for (let i = 0; i < recentReviews.length; ++i) {
+    const reviewerId = recentReviews[i].reviewerId.toString();
+    const reviewer = await User.findById(reviewerId);
+    recentReviews[i].reviewerAvatar = reviewer.avatar;
+  }
+  // console.log(recentReviews);
+  return {
+    recentReviews: recentReviews,
+  };
+};
+
 const getTopTutors = async (req, res) => {
   try {
     // console.log(userId)
+    const selection = req.query.selected.selected;
+    let sortOrder = {};
+    if (selection == "Highest Rating") {
+      sortOrder = { rating: -1 };
+    } else if (selection == "Most Service") {
+      sortOrder = { tutoringCount: -1 };
+    } else if (selection == "Verified") {
+      sortOrder = { verified: -1 };
+    }
     const topTutors = await User.find({ tutor: true })
-      .sort({
-        rating: -1,
-      })
+      .sort(sortOrder)
       .select("-password");
     return res.json({
       topTutors: topTutors,
