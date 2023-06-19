@@ -29,7 +29,7 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
           </Link>
         ))
       ) : (
-        <div>"You have yet to leave any comments"</div>
+        <div className="italic font-light">You have yet to leave any comments</div>
       )}
     </>
   );

@@ -7,11 +7,12 @@ const addReview = async (req, res) => {
         if(rating<0 || rating>5){
             rating=5
         }
-        const transaction = await Transaction.find({id:transactionId})
+        const transaction = await Transaction.findOne({_id:transactionId})
         if(!transaction){
             return res.status(404).json({ message: "Transaction not found!" }); 
         }
-        if(!transaction.transactionCompleted){
+        // console.log(transaction)
+        if(transaction.transactionCompleted!==true){
             return res.status(404).json({ message: "Transaction not completed yet!" }); 
         }
 

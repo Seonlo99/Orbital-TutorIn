@@ -37,33 +37,34 @@ const ProfilePage = () => {
 
   return (
     <MainLayout>
-      {!isLoading && !isError && (
-        <div className="container mx-auto max-w-4xl mt-5 p-3">
-          <div className="flex flex-col lg:flex-row gap-x-5">
-            <div className="flex flex-col lg:w-[40%] gap-y-5 ">
+      {!isLoading && !isError &&
+      <div className="container mx-auto max-w-4xl mt-5 p-3">
+        <div className="flex flex-col lg:flex-row gap-x-5">
+        {userState.userInfo && data.user._id !== userState.userInfo._id && 
+            <section className="flex justify-center lg:hidden mb-5">
+              <Service viewedUser={data.user} userId={userState.userInfo._id} token={userState.userInfo.token}/>
+            </section>
+        }
+          <div className="flex flex-col lg:w-[40%] gap-y-5 ">
+            <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
+              <AboutMe viewedUser={data.user}/>
+            </section>
+            <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
+              <CommunityStats postCount={data.postCount} commentCount={data.commentCount} VoteCount={data.VoteCount}/>
+            </section>
+            {data.user.tutor ? (
               <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                <AboutMe viewedUser={data.user} />
+                <div className="font-bold text-xl">Tutor Only Section</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
               </section>
-              <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                <CommunityStats
-                  postCount={data.postCount}
-                  commentCount={data.commentCount}
-                  VoteCount={data.VoteCount}
-                />
-              </section>
-              {data.user.tutor ? (
-                <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                  <div className="font-bold text-xl">Tutor Only Section</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
-                </section>
-              ) : (
-                <></>
-              )}
-            </div>
+            ) : (
+              <></>
+            )}
+          </div>
 
             <div className="flex flex-col lg:w-[60%] mt-5 lg:mt-0 gap-y-5">
               {/* <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5"> */}

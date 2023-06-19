@@ -25,7 +25,7 @@ export const RecentCreatedPosts = ({ recentPosts }) => {
           </ul>
         </div>
       ) : (
-        <div>"No recent post available!"</div>
+        <div className="italic font-light">No recent post available!</div>
       )}
     </>
   );
