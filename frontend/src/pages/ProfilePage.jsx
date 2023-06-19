@@ -42,6 +42,11 @@ const ProfilePage = () => {
       {!isLoading && !isError &&
       <div className="container mx-auto max-w-4xl mt-5 p-3">
         <div className="flex flex-col lg:flex-row gap-x-5">
+        {userState.userInfo && data.user._id !== userState.userInfo._id && 
+            <section className="flex justify-center lg:hidden mb-5">
+              <Service viewedUser={data.user} userId={userState.userInfo._id} token={userState.userInfo.token}/>
+            </section>
+        }
           <div className="flex flex-col lg:w-[40%] gap-y-5 ">
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
               <AboutMe viewedUser={data.user}/>
@@ -66,7 +71,7 @@ const ProfilePage = () => {
           <div className="flex flex-col lg:w-[60%] mt-5 lg:mt-0 gap-y-5">
             {/* <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5"> */}
             {userState.userInfo && data.user._id !== userState.userInfo._id && 
-            <section className="px-7">
+            <section className="px-7 hidden lg:block">
               <Service viewedUser={data.user} userId={userState.userInfo._id} token={userState.userInfo.token}/>
             </section>}
             <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
