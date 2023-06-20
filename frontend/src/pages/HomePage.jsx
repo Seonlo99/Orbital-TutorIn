@@ -8,6 +8,7 @@ import Tutors from "../home/Tutors";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 
 const HomePage = () => {
+  const [search, setSearch] = useState("");
   const [selected, setSelected] = useState("Highest Rating");
   const clickHandler = (e) => {
     setSelected(e.currentTarget.value);
@@ -22,9 +23,14 @@ const HomePage = () => {
               className="placeholder:font-bold fond font-semibold placeholder:text-blue-500 rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4"
               type="text"
               placeholder="Search Tutor"
+              defaultValue={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="w-full text-blue-500/70 font-semibold rounded-lg px-5 py-3 md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2">
+          <button
+            onClick=""
+            className="w-full text-blue-500/70 font-semibold rounded-lg px-5 py-3 md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2"
+          >
             Search
           </button>
         </div>
@@ -74,7 +80,10 @@ const HomePage = () => {
         </div>
       </div> */}
       <div></div>
-      <Tutors selected={selected} />
+      <Tutors
+        selected={selected}
+        search={search}
+      />
     </MainLayout>
   );
 };

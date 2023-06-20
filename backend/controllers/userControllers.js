@@ -294,6 +294,8 @@ const getTopTutors = async (req, res) => {
   try {
     // console.log(userId)
     const selection = req.query.selected.selected;
+    const search = req.query.selected.search;
+    const nameRegex = new RegExp(search, "i");
     let sortOrder = {};
     if (selection == "Highest Rating") {
       sortOrder = { rating: -1 };
@@ -302,7 +304,11 @@ const getTopTutors = async (req, res) => {
     } else if (selection == "Verified") {
       sortOrder = { verified: -1 };
     }
-    const topTutors = await User.find({ tutor: true })
+
+    const topTutors = await User.find({
+      tutor: true,
+      name: { $regex: nameRegex },
+    })
       .sort(sortOrder)
       .select("-password");
     return res.json({

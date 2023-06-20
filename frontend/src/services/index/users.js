@@ -94,10 +94,10 @@ export const getUserProfile = async (id) => {
   }
 };
 
-export const getTopTutors = async (selected) => {
+export const getTopTutors = async (selected, search) => {
   try {
     const { data } = await axios.get(`${rootUrl}/api/users/getTopTutors`, {
-      params: { selected: selected },
+      params: { selected: selected, search: search },
     });
     return data;
   } catch (error) {

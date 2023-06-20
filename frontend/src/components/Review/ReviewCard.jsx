@@ -1,5 +1,7 @@
 import React from "react";
 import moment from "moment";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import Rating from "react-rating";
 
 import defaultPic from "../../assets/images/default.png";
 import stables from "../../constants/stables";
@@ -27,6 +29,15 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
           />
         </div>
         <div className="flex flex-col justify-between ml-6 h-full">
+          <div className="">
+            <Rating
+              readonly
+              initialRating={review.stars}
+              emptySymbol={<BsStar />}
+              fullSymbol={<BsStarFill />}
+              className="text-blue-500"
+            />
+          </div>
           <div className="w-full font-semibold">{review.reviewComment}</div>
           <div className="w-full font-light text-sm">
             {`Reviewed on: `}
