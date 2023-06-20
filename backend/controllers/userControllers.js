@@ -296,19 +296,21 @@ const getTopTutors = async (req, res) => {
     const selection = req.query.selected.selected;
     const search = req.query.selected.search;
     const nameRegex = new RegExp(search, "i");
+    const filter = {
+      tutor: true,
+      name: { $regex: nameRegex },
+    };
     let sortOrder = {};
     if (selection == "Highest Rating") {
       sortOrder = { rating: -1 };
     } else if (selection == "Most Service") {
       sortOrder = { tutoringCount: -1 };
     } else if (selection == "Verified") {
-      sortOrder = { verified: -1 };
+      filter.verified = true;
+      sortOrder = { rating: -1 };
     }
-
-    const topTutors = await User.find({
-      tutor: true,
-      name: { $regex: nameRegex },
-    })
+    console.log(filter);
+    const topTutors = await User.find(filter)
       .sort(sortOrder)
       .select("-password");
     return res.json({
