@@ -4,15 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-
-export const RecentCommentedPosts = ({recentCommentedPostsData}) => {
-
+export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
   const recentPostsAndComments =
-    recentCommentedPostsData.length == 0
-      ? null
-      : recentCommentedPostsData;
+    recentCommentedPostsData.length == 0 ? null : recentCommentedPostsData;
 
-//   console.log(recentPostsAndComments);
+  //   console.log(recentPostsAndComments);
   return (
     <>
       <div className="font-bold text-xl">My Comments</div>
@@ -32,7 +28,9 @@ export const RecentCommentedPosts = ({recentCommentedPostsData}) => {
           </Link>
         ))
       ) : (
-        <div className="italic font-light">You have yet to leave any comments</div>
+        <div className="italic font-light">
+          You have yet to leave any comments
+        </div>
       )}
     </>
   );

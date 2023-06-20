@@ -80,15 +80,30 @@ export const UpdateProfilePicture = async ({ formData }) => {
   }
 };
 
-export const getUserProfile = async(id)=>{
-  try{
-      const {data} = await axios.get(`${rootUrl}/api/users`, { params: { userId:id }});
-      return data;
-      
-  } catch(error){
-      if(error.response && error.response.data.message){
-          throw new Error(error.response.data.message);
-      }
-      throw new Error(error.message)
+export const getUserProfile = async (id) => {
+  try {
+    const { data } = await axios.get(`${rootUrl}/api/users`, {
+      params: { userId: id },
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
   }
-}
+};
+
+export const getTopTutors = async (selected, search) => {
+  try {
+    const { data } = await axios.get(`${rootUrl}/api/users/getTopTutors`, {
+      params: { selected: selected, search: search },
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};

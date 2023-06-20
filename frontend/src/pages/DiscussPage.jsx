@@ -158,7 +158,9 @@ const DiscussPage = () => {
                           ? defaultPic
                           : stables.UPLOAD_FOLDER_BASE_URL + post.avatar
                       }
-                      onError={e => { e.currentTarget.src = defaultPic}}
+                      onError={(e) => {
+                        e.currentTarget.src = defaultPic;
+                      }}
                       alt="Author Profile Picture"
                       className="h-10 w-10 transition-all duration-300 rounded-full"
                     />
