@@ -51,7 +51,6 @@ const addReview = async (req, res) => {
 
     //  Recalculate reviewee rating
     const reviewee = await User.findById(revieweeId);
-    console.log(reviewee);
     const currentRating = reviewee.rating;
     const currentTutoringCount = reviewee.tutoringCount;
     await User.findByIdAndUpdate(
