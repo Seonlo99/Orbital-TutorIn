@@ -1,11 +1,9 @@
 import React from "react";
 import { FiSearch } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import MainLayout from "../components/MainLayout";
-import Hero from "../home/Hero";
 import Tutors from "../home/Tutors";
-import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
@@ -27,12 +25,6 @@ const HomePage = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button
-            onClick=""
-            className="w-full text-blue-500/70 font-semibold rounded-lg px-5 py-3 md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2"
-          >
-            Search
-          </button>
         </div>
         <div className="flex flex-row border mt-10 lg:mt-6 xl:mt-10 h-14 w-fit ml-6 rounded-full">
           <button
@@ -70,16 +62,6 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-      {/* <div className="h-screen w-screen">
-        <Hero />
-        <div className="flex flex-row justify-center">
-          <h1 className="mt-20 font-roboto text-blue-500 text-3xl text-center font-bold">
-            View our top rating tutors below
-          </h1>
-          <MdOutlineKeyboardDoubleArrowDown className="text-blue-500 text-3xl" />
-        </div>
-      </div> */}
-      <div></div>
       <Tutors
         selected={selected}
         search={search}

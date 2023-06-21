@@ -179,7 +179,7 @@ const getUserProfile = async (req, res) => {
       userId
     );
     const { recentPosts } = await getRecentCreatedPosts(userId);
-    const { recentPostsAndComments } = await getRecentCommentedPosts(userId);
+    const { recentComments } = await getRecentComments(userId);
     const { recentReviews } = await getRecentReview(userId);
     // console.log({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
     return res.json({
@@ -188,7 +188,7 @@ const getUserProfile = async (req, res) => {
       commentCount,
       VoteCount,
       recentPosts,
-      recentPostsAndComments,
+      recentComments,
       recentReviews,
     });
   } catch (error) {
@@ -211,11 +211,11 @@ const getCommunityStats = async (id) => {
     authorId: id,
     value: "-1",
   });
-  const VoteCount = UpVoteCount - DownVoteCount;
+  const voteCount = UpVoteCount - DownVoteCount;
   return {
     postCount: postCount,
     commentCount: commentCount,
-    VoteCount: VoteCount,
+    VoteCount: voteCount,
   };
 };
 
@@ -237,7 +237,7 @@ const getRecentCreatedPosts = async (id) => {
   };
 };
 
-const getRecentCommentedPosts = async (id) => {
+const getRecentComments = async (id) => {
   const RECENTCOUNT = 5;
   // const _id = req.body._id;
   const filter = {
@@ -246,26 +246,14 @@ const getRecentCommentedPosts = async (id) => {
   };
 
   // Find recent comment
-  const comments = await Comment.find(filter)
+  const recentComments = await Comment.find(filter)
     .sort({
       updatedAt: -1,
     })
+    .populate("postId", "title body slug")
     .limit(RECENTCOUNT);
 
-  // Remove duplicate post
-  const recentPosts = comments.map((comment) => comment.postId.toString());
-  for (let i = 0; i < recentPosts.length; ++i) {
-    recentPosts[i] = await Post.findById(recentPosts[i]);
-  }
-
-  const recentPostsAndComments = Object.keys(recentPosts).map((key) => {
-    return {
-      key,
-      posts: recentPosts[key],
-      comments: comments[key],
-    };
-  });
-  return { recentPostsAndComments };
+  return { recentComments };
 };
 
 const getRecentReview = async (id) => {
@@ -276,14 +264,9 @@ const getRecentReview = async (id) => {
 
   const recentReviews = await Review.find(filter)
     .sort({ updatedAt: -1 })
-    .limit(RECENTCOUNT)
-    .lean(); // Convert Mongoose documents to plain JavaScript objects
+    .populate("reviewerId", "name avatar")
+    .limit(RECENTCOUNT);
 
-  for (let i = 0; i < recentReviews.length; ++i) {
-    const reviewerId = recentReviews[i].reviewerId.toString();
-    const reviewer = await User.findById(reviewerId);
-    recentReviews[i].reviewerAvatar = reviewer.avatar;
-  }
   // console.log(recentReviews);
   return {
     recentReviews: recentReviews,
@@ -292,7 +275,6 @@ const getRecentReview = async (id) => {
 
 const getTopTutors = async (req, res) => {
   try {
-    // console.log(userId)
     const selection = req.query.selected.selected;
     const search = req.query.selected.search;
     const nameRegex = new RegExp(search, "i");
@@ -307,12 +289,13 @@ const getTopTutors = async (req, res) => {
       sortOrder = { tutoringCount: -1 };
     } else if (selection == "Verified") {
       filter.verified = true;
-      sortOrder = { rating: -1 };
+      sortOrder = { verified: -1 };
     }
-    console.log(filter);
+
     const topTutors = await User.find(filter)
       .sort(sortOrder)
       .select("-password");
+
     return res.json({
       topTutors: topTutors,
     });

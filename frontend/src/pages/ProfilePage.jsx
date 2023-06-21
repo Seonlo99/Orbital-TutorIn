@@ -84,7 +84,7 @@ const ProfilePage = () => {
               </section>
               <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
                 <RecentCommentedPosts
-                  recentCommentedPostsData={data.recentPostsAndComments}
+                  recentCommentedPostsData={data.recentComments}
                 />
               </section>
               <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
