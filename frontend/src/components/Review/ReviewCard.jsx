@@ -11,36 +11,43 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
     review.reviewerAvatar === ""
       ? defaultPic
       : stables.UPLOAD_FOLDER_BASE_URL + review.reviewerAvatar;
+  console.log(review);
   return (
     <div
       className={
         review._id === displayArray[activeItem]._id ? "block" : "hidden"
       }
     >
-      <div className={`py-3 items-center flex flex-row`}>
-        <div className="h-16 w-16">
-          <img
-            src={profilePic}
-            onError={(e) => {
-              e.currentTarget.src = defaultPic;
-            }}
-            alt="Reviewee Profile Picture"
-            className="h-16 w-16 transition-all duration-300 rounded-full"
-          />
-        </div>
-        <div className="flex flex-col justify-between ml-6 h-full">
+      <div className="flex flex-col">
+        <div className="items-center flex flex-row h-10 px-2 bg-white rounded-lg">
           <div className="">
-            <Rating
-              readonly
-              initialRating={review.stars}
-              emptySymbol={<BsStar />}
-              fullSymbol={<BsStarFill />}
-              className="text-blue-500"
+            <img
+              src={profilePic}
+              onError={(e) => {
+                e.currentTarget.src = defaultPic;
+              }}
+              alt="Reviewer Profile Picture"
+              className="mr-3 h-8 w-8 transition-all duration-300 rounded-full"
             />
           </div>
-          <div className="w-full font-semibold">{review.reviewComment}</div>
-          <div className="w-full font-light text-sm">
-            {`Reviewed on: `}
+          <div className="flex flex-col">
+            <div className="font-bold text-sm">{review.reviewerName}</div>
+            <div className="">
+              <Rating
+                readonly
+                initialRating={review.stars}
+                emptySymbol={<BsStar />}
+                fullSymbol={<BsStarFill />}
+                className="text-blue-500 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mt-2 px-2 bg-white rounded-lg">
+          <div className="px-2 py-2 w-full font-light text-sm text-justify overflow-y:auto">
+            {review.reviewComment}
+          </div>
+          <div className="absolute bottom-0 right-12 font-light text-xs">
             {moment(review.updatedAt).format("DD/MM/yyyy")} |{" "}
             {moment(review.updatedAt).format("HH:mm")}
           </div>

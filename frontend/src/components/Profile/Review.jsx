@@ -23,7 +23,7 @@ const Review = (recentReviews) => {
       class="relative w-full"
       data-carousel="static"
     >
-      <div className="relative px-14 py-5 h-36 max-h-36 w-full overflow-hidden rounded-lg">
+      <div className="relative px-10 py-5 w-full overflow-hidden rounded-lg overflow-y:auto">
         {reviewNum > 0 ? (
           recentReviews?.reviews.map((review) => (
             <ReviewCard
@@ -64,7 +64,7 @@ const Review = (recentReviews) => {
           </button>
           <button
             type="button"
-            class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            class="absolute top-0 right-0 z-30 flex items-center justify-center h-full cursor-pointer group focus:outline-none"
             onClick={handleNext}
           >
             <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">

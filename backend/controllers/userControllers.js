@@ -283,6 +283,7 @@ const getRecentReview = async (id) => {
     const reviewerId = recentReviews[i].reviewerId.toString();
     const reviewer = await User.findById(reviewerId);
     recentReviews[i].reviewerAvatar = reviewer.avatar;
+    recentReviews[i].reviewerName = reviewer.name;
   }
   // console.log(recentReviews);
   return {

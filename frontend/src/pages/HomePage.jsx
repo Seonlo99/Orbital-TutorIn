@@ -27,12 +27,6 @@ const HomePage = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button
-            onClick=""
-            className="w-full text-blue-500/70 font-semibold rounded-lg px-5 py-3 md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 md:w-fit md:py-2"
-          >
-            Search
-          </button>
         </div>
         <div className="flex flex-row border mt-10 lg:mt-6 xl:mt-10 h-14 w-fit ml-6 rounded-full">
           <button
