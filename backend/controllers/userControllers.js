@@ -276,15 +276,9 @@ const getRecentReview = async (id) => {
 
   const recentReviews = await Review.find(filter)
     .sort({ updatedAt: -1 })
-    .limit(RECENTCOUNT)
-    .lean(); // Convert Mongoose documents to plain JavaScript objects
+    .populate("reviewerId", "name avatar")
+    .limit(RECENTCOUNT);
 
-  for (let i = 0; i < recentReviews.length; ++i) {
-    const reviewerId = recentReviews[i].reviewerId.toString();
-    const reviewer = await User.findById(reviewerId);
-    recentReviews[i].reviewerAvatar = reviewer.avatar;
-    recentReviews[i].reviewerName = reviewer.name;
-  }
   // console.log(recentReviews);
   return {
     recentReviews: recentReviews,

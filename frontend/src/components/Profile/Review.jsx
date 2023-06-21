@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ReviewCard from "../Review/ReviewCard";
-import defaultPic from "../../assets/images/default.png";
 
 const Review = (recentReviews) => {
   const reviewNum = recentReviews?.reviews.length;

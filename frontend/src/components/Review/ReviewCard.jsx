@@ -8,10 +8,10 @@ import stables from "../../constants/stables";
 
 const ReviewCard = ({ review, activeItem, displayArray }) => {
   const profilePic =
-    review.reviewerAvatar === ""
+    review.reviewerId.avatar === ""
       ? defaultPic
-      : stables.UPLOAD_FOLDER_BASE_URL + review.reviewerAvatar;
-  console.log(review);
+      : stables.UPLOAD_FOLDER_BASE_URL + review.reviewerId.avatar;
+
   return (
     <div
       className={
@@ -31,7 +31,7 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
             />
           </div>
           <div className="flex flex-col">
-            <div className="font-bold text-sm">{review.reviewerName}</div>
+            <div className="font-bold text-sm">{review.reviewerId.name}</div>
             <div className="">
               <Rating
                 readonly
