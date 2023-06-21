@@ -20,12 +20,12 @@ const Tutors = (selected, search) => {
     <>
       {!isLoading && !isError && (
         <section className="flex flex-col container mx-auto px-5">
-          <div className="flex flex-wrap md:gap-x-5 gap-y-5 pb-10">
+          <div className="flex flex-wrap sm:gap-x-5 gap-y-5 pb-10">
             {data.topTutors.length > 0
               ? data.topTutors.map((tutor) => (
                   <TutorCard
                     tutor={tutor}
-                    className="w-full md:w-[calc(33.33%-20px)] lg:w-[calc(25%-21px)]"
+                    className="w-full sm:w-[calc(33.33%-20px)] md:w-[calc(25%-20px)] lg:w-[calc(20%-20px)]"
                   />
                 ))
               : "Currently no tutors available, check back later!"}
