@@ -278,8 +278,7 @@ const getTopTutors = async (req, res) => {
     const selection = req.query.selected.selected;
     const search = req.query.selected.search;
     const nameRegex = new RegExp(search, "i");
-
-    let filter = {
+    const filter = {
       tutor: true,
       name: { $regex: nameRegex },
     };
