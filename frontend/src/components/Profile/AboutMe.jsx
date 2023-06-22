@@ -20,6 +20,9 @@ export const AboutMe = ({ viewedUser }) => {
           id="avatar"
           className=" w-20 h-20 rounded-full border border-black"
           src={profilePic}
+          onError={(e) => {
+            e.currentTarget.src = defaultPic;
+          }}
           alt="Img"
         ></img>
         <div className=" mt-5 ml-10">

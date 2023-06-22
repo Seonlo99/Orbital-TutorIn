@@ -1,19 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
   const recentPostsAndComments =
     recentCommentedPostsData == 0 ? null : recentCommentedPostsData;
-
+  const navigate = useNavigate();
+  const handlePostClick = (slug) => {
+    navigate(`/post/${slug}`);
+  };
   // console.log(recentCommentedPostsData);
   return (
     <>
       <div className="font-bold text-xl">My Comments</div>
       {recentPostsAndComments ? (
         recentPostsAndComments.map((curr) => (
-          <Link to={`/post/${curr.postId.slug}`}>
-            <div className="border rounded-lg border-black my-2 px-2 hover:text-white hover:bg-black">
-              <div className="font-semibold ">
+          <div className="border rounded-lg border-black my-2 px-3 hover:text-white hover:bg-black">
+            <button
+              onClick={() => handlePostClick(`${curr.postId.slug}`)}
+              className="hover:cursor-pointer text-left"
+            >
+              <div className="font-semibold underline">
                 {curr.postId.title.substring(0, 50)}
                 {curr.postId.title.length > 50 && " ..."}
               </div>
@@ -21,8 +27,8 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
                 {curr.body.substring(0, 50)}
                 {curr.body.length > 50 && " ..."}
               </div>
-            </div>
-          </Link>
+            </button>
+          </div>
         ))
       ) : (
         <div className="italic font-light">

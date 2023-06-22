@@ -15,7 +15,7 @@ const Tutors = (selected, search) => {
       // console.log(error)
     },
   });
-  console.log(data);
+
   return (
     <>
       {!isLoading && !isError && (
@@ -25,7 +25,7 @@ const Tutors = (selected, search) => {
               ? data.topTutors.map((tutor) => (
                   <TutorCard
                     tutor={tutor}
-                    className="w-full sm:w-[calc(33.33%-20px)] md:w-[calc(25%-20px)] lg:w-[calc(20%-20px)]"
+                    className="w-full sm:w-[calc(33.33%-16px)] md:w-[calc(25%-16px)] lg:w-[calc(20%-16px)]"
                   />
                 ))
               : "Currently no tutors available, check back later!"}

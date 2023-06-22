@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
@@ -35,6 +35,10 @@ const Header = () => {
       return !curState;
     });
   };
+  const handleNav = (target) => {
+    navVisibleHandler();
+    navigate(`${target}`);
+  };
 
   return (
     <section>
@@ -62,19 +66,16 @@ const Header = () => {
         >
           <ul className="flex flex-col items-center gap-y-5 lg:flex-row text-white lg:text-black gap-x-5 font-semibold ">
             <li className="hover:underline">
-              <Link to="/">Home</Link>
+              <button onClick={() => handleNav("/")}>Home</button>
             </li>
             <li className="hover:underline">
-              <Link to="/discuss">Forum</Link>
+              <button onClick={() => handleNav("/discuss")}>Forum</button>
             </li>
-            {
-              userState.userInfo && 
+            {userState.userInfo && (
               <li className="hover:underline">
-                <Link to="/services">Services</Link>
+                <button onClick={() => handleNav("/services")}>Services</button>
               </li>
-
-            }
-            
+            )}
 
             {userState.userInfo ? (
               <li className="relative group flex flex-row items-center hover:cursor-pointer">
@@ -110,7 +111,11 @@ const Header = () => {
                   </ul>
                 </div>
                 <div className="lg:hidden flex flex-col gap-y-3 justify-center items-center">
-                  <button onClick={()=>navigate(`/profile/${userState.userInfo._id}`)}>
+                  <button
+                    onClick={() =>
+                      navigate(`/profile/${userState.userInfo._id}`)
+                    }
+                  >
                     View Profile
                   </button>
                   <button onClick={logoutHandler}>Logout</button>
