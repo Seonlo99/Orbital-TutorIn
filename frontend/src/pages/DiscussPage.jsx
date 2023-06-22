@@ -84,6 +84,12 @@ const DiscussPage = () => {
       navigate("/createPost");
     }
   };
+  const handlePostClick = (slug) => {
+    navigate(`/post/${slug}`);
+  };
+  const handleUserClick = (id) => {
+    navigate(`/profile/${id}`);
+  };
 
   const setSortByHandler = (text) => {
     setSortBy(text);
@@ -167,10 +173,14 @@ const DiscussPage = () => {
                   </div>
                   <div className="ml-6">
                     <div className="font-semibold">
-                      <Link to={`/post/${post.slug}`}>
+                      <button
+                        onClick={() => handlePostClick(post.slug)}
+                        className="hover:underline
+                        hover:cursor-pointer"
+                      >
                         {post.title.substring(0, 50)}{" "}
                         {post.title.length > 50 && "..."}
-                      </Link>
+                      </button>
                       {post.tags &&
                         post.tags.slice(0, 2).map((tag) => (
                           <div
@@ -183,8 +193,15 @@ const DiscussPage = () => {
                       {post.tags.length > 2 && "..."}
                     </div>
                     <div className="font-light text-sm">
-                      Created by: {post.user.username},{" "}
-                      {moment(post.createdAt).format("DD/MM/yyyy")} |{" "}
+                      Created by:{" "}
+                      <button
+                        onClick={() => handleUserClick(post.user._id)}
+                        className="hover:underline
+                        hover:cursor-pointer"
+                      >
+                        {post.user.username}
+                      </button>
+                      , {moment(post.createdAt).format("DD/MM/yyyy")} |{" "}
                       {moment(post.createdAt).format("HH:mm")}
                     </div>
                   </div>
