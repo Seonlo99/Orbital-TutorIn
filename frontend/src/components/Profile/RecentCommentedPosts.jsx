@@ -14,12 +14,8 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
       <div className="font-bold text-xl">My Comments</div>
       {recentPostsAndComments ? (
         recentPostsAndComments.map((curr) => (
-          <div className="border rounded-lg border-black my-2 px-3 hover:text-white hover:bg-black">
-            <button
-              onClick={() => handlePostClick(`${curr.postId.slug}`)}
-              className="hover:cursor-pointer text-left"
-            >
-              <div className="font-semibold underline">
+          <div onClick={() => handlePostClick(`${curr.postId.slug}`)} className="border rounded-lg border-black my-2 px-3 hover:cursor-pointer">
+              <div className="font-semibold text-xl">
                 {curr.postId.title.substring(0, 50)}
                 {curr.postId.title.length > 50 && " ..."}
               </div>
@@ -27,7 +23,6 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
                 {curr.body.substring(0, 50)}
                 {curr.body.length > 50 && " ..."}
               </div>
-            </button>
           </div>
         ))
       ) : (

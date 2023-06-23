@@ -3,7 +3,7 @@ import { FiSearch } from "react-icons/fi";
 import { useState } from "react";
 
 import MainLayout from "../components/MainLayout";
-import Tutors from "../home/Tutors";
+import Tutors from "./home/Tutors";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
