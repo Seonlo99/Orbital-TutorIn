@@ -112,9 +112,10 @@ const Header = () => {
                 </div>
                 <div className="lg:hidden flex flex-col gap-y-3 justify-center items-center">
                   <button
-                    onClick={() =>
-                      navigate(`/profile/${userState.userInfo._id}`)
-                    }
+                    onClick={() => {
+                      navVisibleHandler();
+                      navigate(`/profile/${userState.userInfo._id}`);
+                    }}
                   >
                     View Profile
                   </button>
