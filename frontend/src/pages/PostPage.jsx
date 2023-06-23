@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { generateHTML } from "@tiptap/html";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import Bold from "@tiptap/extension-bold";
 import Underline from "@tiptap/extension-underline";
 import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -22,7 +17,6 @@ import MainLayout from "../components/MainLayout";
 import { getSinglePost, deletePost } from "../services/index/posts";
 import AddComment from "../components/Comment/AddComment";
 import { newComment } from "../services/index/comments";
-import Comment from "../components/Comment/Comment";
 import AllComments from "../components/Comment/AllComments";
 import { Upvote } from "../components/Upvote";
 
