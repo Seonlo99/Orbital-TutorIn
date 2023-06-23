@@ -18,8 +18,8 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
         review._id === displayArray[activeItem]._id ? "block" : "hidden"
       }
     >
-      <div className="flex flex-col">
-        <div className="items-center flex flex-row h-10 px-2 bg-white rounded-lg">
+      <div className="flex flex-col bg-white rounded-lg">
+        <div className="items-center flex flex-row h-10 px-2 ">
           <div className="">
             <img
               src={profilePic}
@@ -43,7 +43,7 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
             </div>
           </div>
         </div>
-        <div className="mt-2 px-2 bg-white rounded-lg">
+        <div className="mt-2 px-2">
           <div className="px-2 py-2 w-full font-light text-sm text-justify overflow-y:auto">
             {review.reviewComment}
           </div>

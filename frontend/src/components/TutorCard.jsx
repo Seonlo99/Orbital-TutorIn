@@ -17,22 +17,20 @@ const TutorCard = ({ tutor, className }) => {
     navigate(`/profile/${id}`);
   };
   return (
-    <div
-      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className}`}
+    <div onClick={() => handleUserClick(`${tutor._id}`)}
+      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className} hover:cursor-pointer`}
     >
-      <button
-        onClick={() => handleUserClick(`${tutor._id}`)}
-        className="hover:underline hover:cursor-pointer"
-      >
+      <div className="flex flex-row items-center justify-center mt-2">
         <img
-          src={profilePic}
-          onError={(e) => {
-            e.currentTarget.src = defaultPic;
-          }}
-          alt="Tutor Image"
-          className="w-full object-cover object-center h-auto sm:h-40 md:h-44 lg:h-48 xl:h-52"
-        />
-      </button>
+            src={profilePic}
+            onError={(e) => {
+              e.currentTarget.src = defaultPic;
+            }}
+            alt="Tutor Image"
+            className="object-cover object-center rounded-full w-40 h-40 lg:w-48 lg:h-44 xl:w-52 xl:h-52"
+          />
+      </div>
+        
       <div className="p-5">
         <h2 className="font-roboto font-bold text-base text-dark-soft md:text-lg lg:text-xl">
           <button
