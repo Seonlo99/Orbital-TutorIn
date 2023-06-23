@@ -21,7 +21,7 @@ const ServicePage = () => {
       //navigate user to login if user has not login
       navigate("/");
     }
-  }, [userState.userInfo]);
+  });
 
   return <MainLayout>
     { userState.userInfo &&
