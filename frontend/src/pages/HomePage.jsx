@@ -14,7 +14,7 @@ const HomePage = () => {
   return (
     <MainLayout>
       <div className="flex flex-col mb-6 justify-center items-center md:flex-row lg:flew-row">
-        <div className="flex flex-col gap-y-2.5 w-1/3 mt-10 lg:mt-6 xl:mt-10 relative">
+        <div className="flex flex-col gap-y-2.5 w-2/3 md:w-1/3 mr-6 mt-10 lg:mt-6 xl:mt-10 relative">
           <div className="relative">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-blue-500" />
             <input
@@ -26,7 +26,7 @@ const HomePage = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row border mt-10 lg:mt-6 xl:mt-10 h-14 w-fit ml-6 rounded-full">
+        <div className="flex flex-row border mt-10 lg:mt-6 xl:mt-10 h-14 w-fit rounded-full">
           <button
             onClick={(e) => clickHandler(e)}
             value="Highest Rating"
