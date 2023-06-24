@@ -87,10 +87,10 @@ const ProfilePage = () => {
                   recentCommentedPostsData={data.recentComments}
                 />
               </section>
-              <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
+              <section className="flex flex-col rounded-md border shadow-md bg-gray-100 px-7 py-5">
                 <div className="flex flex-row ">
                   <div className="font-bold text-xl">Reviews</div>
-                  <div className="ml-5 mt-1 flex flex-row">
+                  <div className="ml-5 mt-1 flex flex-row items-center">
                     <div className="">
                       <Rating
                         readonly
@@ -102,7 +102,7 @@ const ProfilePage = () => {
                     </div>
                     <div className="ml-2 text-blue-500 font-bold">
                       {`${Math.round(data.user.rating * 100) / 100} (${
-                        data.user.tutoringCount
+                        data.user.ratingCount
                       })`}
                     </div>
                   </div>
