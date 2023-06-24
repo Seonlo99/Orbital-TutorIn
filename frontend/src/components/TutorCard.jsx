@@ -18,10 +18,12 @@ const TutorCard = ({ tutor, className }) => {
   };
   return (
     <div
-      onClick={() => handleUserClick(`${tutor._id}`)}
-      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className} hover:cursor-pointer`}
+      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className} `}
     >
-      <div className="flex flex-row items-center justify-center mt-2">
+      <div
+        onClick={() => handleUserClick(`${tutor._id}`)}
+        className="flex flex-row items-center justify-center mt-2 hover:cursor-pointer"
+      >
         <img
           src={profilePic}
           onError={(e) => {
@@ -42,7 +44,10 @@ const TutorCard = ({ tutor, className }) => {
           </button>
         </h2>
         <p className="text-dark-light mt-3 text-sm md:text-base">Tutor About</p>
-        <div className="flex flex-col mt-6">
+        <p className="text-dark-light mt-3 text-sm md:text-base italic  mt-6">
+          Teach {tutor.tutoringCount} times
+        </p>
+        <div className="flex flex-col">
           <div className="flex flex-row gap-x-1 items-center">
             <div className="mr-2">
               <Rating
@@ -54,9 +59,7 @@ const TutorCard = ({ tutor, className }) => {
               />
             </div>
             <div className="text-blue-500 font-bold text-xs md:text-sm lg:text-base">
-              {`${Math.round(tutor.rating * 100) / 100} (${
-                tutor.tutoringCount
-              })`}
+              {`${Math.round(tutor.rating * 100) / 100} (${tutor.ratingCount})`}
             </div>
           </div>
           <div className="flex item-center gap-x-2 mt-2">

@@ -19,7 +19,7 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
       }
     >
       <div className="flex flex-col bg-white rounded-lg">
-        <div className="items-center flex flex-row h-10 px-2 ">
+        <div className="items-center flex flex-row h-10 px-3 mt-2">
           <div className="">
             <img
               src={profilePic}
