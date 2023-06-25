@@ -107,6 +107,8 @@ const updateProfile = async (req, res) => {
 
 const updateProfilePicture = async (req, res, next) => {
   try {
+    const { formData  } = req.body;
+    console.log(formData)
     const upload = uploadPicture.single("avatar");
     upload(req, res, async function (err) {
       if (err) {

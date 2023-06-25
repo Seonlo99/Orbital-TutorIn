@@ -35,6 +35,32 @@ const uploadPicture = multer({
   },
 });
 
+const transcriptStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    let filePath="/tmp";
+    cb(null, filePath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+
+const uploadAcademicTranscript = multer({
+  storage: transcriptStorage,
+  limits: {
+    fileSize: 5 * 1000000, // 5MB
+  },
+  fileFilter: function (req, file, cb) {
+    let extName = path.extname(file.originalname);
+    let ext = extName.substring(1).toLowerCase();
+    if (ext !== "pdf") {
+      return cb(new Error("Only PDF files are allowed"));
+    }
+    cb(null, true);
+  },
+});
+
 const uploadPictureCloud = async (file) => {
   try {
     const cloudinary = cloudinaryFn();
@@ -45,4 +71,4 @@ const uploadPictureCloud = async (file) => {
   }
 };
 
-export { uploadPicture, uploadPictureCloud };
+export { uploadPicture, uploadPictureCloud, uploadAcademicTranscript };
