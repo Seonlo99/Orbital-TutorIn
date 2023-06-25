@@ -16,10 +16,11 @@ const RegisterPage = () => {
   const userState = useSelector((state) => state.user);
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: ({ _id, fullname, email, password }) => {
+    mutationFn: ({ _id, fullname, about, email, password }) => {
       return editProfile({
         _id,
         fullname,
+        about,
         email,
         password,
       });
@@ -52,6 +53,7 @@ const RegisterPage = () => {
     defaultValues: {
       _id: userState.userInfo._id,
       fullname: userState.userInfo.name,
+      about: userState.userInfo.about,
       email: userState.userInfo.email,
       password: "",
       cfmPassword: "",
@@ -59,8 +61,8 @@ const RegisterPage = () => {
     mode: "onChange",
   });
   const submitHandler = (data) => {
-    const { _id, fullname, email, password } = data;
-    mutate({ _id, fullname, email, password });
+    const { _id, fullname, about, email, password } = data;
+    mutate({ _id, fullname, about, email, password });
   };
 
   const password = watch("password");
@@ -106,6 +108,19 @@ const RegisterPage = () => {
                   {errors.fullname?.message}
                 </p>
               )}
+
+              <label
+                htmlFor="about"
+                className="text-gray-500 font-semibold block mt-5"
+              >
+                Profile Bio:
+              </label>
+              <textarea
+                id="about"
+                {...register("about")}
+                placeholder="Profile Bio"
+                className={`placeholder:text-gray-400 text-black mt-1 rounded-lg max-w-lg whitespace-pre-wrap font-semibold block px-3 py-2 outline-none border break-words`}
+              />
 
               <label
                 htmlFor="email"
