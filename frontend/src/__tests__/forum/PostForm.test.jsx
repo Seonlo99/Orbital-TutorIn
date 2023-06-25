@@ -56,7 +56,11 @@ describe(PostForm, ()=>{
     it('Submit Button should not work when Title is empty', () => {
         const handleMutateMock = jest.fn();
         const { getByText } = render(
-            <QueryClientProvider client={queryClient}><BrowserRouter> <PostForm handleMutate={handleMutateMock} btnName="Post" /></BrowserRouter></QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <PostForm handleMutate={handleMutateMock} btnName="Post" />
+                </BrowserRouter>
+            </QueryClientProvider>
         );
     
         // Click the submit button without entering a title
@@ -69,7 +73,11 @@ describe(PostForm, ()=>{
     it('Submit Button should not work when Description is empty', () => {
         const handleMutateMock = jest.fn();
         const { getByText, getByPlaceholderText } = render(
-            <QueryClientProvider client={queryClient}><BrowserRouter> <PostForm handleMutate={handleMutateMock} btnName="Post" /></BrowserRouter></QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <PostForm handleMutate={handleMutateMock} btnName="Post" />
+                </BrowserRouter>
+            </QueryClientProvider>
         );
     
         const titleInput = getByPlaceholderText('Title');
