@@ -45,14 +45,24 @@ describe(AddComment, ()=>{
 
     it("Form handler called", async ()=>{
         const formHandler = jest.fn(); 
-        render(<QueryClientProvider client={queryClient}><BrowserRouter> <AddComment label={"Edit"} formHandler={formHandler} initialText={"test"}/> </BrowserRouter></QueryClientProvider>)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <AddComment label={"Edit"} formHandler={formHandler} initialText={"test"}/>
+                </BrowserRouter>
+            </QueryClientProvider>)
         await userEvent.click(screen.getByText(/Edit/i))
         expect(formHandler).toHaveBeenCalled();
     })
 
     it("Cancel handler called", async ()=>{
         const cancelHandler = jest.fn(); 
-        render(<QueryClientProvider client={queryClient}><BrowserRouter> <AddComment label={"Edit"} formHandler={formHandler} initialText={""} cancelHandler={cancelHandler}/> </BrowserRouter></QueryClientProvider>)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <AddComment label={"Edit"} formHandler={formHandler} initialText={""} cancelHandler={cancelHandler}/>
+                </BrowserRouter>
+            </QueryClientProvider>)
         await userEvent.click(screen.getByText(/Cancel/i))
         expect(cancelHandler).toHaveBeenCalled();
     })

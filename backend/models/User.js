@@ -17,6 +17,7 @@ const UserSchema = new Schema(
     rating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 },
     tutoringCount: { type: Number, default: 0 },
+    about: {type:String, default: ""}
   },
   { timestamps: true }
 );
