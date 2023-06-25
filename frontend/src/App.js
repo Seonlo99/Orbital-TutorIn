@@ -12,6 +12,7 @@ import PostPage from "./pages/PostPage";
 import EditPostPage from "./pages/EditPostPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ServicePage from "./pages/ServicePage";
+import AdminPage from "./pages/admin/Admin";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="post/:uuid" element={<PostPage />} />
         <Route path="profile/:id/edit-profile" element={<EditProfilePage />} />
         <Route path="services" element={<ServicePage />} />
+        <Route path="admin" element={<AdminPage />} />
       </Routes>
       <Toaster />
     </div>

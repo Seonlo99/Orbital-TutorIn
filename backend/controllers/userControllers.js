@@ -35,6 +35,7 @@ const registerUser = async (req, res) => {
       verified: user.verified,
       tutor: user.tutor,
       token: await user.generateJWT(),
+      isAdmin: user.isAdmin,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -61,6 +62,7 @@ const userLogin = async (req, res) => {
         verified: user.verified,
         tutor: user.tutor,
         token: await user.generateJWT(),
+        isAdmin: user.isAdmin
       });
     } else {
       return res
@@ -96,6 +98,7 @@ const updateProfile = async (req, res) => {
       verified: updatedUser.verified,
       tutor: updatedUser.tutor,
       token: await updatedUser.generateJWT(),
+      isAdmin: updatedUser.isAdmin
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -137,6 +140,7 @@ const updateProfilePicture = async (req, res, next) => {
             verified: updatedUser.verified,
             tutor: updatedUser.tutor,
             token: await updatedUser.generateJWT(),
+            isAdmin: updatedUser.isAdmin
           });
         } else {
           let filename;
@@ -157,6 +161,7 @@ const updateProfilePicture = async (req, res, next) => {
             verified: updatedUser.verified,
             tutor: updatedUser.tutor,
             token: await updatedUser.generateJWT(),
+            isAdmin: updatedUser.isAdmin
           });
         }
       }

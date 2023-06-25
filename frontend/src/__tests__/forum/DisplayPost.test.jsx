@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 const SamplePost={
-    title: "Sample Post",
+    title: "Sample Post with a very long title that should be truncated",
     slug: "123123123",
     avatar: "test.jpg",
     tags: ["CS2105", "CS2106"],
@@ -28,4 +28,20 @@ describe(DisplayPost, ()=>{
         expect(screen.getByTestId("voteCount").textContent).toBe("10");
         expect(screen.getByTestId("commentCount").textContent).toBe("10");
     })
+
+    it("Long post title truncated", ()=>{
+        render(<BrowserRouter> <DisplayPost post={SamplePost}/> </BrowserRouter>)
+        
+        expect(screen.getByText(/Sample Post with a very long title that should be .../i)).toBeInTheDocument();
+    })
+
+    it("Profile picture should be correct", ()=>{
+        render(<BrowserRouter> <DisplayPost post={SamplePost}/> </BrowserRouter>)
+
+        const testImage = screen.getByRole("img");
+        expect(testImage.src).toContain("test.jpg");
+        expect(testImage.alt).toContain("Author Profile Picture");
+
+    })
+    
 })
