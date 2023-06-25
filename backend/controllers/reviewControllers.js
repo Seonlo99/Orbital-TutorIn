@@ -52,20 +52,20 @@ const addReview = async (req, res) => {
     //  Recalculate reviewee rating
     const reviewee = await User.findById(revieweeId);
     const currentRating = reviewee.rating;
-    const currentTutoringCount = reviewee.tutoringCount;
+    const currentRatingCount = reviewee.ratingCount;
     await User.findByIdAndUpdate(
       revieweeId,
       {
         rating:
-          (currentRating * currentTutoringCount + rating) /
-          (currentTutoringCount + 1),
-        tutoringCount: currentTutoringCount + 1,
+          (currentRating * currentRatingCount + rating) /
+          (currentRatingCount + 1),
+        ratingCount: currentRatingCount + 1,
       },
       {
         new: true,
       }
     );
-    console.log(reviewee);
+    // console.log(reviewee);
 
     return res.json({ reviewCreated });
   } catch (error) {
