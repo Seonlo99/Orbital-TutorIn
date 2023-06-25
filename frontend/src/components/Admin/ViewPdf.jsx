@@ -5,10 +5,9 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 
 const ViewPdf = ({closeHandler, PDFLINK}) => {
 
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-        'pdfjs-dist/build/pdf.worker.min.js',
-        import.meta.url,
-      ).toString();
+    const url = `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
+    pdfjs.GlobalWorkerOptions.workerSrc = url
+
       
 
 
@@ -26,7 +25,8 @@ const ViewPdf = ({closeHandler, PDFLINK}) => {
 		setPageNumber(
 			pageNumber + 1 >= numPages ? numPages : pageNumber + 1,
 		);
-
+    
+    console.log(PDFLINK)
 	return (
 			
 

@@ -1,19 +1,34 @@
 import Application from "../models/Application.js"
 
 import User from "../models/User.js";
+import {
+    uploadAcademicTranscript,
+    uploadPictureCloud,
+  } from "../middleware/uploadPictureMiddleware.js";
 
 
-const addApplication = async (req, res) => {
+const addApplication = async (req, res, next) => {
     try{
-        const { pdfUrl  } = req.body;
-
-        const application = await Application.create({
-            tutorId:req.user._id,
-            pdfUrl:pdfUrl,
-        });
-
-        return res.json({application})
-
+        const upload = uploadAcademicTranscript.single("file");
+        upload(req, res, async function (err) {
+        if (err) {
+            console.log(err)
+        } else {
+            // every thing went well
+            if (req.file) {
+                const cloudImgUrl = await uploadPictureCloud(req.file);
+                const application = await Application.create({
+                    tutorId:req.user._id,
+                    pdfUrl:cloudImgUrl,
+                });
+                return res.json({application});
+            } 
+            
+            else{
+                return res.status(404).json({ message: "Error uploading file" });
+            }
+        }
+    })
     } catch (error){
         return res.status(500).json({message:error.message})
     }
@@ -22,7 +37,7 @@ const addApplication = async (req, res) => {
 const getApplications = async (req, res) => {
     try{
         let user = await User.findOne({_id:req.user._id})
-        console.log(user)
+        // console.log(user)
         if(!user.isAdmin){
             return res.status(401).json({message:"Unauthorised"})
         }
@@ -56,6 +71,9 @@ const editApplication = async (req, res) => {
 
 
         application = await Application.findOneAndUpdate({_id:applicationId}, {approved:accept});
+        if(accept){ // verify
+            user = await User.findOneAndUpdate({_id:application.tutorId}, {verified:true});
+        }
 
         return res.json({application})
 
