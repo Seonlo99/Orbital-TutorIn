@@ -1,12 +1,15 @@
 import axios from "axios";
 import { rootUrl } from "../../config/config";
 
-export const addApplication = async({token, desc, slug, parent, replyUser})=>{
+export const addApplication = async({token, formData})=>{
     try{
         const config = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { 
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            }
         };
-        const {data} = await axios.post(`${rootUrl}/api/applications`, {desc, slug, parent, replyUser}, config);
+        const {data} = await axios.post(`${rootUrl}/api/applications`, formData, config);
         return data;
         
     } catch(error){

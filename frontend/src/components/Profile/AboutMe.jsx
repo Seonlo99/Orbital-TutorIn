@@ -25,13 +25,15 @@ export const AboutMe = ({ viewedUser }) => {
           }}
           alt="Img"
         ></img>
-        <div className=" mt-5 ml-10">
+        <div className=" flex flex-col mt-5 ml-10">
           {userState.userInfo && viewedUser._id === userState.userInfo._id ? (
+            <>
             <Link to="edit-profile">
               <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
                 Edit Profile
               </button>
             </Link>
+            </>
           ) : (
             ""
           )}

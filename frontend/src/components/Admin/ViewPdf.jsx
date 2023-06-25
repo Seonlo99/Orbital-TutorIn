@@ -26,7 +26,8 @@ const ViewPdf = ({closeHandler, PDFLINK}) => {
 		setPageNumber(
 			pageNumber + 1 >= numPages ? numPages : pageNumber + 1,
 		);
-
+    
+    console.log(PDFLINK)
 	return (
 			
 

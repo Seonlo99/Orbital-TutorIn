@@ -15,6 +15,7 @@ import { RecentCommentedPosts } from "../components/Profile/RecentCommentedPosts
 import Review from "../components/Profile/Review";
 import { getUserProfile } from "../services/index/users";
 import { Service } from "../components/Profile/Service";
+import { AboutTutor } from "../components/Profile/Tutor/AboutTutor";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -55,12 +56,7 @@ const ProfilePage = () => {
               </section>
               {data.user.tutor ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                  <div className="font-bold text-xl">Tutor Only Section</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
-                  <div>a</div>
+                  <AboutTutor />
                 </section>
               ) : (
                 <></>
