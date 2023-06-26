@@ -41,6 +41,7 @@ export const AboutMe = ({ viewedUser }) => {
       </div>
       <div className="mt-3 flex flex-col gap-y-2">
         <div className="font-bold">{viewedUser.name}</div>
+        <div className="break-words">{viewedUser.about}</div>
         <div>
           <div className="font-extralight text-sm">Role</div>
           <div className="mt-0">{viewedUser.tutor ? "Tutor" : "Student"}</div>

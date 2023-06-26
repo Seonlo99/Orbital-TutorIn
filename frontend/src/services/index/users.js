@@ -41,11 +41,18 @@ export const userRegister = async ({
   }
 };
 
-export const editProfile = async ({ _id, fullname, email, password }) => {
+export const editProfile = async ({
+  _id,
+  fullname,
+  about,
+  email,
+  password,
+}) => {
   try {
     const { data } = await axios.put(`${rootUrl}/api/users/updateProfile`, {
       _id,
       fullname,
+      about,
       email,
       password,
     });
