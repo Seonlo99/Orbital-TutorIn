@@ -56,7 +56,7 @@ const ProfilePage = () => {
               </section>
               {data.user.tutor ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                  <AboutTutor />
+                  <AboutTutor profileId={data.user._id} userId={userState?.userInfo? userState.userInfo._id : null}/>
                 </section>
               ) : (
                 <></>
