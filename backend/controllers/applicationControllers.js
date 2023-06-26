@@ -12,7 +12,7 @@ const addApplication = async (req, res, next) => {
         const upload = uploadAcademicTranscript.single("file");
         upload(req, res, async function (err) {
         if (err) {
-            console.log(err)
+            return res.status(500).json({message:err.message})
         } else {
             // every thing went well
             if (req.file) {

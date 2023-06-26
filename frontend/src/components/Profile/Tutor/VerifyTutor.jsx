@@ -57,7 +57,10 @@ export const VerifyTutor = ({closeHandler}) => {
             <div className='px-1 pb-5 flex flex-col gap-y-2'>
                     <div className='flex flex-col items-center gap-y-2'>
                         <div className='text-lg font-semibold'>
-                            Please upload your academic transcript!
+                            Please upload your academic transcript! 
+                        </div>
+                        <div className='font-light'>
+                            PDF file only, less than 5mb
                         </div>
                         <div className='flex flex-row items-center gap-x-1'>
                         
