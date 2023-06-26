@@ -36,6 +36,7 @@ const registerUser = async (req, res) => {
       tutor: user.tutor,
       token: await user.generateJWT(),
       isAdmin: user.isAdmin,
+      about: user.about
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -63,6 +64,7 @@ const userLogin = async (req, res) => {
         tutor: user.tutor,
         token: await user.generateJWT(),
         isAdmin: user.isAdmin,
+        about: user.about
       });
     } else {
       return res
@@ -78,14 +80,25 @@ const updateProfile = async (req, res) => {
   try {
     const { _id, fullname, about, email, password } = req.body;
     const user = await User.findById({ _id });
-    const updatedUser = await User.findByIdAndUpdate(
-      { _id },
-      {
+    let changes;
+    if (password){
+      changes = {
         name: fullname,
         about: about,
         email: email,
-        password: password || user.password,
-      },
+        password: password,
+      }
+    }
+    else{
+      changes = {
+        name: fullname,
+        about: about,
+        email: email,
+      }
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id },
+      changes,
       {
         new: true,
       }
