@@ -1,9 +1,10 @@
 import React from 'react'
 import {useState} from 'react'
 
+
 import {VerifyTutor} from './VerifyTutor'
 
-export const AboutTutor = () => {
+export const AboutTutor = ({profileId, userId}) => {
   
   const [showUpload, setShowUpload] = useState(false)
   
@@ -11,12 +12,17 @@ export const AboutTutor = () => {
     setShowUpload(false)
   }
 
+  
+
   return (
     <>
         <div className="font-bold text-xl">Tutor Only Section</div>
-        <button onClick={()=>setShowUpload(true)} className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
+        {
+          profileId === userId && 
+          (<button onClick={()=>setShowUpload(true)} className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
             Verify Tutor
-        </button>
+          </button>)
+        }
         { showUpload && <VerifyTutor closeHandler={closeHandler}/>}
         <div>a</div>
         <div>a</div>

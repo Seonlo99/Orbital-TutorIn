@@ -15,15 +15,19 @@ const getAllPosts = async (req, res) => {
     // console.log(sortBy)
     let filteredSelectedTags;
     const availableTags = await getAllTagsArray();
+    let tagFilter;
     if (selectedTags.length === 0) {
       //user did not filter for any tag
       filteredSelectedTags = availableTags;
+      tagFilter = [{ tags: { $in: filteredSelectedTags } }, { tags: [] }]
     } else {
       filteredSelectedTags = selectedTags.map((tag) => {
         if (availableTags.includes(tag.value)) {
           return tag.value;
         }
       }); //check to ensure the tags exists in the database
+
+      tagFilter = [{ tags: { $in: filteredSelectedTags } }]
     }
 
     search = search || "";
@@ -108,7 +112,7 @@ const getAllPosts = async (req, res) => {
       aggregate = [
         {
           $match: {
-            $or: [{ tags: { $in: filteredSelectedTags } }, { tags: [] }],
+            $or: tagFilter,
           },
         },
         lookup,
@@ -144,7 +148,7 @@ const getAllPosts = async (req, res) => {
           $match: {
             isDeleted: false,
             title: searchFilter,
-            $or: [{ tags: { $in: filteredSelectedTags } }, { tags: [] }],
+            $or: tagFilter,
           },
         },
         sort,

@@ -166,7 +166,7 @@ export const DisplayService = ({ selected }) => {
                 {selected === "Completed" &&
                   (transaction.transactionCompleted
                     ? "Completed"
-                    : transaction.tutorAccepted
+                    : transaction.tutorAccepted === null
                     ? "Cancelled"
                     : "Rejected by Tutor")}
               </div>
