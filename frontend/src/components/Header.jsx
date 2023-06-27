@@ -76,6 +76,11 @@ const Header = () => {
                 <button onClick={() => handleNav("/services")}>Services</button>
               </li>
             )}
+            {userState.userInfo && (
+              <li className="hover:underline">
+                <button onClick={() => handleNav("/chat")}>Chat</button>
+              </li>
+            )}
 
             {userState.userInfo ? (
               <li className="relative group flex flex-row items-center hover:cursor-pointer">

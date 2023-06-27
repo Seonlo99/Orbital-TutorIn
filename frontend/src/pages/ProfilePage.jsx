@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -18,7 +17,6 @@ import { Service } from "../components/Profile/Service";
 import { AboutTutor } from "../components/Profile/Tutor/AboutTutor";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const { id } = useParams();
 
@@ -56,7 +54,10 @@ const ProfilePage = () => {
               </section>
               {data.user.tutor ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                  <AboutTutor profileId={data.user._id} userId={userState?.userInfo? userState.userInfo._id : null}/>
+                  <AboutTutor
+                    profileId={data.user._id}
+                    userId={userState?.userInfo ? userState.userInfo._id : null}
+                  />
                 </section>
               ) : (
                 <></>

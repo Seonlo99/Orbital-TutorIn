@@ -18,7 +18,7 @@ export const AboutMe = ({ viewedUser }) => {
       <div className="flex flex-row">
         <img
           id="avatar"
-          className=" w-20 h-20 rounded-full border border-black"
+          className="w-20 h-20 rounded-full border border-black"
           src={profilePic}
           onError={(e) => {
             e.currentTarget.src = defaultPic;
@@ -28,11 +28,11 @@ export const AboutMe = ({ viewedUser }) => {
         <div className=" flex flex-col mt-5 ml-10">
           {userState.userInfo && viewedUser._id === userState.userInfo._id ? (
             <>
-            <Link to="edit-profile">
-              <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
-                Edit Profile
-              </button>
-            </Link>
+              <Link to="edit-profile">
+                <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
+                  Edit Profile
+                </button>
+              </Link>
             </>
           ) : (
             ""
