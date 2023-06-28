@@ -16,6 +16,7 @@ const TutorCard = ({ tutor, className }) => {
   const handleUserClick = (id) => {
     navigate(`/profile/${id}`);
   };
+
   return (
     <div
       className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className} `}
@@ -34,41 +35,40 @@ const TutorCard = ({ tutor, className }) => {
         />
       </div>
 
-      <div className="p-5">
-        <h2 className="font-roboto font-bold text-base text-dark-soft md:text-lg lg:text-xl">
-          <button
+      <div className="flex flex-col p-5 justify-between">
+        <div className="flex flex-row font-roboto font-bold text-dark-soft text-base items-center md:text-lg lg:text-xl">
+          <div
             onClick={() => handleUserClick(`${tutor._id}`)}
-            className="hover:underline hover:cursor-pointer"
+            className="hover:underline hover:cursor-pointer mr-2"
           >
             {tutor.name}
-          </button>
-        </h2>
-        <p className="text-dark-light mt-3 text-sm md:text-base">Tutor About</p>
-        <p className="text-dark-light mt-3 text-sm md:text-base italic  mt-6">
-          Teach {tutor.tutoringCount} times
-        </p>
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-x-1 items-center">
-            <div className="mr-2">
-              <Rating
-                readonly
-                initialRating={tutor.rating}
-                emptySymbol={<BsStar />}
-                fullSymbol={<BsStarFill />}
-                className="text-blue-500 text-xs md:text-sm lg:text-base"
-              />
-            </div>
-            <div className="text-blue-500 font-bold text-xs md:text-sm lg:text-base">
-              {`${Math.round(tutor.rating * 100) / 100} (${tutor.ratingCount})`}
-            </div>
           </div>
-          <div className="flex item-center gap-x-2 mt-2">
+          {tutor.verified ? (
             <span className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full">
               <BsCheckLg className="w-2 h-2 text-blue-500" />
             </span>
-            <span className="italic text-dark-light text-xs md:text-sm">
-              Verified tutor
-            </span>
+          ) : (
+            ""
+          )}
+        </div>
+        <p className="text-dark-light mt-3 text-sm md:text-base">
+          {tutor.about || "This fellow did not leave anything behind"}
+        </p>
+        <p className="text-dark-light mt-3 text-sm md:text-base italic">
+          Teach {tutor.tutoringCount} times
+        </p>
+        <div className="flex flex-row gap-x-1 items-center overflow-x-auto">
+          <div className="mr-2">
+            <Rating
+              readonly
+              initialRating={tutor.rating}
+              emptySymbol={<BsStar />}
+              fullSymbol={<BsStarFill />}
+              className="text-blue-500 text-xs md:text-sm lg:text-base"
+            />
+          </div>
+          <div className="text-blue-500 font-bold text-xs md:text-sm lg:text-base">
+            {`${Math.round(tutor.rating * 100) / 100} (${tutor.ratingCount})`}
           </div>
         </div>
       </div>

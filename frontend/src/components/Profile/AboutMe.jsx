@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { BsCheckLg } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 
 import defaultPic from "../../assets/images/default.png";
@@ -40,7 +41,12 @@ export const AboutMe = ({ viewedUser }) => {
         </div>
       </div>
       <div className="mt-3 flex flex-col gap-y-2">
-        <div className="font-bold">{viewedUser.name}</div>
+        <div className="flex flex-row items-center">
+          <div className="font-bold mr-2">{viewedUser.name}</div>
+          <span className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full">
+            <BsCheckLg className="w-2 h-2 text-blue-500" />
+          </span>
+        </div>
         <div className="break-words">{viewedUser.about}</div>
         <div>
           <div className="font-extralight text-sm">Role</div>
