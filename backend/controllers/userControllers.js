@@ -321,6 +321,24 @@ const getTopTutors = async (req, res) => {
   }
 };
 
+const findUsers = async (req, res) => {
+  try {
+    const search = req.body.search;
+    const nameRegex = new RegExp(search, "i");
+    const filter = {
+      name: { $regex: nameRegex },
+    };
+
+    const users = await User.find(filter).select("-password -isAdmin").limit(5);
+
+    return res.json({
+      users: users,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export {
   registerUser,
   userLogin,
@@ -328,4 +346,5 @@ export {
   updateProfilePicture,
   getUserProfile,
   getTopTutors,
+  findUsers,
 };

@@ -16,7 +16,14 @@ const newConversation = async (req, res) => {
     const createNew = await Conversation.create({
       members: members,
     });
-    return res.status(200).json(createNew);
+    const returnData = await Conversation.findOne({
+      members: {
+        $all: members,
+      },
+      isDeleted: false,
+    }).populate("members", "avatar name");
+
+    return res.status(200).json(returnData);
   } catch (error) {
     return res.status(500).json(error);
   }

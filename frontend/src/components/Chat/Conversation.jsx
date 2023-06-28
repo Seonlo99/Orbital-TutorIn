@@ -20,9 +20,9 @@ const Conversation = ({
       ? convo.members[1]
       : convo.members[0];
   const profilePic =
-    recipient.avatar === ""
+    recipient?.avatar === ""
       ? defaultPic
-      : stables.UPLOAD_FOLDER_BASE_URL + recipient.avatar;
+      : stables.UPLOAD_FOLDER_BASE_URL + recipient?.avatar;
 
   const { mutate: mutateChat } = useMutation({
     mutationFn: () => {
@@ -57,7 +57,7 @@ const Conversation = ({
           alt="profile picture"
           className="w-10 h-10 rounded-full object-cover border mr-3"
         />
-        <span>{recipient.name}</span>
+        <span>{recipient?.name}</span>
       </div>
       <TiDelete
         onClick={handleDelete}
