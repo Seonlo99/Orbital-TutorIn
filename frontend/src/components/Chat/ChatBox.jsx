@@ -3,13 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
 
 import Message from "./Message";
 import { getChat, sendMessage } from "../../services/index/chats";
+import { rootUrl } from "../../config/config";
 
 const ChatBox = ({ currentChat }) => {
   const conversationId = currentChat._id;
+  const userState = useSelector((state) => state.user);
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["getChat", conversationId],
     queryFn: () => getChat(conversationId),
@@ -20,13 +27,19 @@ const ChatBox = ({ currentChat }) => {
     },
   });
 
-  const [newMessage, setNewMessage] = useState("");
-  const userState = useSelector((state) => state.user);
   const handleSubmit = async (e) => {
     e.target.value = e.target.value.trim();
     if (e.target.value !== "") {
       e.preventDefault();
       // refetch();
+      const receiver = currentChat.members.find(
+        (member) => member !== userState.userInfo._id
+      );
+      socket.current.emit("sendMessage", {
+        senderId: userState.userInfo._id,
+        receiverId: receiver._id,
+        message: newMessage,
+      });
       const messageSent = await sendMessage(
         conversationId,
         userState.userInfo._id,
@@ -56,11 +69,38 @@ const ChatBox = ({ currentChat }) => {
   }, [messages]);
 
   const onEnterPress = (e) => {
-    if (e.keyCode == 13 && e.shiftKey == false) {
+    if (e.keyCode === 13 && e.shiftKey === false) {
       e.preventDefault();
       handleSubmit(e);
     }
   };
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        senderId: data.senderId,
+        message: data.message,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", userState.userInfo._id);
+    socket.current.on("getUsers", (users) => {
+      // users are people who are online
+      // console.log(users);
+    });
+  }, [userState.userInfo]);
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.some(
+        (member) => member._id === arrivalMessage?.senderId
+      ) &&
+      setMessages([...messages, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
   return (
     !isLoading &&

@@ -17,7 +17,7 @@ const Conversation = ({ convo, setCurrentChat }) => {
   return (
     <div
       onClick={() => setCurrentChat(convo)}
-      className="flex items-center px-5 py-5 hover:bg-gray-200 mt-2 hover:cursor-pointer"
+      className="flex items-center px-5 py-5 hover:bg-gray-200 hover:cursor-pointer"
     >
       <img
         src={profilePic}

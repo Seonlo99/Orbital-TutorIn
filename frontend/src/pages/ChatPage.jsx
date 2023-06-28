@@ -43,7 +43,7 @@ const ChatPage = () => {
           {currentChat ? (
             <ChatBox currentChat={currentChat} />
           ) : (
-            <span>Click onconversation to view</span>
+            <span>Click on conversation to view</span>
           )}
         </div>
       </MainLayout>

@@ -46,7 +46,6 @@ export const getChat = async (conversationId) => {
 
 export const sendMessage = async (conversationId, senderId, message) => {
   try {
-    console.log(conversationId, senderId, message);
     const { data } = await axios.post(`${rootUrl}/api/messages`, {
       params: {
         conversationId: conversationId,
