@@ -61,3 +61,18 @@ export const sendMessage = async (conversationId, senderId, message) => {
     throw new Error(error.message);
   }
 };
+
+export const deleteConversations = async ({ senderId, receiverId }) => {
+  try {
+    const { data } = await axios.post(`${rootUrl}/api/conversations/delete`, {
+      senderId: senderId,
+      receiverId: receiverId,
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};

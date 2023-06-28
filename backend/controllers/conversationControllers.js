@@ -8,6 +8,7 @@ const newConversation = async (req, res) => {
       members: {
         $all: members,
       },
+      isDeleted: false,
     });
     if (existConverstion) {
       return res.status(200).json(existConverstion);
@@ -26,6 +27,7 @@ const getConversations = async (req, res) => {
     const { _id } = req.query;
     const conversations = await Conversation.find({
       members: { $in: _id },
+      isDeleted: false,
     })
       .populate("members", "avatar name")
       .sort({
@@ -37,4 +39,28 @@ const getConversations = async (req, res) => {
   }
 };
 
-export { newConversation, getConversations };
+const deleteConversation = async (req, res) => {
+  try {
+    const { senderId, receiverId } = req.body;
+    const members = [senderId, receiverId];
+    const deleteConverstion = await Conversation.findOneAndUpdate(
+      {
+        members: {
+          $all: members,
+        },
+        isDeleted: false,
+      },
+      {
+        isDeleted: true,
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(deleteConversation);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+export { newConversation, getConversations, deleteConversation };
