@@ -99,7 +99,7 @@ const Header = () => {
                   {" "}
                   <MdKeyboardArrowDown />{" "}
                 </div>
-                <div className=" hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max">
+                <div className=" hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max bg-white">
                   <ul className="flex flex-col shadow-lg rounded-lg divide-y overflow-hidden">
                     <button
                       onClick={() => {

@@ -37,19 +37,21 @@ const ChatPage = () => {
     !isLoading &&
     !isError && (
       <MainLayout>
-        <div className="flex h-[calc(100vh-220.89px)]">
-          <ChatMenu
-            conversations={conversations}
-            setConversations={setConversations}
-            setCurrentChat={setCurrentChat}
-          />
-          {currentChat ? (
-            <ChatBox currentChat={currentChat} />
-          ) : (
-            <span className="text-gray-300 text-9xl text-center">
-              Click on conversation to view
-            </span>
-          )}
+        <div className="container mx-auto max-w-8xl mt-5">
+          <div className="flex h-[calc(100vh-250px)]">
+            <ChatMenu
+              conversations={conversations}
+              setConversations={setConversations}
+              setCurrentChat={setCurrentChat}
+            />
+            {currentChat ? (
+              <ChatBox currentChat={currentChat} />
+            ) : (
+              <span className="text-gray-300 text-9xl text-center">
+                Click on conversation to view
+              </span>
+            )}
+          </div>
         </div>
       </MainLayout>
     )
