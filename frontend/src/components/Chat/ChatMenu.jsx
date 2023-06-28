@@ -10,9 +10,9 @@ const ChatMenu = ({ conversations, setCurrentChat }) => {
         className="w-full border rounded-lg px-2 py-2"
         // onChange={}
       />
-      <div className="mt-2 h-full overflow-y-scroll">
+      <div className="mt-2 h-full overflow-y-auto">
         {conversations?.map((convo) => (
-          <Conversation
+          <Conversation key={convo._id}
             convo={convo}
             setCurrentChat={setCurrentChat}
           />

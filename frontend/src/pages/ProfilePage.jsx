@@ -29,6 +29,9 @@ const ProfilePage = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["userInfo", id],
     queryFn: () => getUserProfile({ _id: id }),
+    onSuccess:(data)=>{
+      // console.log(data)
+    },
     onError: (error) => {
       toast.error(error.message);
       // console.log(error)
@@ -52,7 +55,7 @@ const ProfilePage = () => {
                   VoteCount={data.VoteCount}
                 />
               </section>
-              {data.user.tutor ? (
+              {data.user?.tutor ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
                   <AboutTutor
                     profileId={data.user._id}

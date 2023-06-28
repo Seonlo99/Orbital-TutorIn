@@ -106,7 +106,7 @@ const ChatBox = ({ currentChat }) => {
     !isLoading &&
     !isError && (
       <div className="flex-1 px-5 py-5">
-        <div className="flex flex-col h-4/5 overflow-y-scroll pr-4">
+        <div className="flex flex-col h-4/5 overflow-y-auto pr-4">
           {messages.map((message) => (
             <div ref={scrollRef}>
               <Message

@@ -21,8 +21,10 @@ const ChatPage = () => {
 
   const { _id } = userState.userInfo;
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["userInfo", _id],
+    queryKey: ["chat", _id],
     queryFn: () => getConversations(_id),
+    onSuccess:(data)=>{
+    },
     onError: (error) => {
       toast.error(error.message);
       // console.log(error)
@@ -30,6 +32,8 @@ const ChatPage = () => {
   });
 
   const [currentChat, setCurrentChat] = useState(null);
+
+  // console.log(data)
 
   return (
     !isLoading &&
