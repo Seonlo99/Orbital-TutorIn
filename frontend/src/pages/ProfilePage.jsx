@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -18,7 +17,6 @@ import { Service } from "../components/Profile/Service";
 import { AboutTutor } from "../components/Profile/Tutor/AboutTutor";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const { id } = useParams();
 
@@ -31,6 +29,9 @@ const ProfilePage = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["userInfo", id],
     queryFn: () => getUserProfile({ _id: id }),
+    onSuccess: (data) => {
+      // console.log(data)
+    },
     onError: (error) => {
       toast.error(error.message);
       // console.log(error)
@@ -54,9 +55,12 @@ const ProfilePage = () => {
                   VoteCount={data.VoteCount}
                 />
               </section>
-              {data.user.tutor ? (
+              {data.user?.tutor && data.user?._id === userState.userInfo._id ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
-                  <AboutTutor profileId={data.user._id} userId={userState?.userInfo? userState.userInfo._id : null}/>
+                  <AboutTutor
+                    profileId={data.user._id}
+                    userId={userState?.userInfo ? userState.userInfo._id : null}
+                  />
                 </section>
               ) : (
                 <></>

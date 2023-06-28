@@ -145,7 +145,7 @@ const DiscussPage = () => {
           {!isLoading &&
             !isError &&
             postsData.posts.map((post) => (
-              <DisplayPost post={post} />
+              <DisplayPost key={post._id}post={post} />
             ))}
         </section>
 

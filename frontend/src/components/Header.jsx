@@ -76,6 +76,11 @@ const Header = () => {
                 <button onClick={() => handleNav("/services")}>Services</button>
               </li>
             )}
+            {userState.userInfo && (
+              <li className="hover:underline">
+                <button onClick={() => handleNav("/chat")}>Chat</button>
+              </li>
+            )}
 
             {userState.userInfo ? (
               <li className="relative group flex flex-row items-center hover:cursor-pointer">
@@ -94,14 +99,16 @@ const Header = () => {
                   {" "}
                   <MdKeyboardArrowDown />{" "}
                 </div>
-                <div className=" hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max">
+                <div className=" hidden transition-all duration-500 absolute bottom-0 right-0 transform translate-y-full lg:group-hover:block w-max bg-white">
                   <ul className="flex flex-col shadow-lg rounded-lg divide-y overflow-hidden">
-                    <Link
-                      to={`/profile/${userState.userInfo._id}`}
+                    <button
+                      onClick={() => {
+                        navigate(`/profile/${userState.userInfo._id}`);
+                      }}
                       className="hover:bg-blue-900 hover:text-white px-3 py-3"
                     >
                       View Profile
-                    </Link>
+                    </button>
                     <button
                       onClick={logoutHandler}
                       className="hover:bg-blue-900 hover:text-white px-3 py-3"

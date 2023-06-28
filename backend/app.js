@@ -17,7 +17,9 @@ import upvoteRoutes from "./routes/upvoteRoutes.js";
 import tagRoutes from "./routes/tagRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
-import applicationRoutes from "./routes/applicationRoutes.js"
+import applicationRoutes from "./routes/applicationRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -38,6 +40,9 @@ app.use("/api/tags", tagRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/conversations", conversationRoutes);
+app.use("/api/messages", messageRoutes);
 
 // static assets
 app.use("/uploads", express.static(path.join(__dirname, "/uploads/")));

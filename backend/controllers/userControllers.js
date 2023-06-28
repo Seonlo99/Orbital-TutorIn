@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
       tutor: user.tutor,
       token: await user.generateJWT(),
       isAdmin: user.isAdmin,
-      about: user.about
+      about: user.about,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -64,7 +64,7 @@ const userLogin = async (req, res) => {
         tutor: user.tutor,
         token: await user.generateJWT(),
         isAdmin: user.isAdmin,
-        about: user.about
+        about: user.about,
       });
     } else {
       return res
@@ -81,28 +81,23 @@ const updateProfile = async (req, res) => {
     const { _id, fullname, about, email, password } = req.body;
     const user = await User.findById({ _id });
     let changes;
-    if (password){
+    if (password) {
       changes = {
         name: fullname,
         about: about,
         email: email,
         password: password,
-      }
-    }
-    else{
+      };
+    } else {
       changes = {
         name: fullname,
         about: about,
         email: email,
-      }
+      };
     }
-    const updatedUser = await User.findByIdAndUpdate(
-      { _id },
-      changes,
-      {
-        new: true,
-      }
-    );
+    const updatedUser = await User.findByIdAndUpdate({ _id }, changes, {
+      new: true,
+    });
     return res.status(201).json({
       _id: updatedUser._id,
       avatar: updatedUser.avatar,
@@ -122,8 +117,8 @@ const updateProfile = async (req, res) => {
 
 const updateProfilePicture = async (req, res, next) => {
   try {
-    const { formData  } = req.body;
-    console.log(formData)
+    const { formData } = req.body;
+    console.log(formData);
     const upload = uploadPicture.single("avatar");
     upload(req, res, async function (err) {
       if (err) {
@@ -306,12 +301,12 @@ const getTopTutors = async (req, res) => {
     };
     let sortOrder = {};
     if (selection == "Highest Rating") {
-      sortOrder = { rating: -1 };
+      sortOrder = { rating: -1, tutoringCount: -1 };
     } else if (selection == "Most Service") {
-      sortOrder = { tutoringCount: -1 };
+      sortOrder = { tutoringCount: -1, rating: -1 };
     } else if (selection == "Verified") {
       filter.verified = true;
-      sortOrder = { verified: -1 };
+      sortOrder = { verified: -1, rating: -1, tutoringCount: -1 };
     }
 
     const topTutors = await User.find(filter)
