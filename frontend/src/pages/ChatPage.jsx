@@ -22,7 +22,7 @@ const ChatPage = () => {
 
   const { _id } = userState.userInfo;
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["userInfo", _id],
+    queryKey: ["chat", _id],
     queryFn: () => getConversations(_id),
     onSuccess: (data) => setConversations(data),
     onError: (error) => {
@@ -32,6 +32,7 @@ const ChatPage = () => {
   });
 
   const [currentChat, setCurrentChat] = useState(null);
+
   return (
     !isLoading &&
     !isError && (
