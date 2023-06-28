@@ -15,7 +15,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <div className="mt-2 h-auto overflow-y-auto">
+        <div className="mt-2 h-[100%] overflow-y-auto">
           {conversations.map((convo) => (
             <Conversation
               conversations={conversations}
