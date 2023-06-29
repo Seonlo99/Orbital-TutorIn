@@ -16,7 +16,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
   const [arrivalConvo, setArrivalConvo] = useState(null);
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["findUsers", search],
     queryFn: () => findUsers({ search }),
     onSuccess: (data) => {
@@ -48,7 +48,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
   useEffect(() => {
     arrivalConvo &&
       !conversations.some((convo) => convo._id === arrivalConvo._id) &&
-      setConversations([...conversations, arrivalConvo]);
+      setConversations([arrivalConvo, ...conversations]);
   }, [arrivalConvo]);
 
   return (

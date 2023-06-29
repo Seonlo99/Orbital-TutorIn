@@ -33,6 +33,7 @@ const Conversation = ({
     },
     onSuccess: (data) => {
       setConversations(conversations.filter((c) => c !== convo));
+      setCurrentChat(null);
     },
     onError: (error) => {
       toast.error(error.message);
