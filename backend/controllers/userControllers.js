@@ -102,6 +102,7 @@ const googleAuth = async (req,res)=>{
     // console.log(req.body);
     // console.log(token.token)
     const googleUser = await verify({token:token.token})
+    // console.log(googleUser)
     if(!googleUser){
       return res
         .status(404)
@@ -117,6 +118,7 @@ const googleAuth = async (req,res)=>{
         password: uuid(),
         isGoogleSignUp: true,
         googleSub: googleUser.sub,
+        avatar: googleUser.picture
       });
     }
     return res.status(201).json({
