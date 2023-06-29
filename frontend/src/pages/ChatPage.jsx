@@ -32,7 +32,6 @@ const ChatPage = () => {
   });
 
   const [currentChat, setCurrentChat] = useState(null);
-
   return (
     !isLoading &&
     !isError && (

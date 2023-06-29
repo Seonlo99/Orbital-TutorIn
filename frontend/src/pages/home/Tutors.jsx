@@ -23,7 +23,8 @@ const Tutors = (selected, search) => {
           <div className="flex flex-wrap sm:gap-x-5 gap-y-5 pb-10">
             {data.topTutors.length > 0
               ? data.topTutors.map((tutor) => (
-                  <TutorCard key={tutor._id}
+                  <TutorCard
+                    key={tutor._id}
                     tutor={tutor}
                     className="w-full sm:w-[calc(33.33%-16px)] md:w-[calc(25%-16px)] lg:w-[calc(20%-16px)]"
                   />

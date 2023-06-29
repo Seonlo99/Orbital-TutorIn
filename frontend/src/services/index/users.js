@@ -114,3 +114,17 @@ export const getTopTutors = async (selected, search) => {
     throw new Error(error.message);
   }
 };
+
+export const findUsers = async ({ search }) => {
+  try {
+    const { data } = await axios.post(`${rootUrl}/api/users/findUsers`, {
+      search: search,
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};
