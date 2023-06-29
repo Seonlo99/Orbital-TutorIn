@@ -8,6 +8,12 @@ import {
   uploadPictureCloud,
 } from "../middleware/uploadPictureMiddleware.js";
 import { fileRemover } from "../utils/fileRemover.js";
+import {OAuth2Client} from 'google-auth-library'
+import { v4 as uuid } from "uuid";
+
+
+const client = new OAuth2Client(process.env.GOOGLE_PUBLIC_API_TOKEN);
+
 
 const registerUser = async (req, res) => {
   try {
@@ -47,7 +53,7 @@ const userLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
     // console.log(req.body);
-    let user = await User.findOne({ username });
+    let user = await User.findOne({ username, isGoogleSignUp:false });
     if (!user) {
       return res
         .status(400)
@@ -75,6 +81,90 @@ const userLogin = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+async function verify({token}) {
+  try{
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_PUBLIC_API_TOKEN,  
+    });
+    const payload = ticket.getPayload();
+    return payload
+  } catch(error){
+      console.log(error)
+      return null
+  }
+}
+
+const googleAuth = async (req,res)=>{
+  try {
+    const { token } = req.body;
+    // console.log(req.body);
+    // console.log(token.token)
+    const googleUser = await verify({token:token.token})
+    if(!googleUser){
+      return res
+        .status(404)
+        .json({ message: "Invalid Google User" });
+    }
+
+    let user = await User.findOne({ googleSub: googleUser.sub });
+    if(!user){
+      user = await User.create({
+        username: googleUser.email,
+        name: googleUser.name,
+        email: googleUser.email,
+        password: uuid(),
+        isGoogleSignUp: true,
+        googleSub: googleUser.sub,
+      });
+    }
+    return res.status(201).json({
+          _id: user._id,
+          avatar: user.avatar,
+          username: user.username,
+          name: user.name,
+          email: user.email,
+          verified: user.verified,
+          tutor: user.tutor,
+          token: await user.generateJWT(),
+          isAdmin: user.isAdmin,
+          about: user.about,
+          isGoogleSignUp: user.isGoogleSignUp,
+    });
+
+
+
+    // console.log(googleUser)
+
+    // let user = await User.findOne({ username });
+    // if (!user) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "User does not exist or invalid password." });
+    // }
+    // if (await user.verifyPassword(password)) {
+    //   return res.status(201).json({
+    //     _id: user._id,
+    //     avatar: user.avatar,
+    //     username: user.username,
+    //     name: user.name,
+    //     email: user.email,
+    //     verified: user.verified,
+    //     tutor: user.tutor,
+    //     token: await user.generateJWT(),
+    //     isAdmin: user.isAdmin,
+    //     about: user.about,
+    //   });
+    // } else {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "User does not exist or invalid password." });
+    // }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
 
 const updateProfile = async (req, res) => {
   try {
@@ -347,4 +437,5 @@ export {
   getUserProfile,
   getTopTutors,
   findUsers,
+  googleAuth
 };

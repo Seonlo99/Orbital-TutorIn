@@ -16,6 +16,20 @@ export const userLogin = async ({ username, password }) => {
   }
 };
 
+export const userGoogleAuth = async ({ token }) => {
+  try {
+    const { data } = await axios.post(`${rootUrl}/api/users/google-auth`, {
+      token,
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message);
+  }
+};
+
 export const userRegister = async ({
   username,
   fullname,

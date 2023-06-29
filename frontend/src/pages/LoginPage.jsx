@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form'
 import {Link, useNavigate} from 'react-router-dom'
 import {useMutation} from "@tanstack/react-query"
 import toast from 'react-hot-toast'
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux" 
+import { GoogleLogin, googleLogout } from '@react-oauth/google'
+import jwt_decode from 'jwt-decode'
 
 import MainLayout from '../components/MainLayout'
-import { userLogin } from '../services/index/users'
+import { userLogin, userGoogleAuth } from '../services/index/users'
 import { userActions } from '../store/reducers/userReducers'
 
 const LoginPage = () => {
@@ -54,6 +56,26 @@ const LoginPage = () => {
   };
 
   // console.log(errors)
+
+  const {mutate: mutateGoogleAuth, isLoading: isLoadingGoogleAuth} = useMutation({
+    mutationFn: ({token})=>{
+      return userGoogleAuth({token});
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("account", JSON.stringify(data));
+      // console.log(data);
+    },
+    onError: (error) =>{
+      toast.error(error.message)
+      // console.log(error);
+    }
+  });
+
+  const googleAuthHandler = (token)=>{
+    mutateGoogleAuth({token})
+  }
+
   return (
     <MainLayout>
         <section className='container mx-auto px-5 py-10'>
@@ -114,6 +136,13 @@ const LoginPage = () => {
                 <span className='mt-5 text-xs text-right'>No account yet? <span onClick={()=>navigate('/register')} className='text-blue-500 hover:cursor-pointer'>Register Now</span></span>
               </div>
             </form>
+
+            <div className='mt-5 w-full'>
+              <GoogleLogin 
+                onSuccess={(res)=>googleAuthHandler({token:res.credential})}
+                onError={()=>toast.error("Error signing in with google.")}
+              />
+            </div>
           </div>
         </section>
     </MainLayout>

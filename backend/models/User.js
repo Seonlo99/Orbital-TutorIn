@@ -18,7 +18,9 @@ const UserSchema = new Schema(
     ratingCount: { type: Number, default: 0 },
     tutoringCount: { type: Number, default: 0 },
     about: {type:String, default: ""},
-    isAdmin: {type:Boolean, default:false}
+    isAdmin: {type:Boolean, default:false},
+    isGoogleSignUp: {type:Boolean, default:false},
+    googleSub: {type:String, default: ""}
   },
   { timestamps: true }
 );

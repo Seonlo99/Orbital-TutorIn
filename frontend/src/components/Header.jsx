@@ -9,6 +9,8 @@ import { logout } from "../store/actions/user";
 import defaultPic from "../assets/images/default.png";
 import stables from "../constants/stables";
 
+import { googleLogout } from "@react-oauth/google";
+
 const Header = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
@@ -17,6 +19,10 @@ const Header = () => {
   const logoutHandler = () => {
     navigate("/");
     dispatch(logout());
+    if(userState.userInfo.isGoogleSignUp){
+      googleLogout();
+    }
+    
   };
 
   const profilePic =

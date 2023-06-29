@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
+import {GoogleOAuthProvider} from '@react-oauth/google'
 
 import store from "./store"
 
@@ -13,6 +14,7 @@ const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_PUBLIC_API_TOKEN}`}>
   <BrowserRouter>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -20,6 +22,7 @@ root.render(
       </QueryClientProvider>
     </Provider>
   </BrowserRouter>
+  </GoogleOAuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
