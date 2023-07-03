@@ -17,10 +17,10 @@ const addApplication = async (req, res, next) => {
         // every thing went well
         if (req.file) {
           const moduleName = req.body.moduleName;
-          // const cloudImgUrl = await uploadPictureCloud(req.file);
+          const cloudImgUrl = await uploadPictureCloud(req.file);
           const application = await Application.create({
             tutorId: req.user._id,
-            pdfUrl: "cloudImgUrl",
+            pdfUrl: cloudImgUrl,
             requestModule: moduleName,
           });
           return res.json({ application });
