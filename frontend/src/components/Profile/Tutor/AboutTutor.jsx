@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { VerifyTutor } from "./VerifyTutor";
 
-export const AboutTutor = ({ profileId, userId }) => {
+export const AboutTutor = ({ profileId, userId, modulesOffer }) => {
   const [showUpload, setShowUpload] = useState(false);
 
   const closeHandler = () => {
@@ -22,11 +22,9 @@ export const AboutTutor = ({ profileId, userId }) => {
         </button>
       )}
       {showUpload && <VerifyTutor closeHandler={closeHandler} />}
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
+      <ul className="list-disc p-4">
+        {modulesOffer ? modulesOffer.map((module) => <li>{module}</li>) : "NIL"}
+      </ul>
     </>
   );
 };

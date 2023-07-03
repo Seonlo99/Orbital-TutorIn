@@ -37,14 +37,13 @@ const uploadPicture = multer({
 
 const transcriptStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let filePath="/tmp";
+    let filePath = "/tmp";
     cb(null, filePath);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-
 
 const uploadAcademicTranscript = multer({
   storage: transcriptStorage,
