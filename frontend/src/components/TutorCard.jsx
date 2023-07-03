@@ -39,7 +39,7 @@ const TutorCard = ({ tutor, className }) => {
         <div className="flex flex-row font-roboto font-bold text-dark-soft text-base items-center md:text-lg lg:text-xl">
           <div
             onClick={() => handleUserClick(`${tutor._id}`)}
-            className="hover:underline hover:cursor-pointer mr-2"
+            className="hover:underline hover:cursor-pointer mr-2 break-words"
           >
             {tutor.name}
           </div>
@@ -51,11 +51,12 @@ const TutorCard = ({ tutor, className }) => {
             ""
           )}
         </div>
-        <p className="text-dark-light mt-3 text-sm md:text-base">
+        <p className="text-dark-light mt-3 text-sm md:text-base break-words">
           {tutor.about || "This fellow did not leave anything behind"}
         </p>
         <p className="text-dark-light mt-3 text-sm md:text-base italic">
-          Teach {tutor.tutoringCount} times
+          Teach {tutor.tutoringCount}{" "}
+          {tutor.tutoringCount > 1 ? "times" : "time"}
         </p>
         <div className="flex flex-row gap-x-1 items-center overflow-x-auto">
           <div className="mr-2">
