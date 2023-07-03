@@ -41,7 +41,7 @@ export const editApplication = async ({
   token,
   applicationId,
   accept,
-  moduleName,
+  modulesName,
 }) => {
   try {
     const config = {
@@ -49,7 +49,7 @@ export const editApplication = async ({
     };
     const { data } = await axios.patch(
       `${rootUrl}/api/applications`,
-      { applicationId, accept, moduleName },
+      { applicationId, accept, modulesName },
       config
     );
     return data;

@@ -37,7 +37,7 @@ const ProfilePage = () => {
       // console.log(error)
     },
   });
-  console.log(data);
+  // console.log(data);
 
   return (
     <MainLayout>

@@ -4,7 +4,7 @@ const ApplicationSchema = new Schema(
   {
     tutorId: { type: Schema.Types.ObjectId, ref: "User" },
     pdfUrl: { type: String, required: true },
-    requestModule: { type: String, require: true },
+    requestModule: [{ type: String, require: true }],
     approved: { type: Boolean, default: null },
   },
   { timestamps: true }

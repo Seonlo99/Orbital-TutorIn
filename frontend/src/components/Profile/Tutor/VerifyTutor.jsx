@@ -8,9 +8,8 @@ import { addApplication } from "../../../services/index/applications";
 
 export const VerifyTutor = ({ closeHandler }) => {
   const userState = useSelector((state) => state.user);
-
   const [userFile, setUserFile] = useState(null);
-  const [moduleName, setModuleName] = useState("");
+  const [modulesList, setModulesList] = useState([{ module: "" }]);
 
   const onChangeFile = (e) => {
     setUserFile(e.target.files[0]);
@@ -38,8 +37,29 @@ export const VerifyTutor = ({ closeHandler }) => {
     //   console.log(file)
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("moduleName", moduleName);
+    const modulesName = [];
+    modulesList.map((module) => {
+      modulesName.push(module.module);
+    });
+    formData.append("moduleName", modulesName);
     mutate({ formData: formData });
+  };
+
+  const handleAddModule = () => {
+    setModulesList([...modulesList, { module: "" }]);
+  };
+
+  const handleRemoveModule = (index) => {
+    const list = [...modulesList];
+    list.splice(index, 1);
+    setModulesList(list);
+  };
+
+  const handleModuleChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...modulesList];
+    list[index][name] = value;
+    setModulesList(list);
   };
 
   return (
@@ -76,13 +96,40 @@ export const VerifyTutor = ({ closeHandler }) => {
                 type="file"
                 onChange={onChangeFile}
               />
+              <button
+                onClick={handleAddModule}
+                className="border rounded-lg p-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+              >
+                Add module
+              </button>
             </div>
-            <input
-              type="text"
-              className="border rounded-lg w-2/3 p-2"
-              placeholder="Enter module name on transcript"
-              onChange={(e) => setModuleName(e.target.value)}
-            />
+            <div className="font-light">
+              Enter module names stated in transcript you want to be verified
+              for
+            </div>
+            {modulesList.map((module, index) => (
+              <div
+                key={index}
+                className="flex flex-row gap-x-2 justify-between w-[80%]"
+              >
+                <input
+                  name="module"
+                  type="text"
+                  className="border rounded-lg w-2/3 p-2"
+                  value={module.module}
+                  placeholder="Enter module name"
+                  onChange={(e) => handleModuleChange(e, index)}
+                />
+                {index !== 0 && (
+                  <button
+                    onClick={() => handleRemoveModule(index)}
+                    className="border rounded-lg border-red-500 text-red-500 p-2 hover:bg-red-500 hover:text-white"
+                  >
+                    remove
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
           <div className="mr-5 flex flex-row gap-x-2 justify-end">
             <button

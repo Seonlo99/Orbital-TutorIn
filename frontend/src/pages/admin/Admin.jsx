@@ -14,9 +14,9 @@ import {
 
 const AdminPage = () => {
   const userState = useSelector((state) => state.user);
-  const [moduleName, setModuleName] = useState("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [modulesList, setModulesList] = useState([{ module: "" }]);
 
   const [showPdf, setShowPdf] = useState({});
 
@@ -51,12 +51,16 @@ const AdminPage = () => {
 
   // console.log(data)
   const { mutate, isLoading: isMutateLoading } = useMutation({
-    mutationFn: ({ applicationId, accept, moduleName }) => {
+    mutationFn: ({ applicationId, accept, modulesList }) => {
+      const modulesName = [];
+      modulesList.map((module) => {
+        modulesName.push(module.module);
+      });
       return editApplication({
         token: userState.userInfo.token,
         applicationId,
         accept,
-        moduleName,
+        modulesName: modulesName,
       });
     },
     onSuccess: (data) => {
@@ -68,9 +72,27 @@ const AdminPage = () => {
     },
   });
 
-  const handleMutate = ({ applicationId, accept, moduleName }) => {
-    mutate({ applicationId, accept, moduleName });
+  const handleMutate = ({ applicationId, accept, modulesList }) => {
+    mutate({ applicationId, accept, modulesList });
   };
+
+  const handleAddModule = () => {
+    setModulesList([...modulesList, { module: "" }]);
+  };
+
+  const handleRemoveModule = (index) => {
+    const list = [...modulesList];
+    list.splice(index, 1);
+    setModulesList(list);
+  };
+
+  const handleModuleChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...modulesList];
+    list[index][name] = value;
+    setModulesList(list);
+  };
+
   return (
     !isLoading &&
     !isError && (
@@ -80,19 +102,20 @@ const AdminPage = () => {
             <div className="text-2xl font-bold">Admin Dashboard</div>
             <div className="mt-10 divide-y divide-slate-300 w-full max-w-4xl">
               <div className="flex flex-row bg-gray-200 px-5 py-2 gap-x-2 rounded-t-lg w-full">
-                <div className="w-[30%]">Name</div>
-                <div className="w-[20%]">View</div>
-                <div className="w-[50%]">Action</div>
+                <div className="w-[20%]">Name</div>
+                <div className="w-[15%]">View</div>
+                <div className="w-[40%]">Modules</div>
+                <div className="w-[25%]">Action</div>
               </div>
 
               {data.applications.map((application) => {
                 return (
                   <div key={application._id}>
                     <div className="flex flex-row px-5 py-2 gap-x-2 w-full">
-                      <div className="w-[30%]">
+                      <div className="w-[20%]">
                         {application.tutorId.username}
                       </div>
-                      <div className="w-[20%]">
+                      <div className="w-[15%]">
                         <button
                           onClick={() => openHandler(application._id)}
                           className="border border-black rounded-lg px-1 lg:px-4 py-2 hover:bg-gray-400 hover:text-white"
@@ -100,32 +123,46 @@ const AdminPage = () => {
                           View Pdf
                         </button>
                       </div>
-                      <div className="w-[50%] flex flex-col gap-y-2">
+                      <div className="w-[40%] flex flex-col gap-y-2">
                         Proposed module: {application.requestModule}
-                        <div className="flex flex-row justify-around">
-                          <input
-                            type="text"
-                            placeholder="Approval Module"
-                            className="border rounded-lg p-2"
-                            value={moduleName}
-                            onChange={(e) => setModuleName(e.target.value)}
-                          />
-                          <button
-                            onClick={() =>
-                              setModuleName(application.requestModule)
-                            }
-                            className="border rounded-lg p-2 hover:bg-gray-200"
+                        <button
+                          onClick={handleAddModule}
+                          className="border rounded-lg p-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                        >
+                          Add module
+                        </button>
+                        {modulesList.map((module, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-row gap-x-2 justify-between w-full"
                           >
-                            Use Proposed
-                          </button>
-                        </div>
+                            <input
+                              name="module"
+                              type="text"
+                              className="border rounded-lg w-3/5 p-2"
+                              value={module.module}
+                              placeholder="Enter module name"
+                              onChange={(e) => handleModuleChange(e, index)}
+                            />
+                            {index !== 0 && (
+                              <button
+                                onClick={() => handleRemoveModule(index)}
+                                className="border rounded-lg border-red-500 text-red-500 p-2 hover:bg-red-500 hover:text-white"
+                              >
+                                remove
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="w-[25%] flex flex-col gap-y-2">
                         <div className="flex flex-row gap-x-10 justify-center">
                           <button
                             onClick={() => {
                               handleMutate({
                                 applicationId: application._id,
                                 accept: true,
-                                moduleName: moduleName,
+                                modulesList: modulesList,
                               });
                             }}
                             className="border border-green-600 rounded-lg px-1 lg:px-4 py-2 hover:bg-green-600 hover:text-white"
