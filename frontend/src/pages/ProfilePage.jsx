@@ -37,7 +37,7 @@ const ProfilePage = () => {
       // console.log(error)
     },
   });
-  // console.log(data);
+  console.log(data);
 
   return (
     <MainLayout>
@@ -55,11 +55,12 @@ const ProfilePage = () => {
                   VoteCount={data.VoteCount}
                 />
               </section>
-              {data.user?.tutor && data.user?._id === userState.userInfo._id ? (
+              {data.user?.tutor ? (
                 <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
                   <AboutTutor
                     profileId={data.user._id}
                     userId={userState?.userInfo ? userState.userInfo._id : null}
+                    modulesOffer={data.modulesOffer}
                   />
                 </section>
               ) : (

@@ -16,11 +16,12 @@ const addApplication = async (req, res, next) => {
       } else {
         // every thing went well
         if (req.file) {
+          const moduleName = req.body.moduleName;
           const cloudImgUrl = await uploadPictureCloud(req.file);
           const application = await Application.create({
             tutorId: req.user._id,
             pdfUrl: cloudImgUrl,
-            requestedModule: req.body.moduleName,
+            requestModule: moduleName,
           });
           return res.json({ application });
         } else {
@@ -55,7 +56,6 @@ const getApplications = async (req, res) => {
 const editApplication = async (req, res) => {
   try {
     const { accept, applicationId, moduleName } = req.body;
-
     let user = await User.findOne({ _id: req.user._id });
     if (!user.isAdmin) {
       return res.status(401).json({ message: "Unauthorised" });
@@ -77,7 +77,7 @@ const editApplication = async (req, res) => {
         { verified: true }
       );
       await Qualification.findOneAndUpdate(
-        { _id: application.tutorId },
+        { tutorId: application.tutorId },
         { $push: { modules: moduleName } },
         { upsert: true }
       );

@@ -309,8 +309,8 @@ const getModulesOffer = async (id) => {
   const filter = {
     tutorId: id,
   };
-  const qualification = await Qualification.find(filter);
-  return qualification.modules;
+  const qualification = await Qualification.findOne(filter);
+  return qualification ? qualification.modules : null;
 };
 
 const getCommunityStats = async (id) => {
