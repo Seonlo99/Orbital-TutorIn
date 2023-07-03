@@ -1,4 +1,5 @@
 import Application from "../models/Application.js";
+import Qualification from "../models/Qualification.js";
 
 import User from "../models/User.js";
 import {
@@ -19,6 +20,7 @@ const addApplication = async (req, res, next) => {
           const application = await Application.create({
             tutorId: req.user._id,
             pdfUrl: cloudImgUrl,
+            requestedModule: req.body.moduleName,
           });
           return res.json({ application });
         } else {
@@ -52,7 +54,7 @@ const getApplications = async (req, res) => {
 
 const editApplication = async (req, res) => {
   try {
-    const { accept, applicationId } = req.body;
+    const { accept, applicationId, moduleName } = req.body;
 
     let user = await User.findOne({ _id: req.user._id });
     if (!user.isAdmin) {
@@ -73,6 +75,11 @@ const editApplication = async (req, res) => {
       user = await User.findOneAndUpdate(
         { _id: application.tutorId },
         { verified: true }
+      );
+      await Qualification.findOneAndUpdate(
+        { _id: application.tutorId },
+        { $push: { modules: moduleName } },
+        { upsert: true }
       );
     }
 

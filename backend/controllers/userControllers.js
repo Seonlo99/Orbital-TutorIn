@@ -3,17 +3,16 @@ import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 import Upvote from "../models/Upvote.js";
 import Review from "../models/Review.js";
+import Qualification from "../models/Qualification.js";
 import {
   uploadPicture,
   uploadPictureCloud,
 } from "../middleware/uploadPictureMiddleware.js";
 import { fileRemover } from "../utils/fileRemover.js";
-import {OAuth2Client} from 'google-auth-library'
+import { OAuth2Client } from "google-auth-library";
 import { v4 as uuid } from "uuid";
 
-
 const client = new OAuth2Client(process.env.GOOGLE_PUBLIC_API_TOKEN);
-
 
 const registerUser = async (req, res) => {
   try {
@@ -53,7 +52,7 @@ const userLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
     // console.log(req.body);
-    let user = await User.findOne({ username, isGoogleSignUp:false });
+    let user = await User.findOne({ username, isGoogleSignUp: false });
     if (!user) {
       return res
         .status(400)
@@ -82,35 +81,33 @@ const userLogin = async (req, res) => {
   }
 };
 
-async function verify({token}) {
-  try{
+async function verify({ token }) {
+  try {
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: process.env.GOOGLE_PUBLIC_API_TOKEN,  
+      audience: process.env.GOOGLE_PUBLIC_API_TOKEN,
     });
     const payload = ticket.getPayload();
-    return payload
-  } catch(error){
-      console.log(error)
-      return null
+    return payload;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 }
 
-const googleAuth = async (req,res)=>{
+const googleAuth = async (req, res) => {
   try {
     const { token } = req.body;
     // console.log(req.body);
     // console.log(token.token)
-    const googleUser = await verify({token:token.token})
+    const googleUser = await verify({ token: token.token });
     // console.log(googleUser)
-    if(!googleUser){
-      return res
-        .status(404)
-        .json({ message: "Invalid Google User" });
+    if (!googleUser) {
+      return res.status(404).json({ message: "Invalid Google User" });
     }
 
     let user = await User.findOne({ googleSub: googleUser.sub });
-    if(!user){
+    if (!user) {
       user = await User.create({
         username: googleUser.email,
         name: googleUser.name,
@@ -118,24 +115,22 @@ const googleAuth = async (req,res)=>{
         password: uuid(),
         isGoogleSignUp: true,
         googleSub: googleUser.sub,
-        avatar: googleUser.picture
+        avatar: googleUser.picture,
       });
     }
     return res.status(201).json({
-          _id: user._id,
-          avatar: user.avatar,
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          verified: user.verified,
-          tutor: user.tutor,
-          token: await user.generateJWT(),
-          isAdmin: user.isAdmin,
-          about: user.about,
-          isGoogleSignUp: user.isGoogleSignUp,
+      _id: user._id,
+      avatar: user.avatar,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      verified: user.verified,
+      tutor: user.tutor,
+      token: await user.generateJWT(),
+      isAdmin: user.isAdmin,
+      about: user.about,
+      isGoogleSignUp: user.isGoogleSignUp,
     });
-
-
 
     // console.log(googleUser)
 
@@ -166,7 +161,7 @@ const googleAuth = async (req,res)=>{
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 const updateProfile = async (req, res) => {
   try {
@@ -284,6 +279,10 @@ const getUserProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    let modulesOffer = null;
+    if (user.tutor) {
+      modulesOffer = await getModulesOffer(userId);
+    }
     const { postCount, commentCount, VoteCount } = await getCommunityStats(
       userId
     );
@@ -299,10 +298,19 @@ const getUserProfile = async (req, res) => {
       recentPosts,
       recentComments,
       recentReviews,
+      modulesOffer,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+};
+
+const getModulesOffer = async (id) => {
+  const filter = {
+    tutorId: id,
+  };
+  const qualification = await Qualification.find(filter);
+  return qualification.modules;
 };
 
 const getCommunityStats = async (id) => {
@@ -439,5 +447,5 @@ export {
   getUserProfile,
   getTopTutors,
   findUsers,
-  googleAuth
+  googleAuth,
 };
