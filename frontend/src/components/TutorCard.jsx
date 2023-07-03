@@ -55,7 +55,8 @@ const TutorCard = ({ tutor, className }) => {
           {tutor.about || "This fellow did not leave anything behind"}
         </p>
         <p className="text-dark-light mt-3 text-sm md:text-base italic">
-          Teach {tutor.tutoringCount} times
+          Teach {tutor.tutoringCount}{" "}
+          {tutor.tutoringCount > 1 ? "times" : "time"}
         </p>
         <div className="flex flex-row gap-x-1 items-center overflow-x-auto">
           <div className="mr-2">
