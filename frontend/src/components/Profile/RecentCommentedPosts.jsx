@@ -11,18 +11,21 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
   // console.log(recentCommentedPostsData);
   return (
     <>
-      <div className="font-bold text-xl">My Comments</div>
+      <div className="font-bold text-xl">Recent Comments</div>
       {recentPostsAndComments ? (
         recentPostsAndComments.map((curr) => (
-          <div onClick={() => handlePostClick(`${curr.postId.slug}`)} className="border rounded-lg border-black my-2 px-3 hover:cursor-pointer">
-              <div className="font-semibold text-xl">
-                {curr.postId.title.substring(0, 50)}
-                {curr.postId.title.length > 50 && " ..."}
-              </div>
-              <div className="">
-                {curr.body.substring(0, 50)}
-                {curr.body.length > 50 && " ..."}
-              </div>
+          <div
+            onClick={() => handlePostClick(`${curr.postId.slug}`)}
+            className="border rounded-lg border-black my-2 px-3 hover:cursor-pointer"
+          >
+            <div className="font-semibold text-xl">
+              {curr.postId.title.substring(0, 50)}
+              {curr.postId.title.length > 50 && " ..."}
+            </div>
+            <div className="">
+              {curr.body.substring(0, 50)}
+              {curr.body.length > 50 && " ..."}
+            </div>
           </div>
         ))
       ) : (

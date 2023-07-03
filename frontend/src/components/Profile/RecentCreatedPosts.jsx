@@ -9,7 +9,7 @@ export const RecentCreatedPosts = ({ recentPosts }) => {
   };
   return (
     <>
-      <div className="font-bold text-xl">My Posts</div>
+      <div className="font-bold text-xl">Recent Posts</div>
       {recentCreatedPosts ? (
         <div className="ml-5 font-extralight text-m">
           <ul className="list-disc">
