@@ -13,7 +13,6 @@ import { RecentCreatedPosts } from "../components/Profile/RecentCreatedPosts";
 import { RecentCommentedPosts } from "../components/Profile/RecentCommentedPosts";
 import Review from "../components/Profile/Review";
 import { getUserProfile } from "../services/index/users";
-import { Service } from "../components/Profile/Service";
 import { AboutTutor } from "../components/Profile/Tutor/AboutTutor";
 
 const ProfilePage = () => {
@@ -69,17 +68,6 @@ const ProfilePage = () => {
             </div>
 
             <div className="flex flex-col lg:w-[60%] mt-5 lg:mt-0 gap-y-5">
-              {/* <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5"> */}
-              {userState.userInfo &&
-                data.user._id !== userState.userInfo._id && (
-                  <section className="px-7">
-                    <Service
-                      viewedUser={data.user}
-                      userId={userState.userInfo._id}
-                      token={userState.userInfo.token}
-                    />
-                  </section>
-                )}
               <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5">
                 <RecentCreatedPosts recentPosts={data.recentPosts} />
               </section>

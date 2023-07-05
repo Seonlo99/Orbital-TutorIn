@@ -78,7 +78,7 @@ const editApplication = async (req, res) => {
       );
       await Qualification.findOneAndUpdate(
         { tutorId: application.tutorId },
-        { $push: { modules: modulesName } },
+        { $addToSet: { modules: { $each: modulesName } } },
         { upsert: true }
       );
     }
