@@ -52,7 +52,16 @@ const TutorCard = ({ tutor, className }) => {
           )}
         </div>
         <p className="text-dark-light mt-3 text-sm md:text-base break-words">
-          {tutor.about || "This fellow did not leave anything behind"}
+          {tutor.about.substring(0, 80) ||
+            "This fellow did not leave anything behind"}
+          {tutor.about.length > 80 && (
+            <p
+              onClick={() => handleUserClick(`${tutor._id}`)}
+              className="inline-block px-2 text-blue-500 font-bold hover:cursor-pointer hover:underline"
+            >
+              . . .
+            </p>
+          )}
         </p>
         <p className="text-dark-light mt-3 text-sm md:text-base italic">
           Teach {tutor.tutoringCount}{" "}
