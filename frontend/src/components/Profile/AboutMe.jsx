@@ -10,10 +10,15 @@ import { Service } from "./Service";
 
 export const AboutMe = ({ viewedUser }) => {
   const userState = useSelector((state) => state.user);
+  const [bioExtend, setBioExtend] = useState(false);
   const profilePic =
     viewedUser.avatar === ""
       ? defaultPic
       : stables.UPLOAD_FOLDER_BASE_URL + viewedUser.avatar;
+
+  const handleBioExtend = () => {
+    setBioExtend(!bioExtend);
+  };
 
   return (
     <>
@@ -58,7 +63,18 @@ export const AboutMe = ({ viewedUser }) => {
             ""
           )}
         </div>
-        <div className="break-words">{viewedUser.about}</div>
+        <div className="break-words">
+          {viewedUser.about.substring(0, 200)}{" "}
+          {bioExtend && viewedUser.about.substring(200)}
+          {viewedUser.about.length > 200 && (
+            <p
+              onClick={handleBioExtend}
+              className="inline-block px-2 italic text-blue-500 hover:cursor-pointer hover:underline"
+            >
+              {bioExtend ? "Collapse" : "Expand bio"}
+            </p>
+          )}
+        </div>
         <div>
           <div className="font-extralight text-sm">Role</div>
           <div className="mt-0">{viewedUser.tutor ? "Tutor" : "Student"}</div>

@@ -13,7 +13,7 @@ export const AboutTutor = ({ profileId, userId, modulesOffer }) => {
   return (
     <div>
       <div className="flex flex-row justify-between">
-        <div className="font-bold text-xl">Modules Offer</div>
+        <div className="font-bold text-xl">Modules Verified</div>
         {profileId === userId && (
           <button
             onClick={() => setShowUpload(true)}
