@@ -140,7 +140,6 @@ const AdminPage = () => {
                               name="module"
                               type="text"
                               className="border rounded-lg w-3/5 p-2"
-                              value={module.module}
                               placeholder="Enter module name"
                               onChange={(e) => handleModuleChange(e, index)}
                             />

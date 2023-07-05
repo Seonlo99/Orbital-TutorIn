@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 import defaultPic from "../../assets/images/default.png";
 import stables from "../../constants/stables";
+import { Service } from "./Service";
 
 export const AboutMe = ({ viewedUser }) => {
   const userState = useSelector((state) => state.user);
@@ -16,7 +17,7 @@ export const AboutMe = ({ viewedUser }) => {
 
   return (
     <>
-      <div className="flex flex-row">
+      <div className="flex flex-row items-center">
         <img
           id="avatar"
           className="w-20 h-20 rounded-full border border-black"
@@ -26,21 +27,27 @@ export const AboutMe = ({ viewedUser }) => {
           }}
           alt="Img"
         ></img>
-        <div className=" flex flex-col mt-5 ml-10">
-          {userState.userInfo && viewedUser._id === userState.userInfo._id ? (
-            <>
-              <Link to="edit-profile">
-                <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
-                  Edit Profile
-                </button>
-              </Link>
-            </>
-          ) : (
-            ""
+        <div className="flex flex-col mt-5 ml-10">
+          {userState.userInfo && viewedUser._id === userState.userInfo._id && (
+            <Link to="edit-profile">
+              <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
+                Edit Profile
+              </button>
+            </Link>
           )}
         </div>
+        {/* <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5"> */}
+        {userState.userInfo && viewedUser._id !== userState.userInfo._id && (
+          <section className="">
+            <Service
+              viewedUser={viewedUser}
+              userId={userState.userInfo._id}
+              token={userState.userInfo.token}
+            />
+          </section>
+        )}
       </div>
-      <div className="mt-3 flex flex-col gap-y-2">
+      <div className="mt-1 flex flex-col gap-y-2">
         <div className="flex flex-row items-center">
           <div className="font-bold mr-2">{viewedUser.name}</div>
           {viewedUser.verified ? (

@@ -22,7 +22,7 @@ export const VerifyTutor = ({ closeHandler }) => {
     },
     onSuccess: () => {
       toast.success("Submitted for verification!");
-      // closeHandler();
+      closeHandler();
     },
     onError: (error) => {
       toast.error(error.message);
