@@ -79,7 +79,7 @@ const ChatBox = ({ currentChat }) => {
   };
 
   useEffect(() => {
-    console.log(currentChat)
+    // console.log(currentChat)
     socket.current = io(SOCKET_URL);
     // socket.current.on("getMessage", (data) => {
     //   console.log("received msg")
@@ -96,7 +96,7 @@ const ChatBox = ({ currentChat }) => {
 
   useEffect(()=>{
     socket.current.on("getMessage", (data) => {
-      console.log("received msg")
+      // console.log("received msg")
       setArrivalMessage({
         senderId: data.senderId,
         message: data.message,
