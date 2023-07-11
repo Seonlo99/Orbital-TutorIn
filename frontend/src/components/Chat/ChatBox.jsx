@@ -7,14 +7,14 @@ import { io } from "socket.io-client";
 
 import Message from "./Message";
 import { getChat, sendMessage } from "../../services/index/chats";
-import { rootUrl } from "../../config/config";
+import { rootUrl, SOCKET_URL } from "../../config/config";
 
 const ChatBox = ({ currentChat }) => {
   const conversationId = currentChat._id;
   const userState = useSelector((state) => state.user);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState({});
   const socket = useRef();
 
   const { data, isLoading, isError } = useQuery({
@@ -27,14 +27,17 @@ const ChatBox = ({ currentChat }) => {
     },
   });
 
+  console.log(currentChat)
+
   const handleSubmit = async (e) => {
     e.target.value = e.target.value.trim();
     if (e.target.value !== "") {
       e.preventDefault();
       // refetch();
       const receiver = currentChat.members.find(
-        (member) => member !== userState.userInfo._id
+        (member) => member._id !== userState.userInfo._id
       );
+      // console.log(receiver)
       socket.current.emit("sendMessage", {
         senderId: userState.userInfo._id,
         receiverId: receiver._id,
@@ -45,7 +48,7 @@ const ChatBox = ({ currentChat }) => {
         userState.userInfo._id,
         newMessage
       );
-      // setMessages([...messages, messageSent]);
+      setMessages([...messages, messageSent]);
       setNewMessage("");
     }
   };
@@ -76,17 +79,29 @@ const ChatBox = ({ currentChat }) => {
   };
 
   useEffect(() => {
-    socket.current = io("https://tutorin-socketio-l65k-dev.fl0.io");
+    socket.current = io(SOCKET_URL);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,
         message: data.message,
         createdAt: Date.now(),
       });
-    });
+    }
+    );
 
-    return () => socket.current.on("disconnect");
+    return () => socket.current.disconnect();
   }, []);
+
+  // useEffect(()=>{
+  //   socket.current.on("getMessage", (data) => {
+  //     setArrivalMessage({
+  //       senderId: data.senderId,
+  //       message: data.message,
+  //       createdAt: Date.now(),
+  //     });
+  //   }
+  //   );
+  // })
 
   useEffect(() => {
     socket.current.emit("addUser", userState.userInfo._id);
