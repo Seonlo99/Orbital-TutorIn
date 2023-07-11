@@ -85,7 +85,7 @@ const ChatBox = ({ currentChat }) => {
       });
     });
 
-    return () => socket.disconnect();
+    return () => socket.current.disconnect();
   }, []);
 
   useEffect(() => {
