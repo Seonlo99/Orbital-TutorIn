@@ -27,7 +27,7 @@ const ChatBox = ({ currentChat }) => {
     },
   });
 
-  console.log(currentChat)
+  // console.log(currentChat)
 
   const handleSubmit = async (e) => {
     e.target.value = e.target.value.trim();
@@ -79,8 +79,24 @@ const ChatBox = ({ currentChat }) => {
   };
 
   useEffect(() => {
+    console.log(currentChat)
     socket.current = io(SOCKET_URL);
+    // socket.current.on("getMessage", (data) => {
+    //   console.log("received msg")
+    //   setArrivalMessage({
+    //     senderId: data.senderId,
+    //     message: data.message,
+    //     createdAt: Date.now(),
+    //   });
+    // }
+    // );
+
+    return () => socket.current.disconnect();
+  }, []);
+
+  useEffect(()=>{
     socket.current.on("getMessage", (data) => {
+      console.log("received msg")
       setArrivalMessage({
         senderId: data.senderId,
         message: data.message,
@@ -88,20 +104,7 @@ const ChatBox = ({ currentChat }) => {
       });
     }
     );
-
-    return () => socket.current.disconnect();
-  }, []);
-
-  // useEffect(()=>{
-  //   socket.current.on("getMessage", (data) => {
-  //     setArrivalMessage({
-  //       senderId: data.senderId,
-  //       message: data.message,
-  //       createdAt: Date.now(),
-  //     });
-  //   }
-  //   );
-  // })
+  })
 
   useEffect(() => {
     socket.current.emit("addUser", userState.userInfo._id);
