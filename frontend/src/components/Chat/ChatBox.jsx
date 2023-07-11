@@ -76,7 +76,7 @@ const ChatBox = ({ currentChat }) => {
   };
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io("https://tutorin-socketio-l65k-dev.fl0.io");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,
