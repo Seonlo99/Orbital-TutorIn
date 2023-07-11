@@ -45,7 +45,7 @@ const ChatBox = ({ currentChat }) => {
         userState.userInfo._id,
         newMessage
       );
-      setMessages([...messages, messageSent]);
+      // setMessages([...messages, messageSent]);
       setNewMessage("");
     }
   };
