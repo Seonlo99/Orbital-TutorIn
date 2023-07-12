@@ -19,10 +19,9 @@ const Header = () => {
   const logoutHandler = () => {
     navigate("/");
     dispatch(logout());
-    if(userState.userInfo.isGoogleSignUp){
+    if (userState.userInfo.isGoogleSignUp) {
       googleLogout();
     }
-    
   };
 
   const profilePic =
@@ -115,6 +114,16 @@ const Header = () => {
                     >
                       View Profile
                     </button>
+                    {userState.userInfo.isAdmin && (
+                      <button
+                        onClick={() => {
+                          navigate(`/admin`);
+                        }}
+                        className="hover:bg-blue-900 hover:text-white px-3 py-3"
+                      >
+                        Admin Page
+                      </button>
+                    )}
                     <button
                       onClick={logoutHandler}
                       className="hover:bg-blue-900 hover:text-white px-3 py-3"
