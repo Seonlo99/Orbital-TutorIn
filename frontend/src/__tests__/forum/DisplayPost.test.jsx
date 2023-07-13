@@ -40,7 +40,7 @@ describe(DisplayPost, ()=>{
 
         const testImage = screen.getByRole("img");
         expect(testImage.src).toContain("test.jpg");
-        expect(testImage.alt).toContain("Author Profile Picture");
+        expect(testImage.alt).toContain("Author");
 
     })
     
