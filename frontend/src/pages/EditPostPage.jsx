@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useMutation, useQuery} from "@tanstack/react-query"
 import {useSelector} from "react-redux"
 import {useNavigate} from 'react-router-dom'
@@ -24,7 +24,7 @@ const EditPostPage = () => {
         if(!userState.userInfo){ //user not logged in
             navigate("/login");
         }
-    },[])
+    },[userState.userInfo,navigate])
 
     const {data, isLoading: isDataLoading, isError: isDataError} = useQuery({
       queryFn: () => getSinglePost(uuid),
@@ -46,7 +46,7 @@ const EditPostPage = () => {
       }
   })
 
-    const {mutate, isLoading} = useMutation({
+    const {mutate} = useMutation({
         mutationFn: ({title,content,selectedTags})=>{
           return editPost({title, content, token:userState.userInfo.token, uuid, selectedTags});
         },

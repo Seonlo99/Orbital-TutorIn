@@ -1,10 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+
 
 export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
-  const userState = useSelector((state) => state.user);
  
   return (
     <>

@@ -7,7 +7,7 @@ import { io } from "socket.io-client";
 
 import Message from "./Message";
 import { getChat, sendMessage } from "../../services/index/chats";
-import { rootUrl, SOCKET_URL } from "../../config/config";
+import { SOCKET_URL } from "../../config/config";
 
 const ChatBox = ({ currentChat }) => {
   const conversationId = currentChat._id;
@@ -17,7 +17,7 @@ const ChatBox = ({ currentChat }) => {
   const [arrivalMessage, setArrivalMessage] = useState({});
   const socket = useRef();
 
-  const { data, isLoading, isError } = useQuery({
+  const { isLoading, isError } = useQuery({
     queryKey: ["getChat", conversationId],
     queryFn: () => getChat(conversationId),
     onSuccess: (data) => setMessages(data),

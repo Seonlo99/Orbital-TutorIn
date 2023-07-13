@@ -4,8 +4,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import {useMutation} from "@tanstack/react-query"
 import toast from 'react-hot-toast'
 import {useDispatch, useSelector} from "react-redux" 
-import { GoogleLogin, googleLogout } from '@react-oauth/google'
-import jwt_decode from 'jwt-decode'
+import { GoogleLogin } from '@react-oauth/google'
 
 import MainLayout from '../components/MainLayout'
 import { userLogin, userGoogleAuth } from '../services/index/users'
@@ -41,7 +40,6 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: {errors, isValid},
-    watch,
   } = useForm({
       defaultValues:{
         username:"",
@@ -57,7 +55,7 @@ const LoginPage = () => {
 
   // console.log(errors)
 
-  const {mutate: mutateGoogleAuth, isLoading: isLoadingGoogleAuth} = useMutation({
+  const {mutate: mutateGoogleAuth} = useMutation({
     mutationFn: ({token})=>{
       return userGoogleAuth({token});
     },

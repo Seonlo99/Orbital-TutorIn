@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { BsCheckLg } from "react-icons/bs";
-import { useParams } from "react-router-dom";
 
 import defaultPic from "../../assets/images/default.png";
 import stables from "../../constants/stables";

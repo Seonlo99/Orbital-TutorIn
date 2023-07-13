@@ -1,14 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react'
-import {useMutation, useQuery} from "@tanstack/react-query"
+import React, {  useEffect } from 'react'
+import {useMutation} from "@tanstack/react-query"
 import {useSelector} from "react-redux"
 import {useNavigate} from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 import MainLayout from '../components/MainLayout'
-import Tiptap from '../components/TipTap'
 import { newPost } from '../services/index/posts'
 import PostForm from '../components/PostForm'
-import {getAllTags} from "../services/index/tags"
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -19,7 +17,7 @@ const CreatePostPage = () => {
         }
     },[navigate, userState.userInfo])
 
-    const {mutate, isLoading} = useMutation({
+    const {mutate} = useMutation({
         mutationFn: ({title, content, token, selectedTags})=>{
           return newPost({title, content, token, selectedTags});
         },

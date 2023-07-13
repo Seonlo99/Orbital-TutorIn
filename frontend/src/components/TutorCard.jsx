@@ -30,7 +30,7 @@ const TutorCard = ({ tutor, className }) => {
           onError={(e) => {
             e.currentTarget.src = defaultPic;
           }}
-          alt="Tutor Image"
+          alt="Tutor"
           className="object-cover object-center rounded-full w-40 h-40 lg:w-48 lg:h-44 xl:w-52 xl:h-52"
         />
       </div>

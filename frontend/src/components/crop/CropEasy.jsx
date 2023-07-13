@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { userActions } from "../../store/reducers/userReducers";
 import { useDispatch, useSelector } from "react-redux";
 

@@ -24,7 +24,7 @@ export const AddReview = ({revieweeName, transactionId, reviewerId, revieweeId, 
         
     }
 
-    const { mutate, isLoading} =
+    const { mutate } =
     useMutation({
       mutationFn: () => {
         return addReview({ token: userState.userInfo.token ,transactionId, reviewerId, revieweeId, rating, review});

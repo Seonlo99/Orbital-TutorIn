@@ -21,7 +21,7 @@ const ChatPage = () => {
   }
 
   const { _id } = userState.userInfo;
-  const { data, isLoading, isError } = useQuery({
+  const { isLoading, isError } = useQuery({
     queryKey: ["chat", _id],
     queryFn: () => getConversations(_id),
     onSuccess: (data) => setConversations(data),

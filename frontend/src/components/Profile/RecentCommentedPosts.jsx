@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
   const recentPostsAndComments =
-    recentCommentedPostsData == 0 ? null : recentCommentedPostsData;
+    recentCommentedPostsData === 0 ? null : recentCommentedPostsData;
   const navigate = useNavigate();
   const handlePostClick = (slug) => {
     navigate(`/post/${slug}`);

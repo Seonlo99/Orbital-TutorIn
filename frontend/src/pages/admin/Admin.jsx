@@ -50,11 +50,12 @@ const AdminPage = () => {
   };
 
   // console.log(data)
-  const { mutate, isLoading: isMutateLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ applicationId, accept, modulesList }) => {
       const modulesName = [];
       modulesList.map((module) => {
         modulesName.push(module.module);
+        return null;
       });
       return editApplication({
         token: userState.userInfo.token,

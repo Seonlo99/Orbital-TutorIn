@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { getAllPosts } from "../services/index/posts";
 import MainLayout from "../components/MainLayout";
 import { SearchBar } from "../components/Filters/SearchBar";
-import { getAllTags } from "../services/index/tags";
 import { TagSelector } from "../components/TagSelector";
 import { Sort } from "../components/Filters/Sort";
 
@@ -26,7 +25,7 @@ const DiscussPage = () => {
 
   // const [availableTags, setAvailableTags] = useState([]) // array of tags from db
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   // console.log(search)
 
   const pages = [{ page: num }, { page: num + 1 }, { page: num + 2 }];

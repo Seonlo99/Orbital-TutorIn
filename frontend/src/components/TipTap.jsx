@@ -5,7 +5,7 @@ import Underline from "@tiptap/extension-underline"
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React from 'react'
-import {FaBold, FaHeading, FaItalic, FaListOl, FaListUl, FaQuoteLeft, FaRedo, FaStrikethrough, FaUnderline, FaUndo} from  "react-icons/fa"
+import {FaBold, FaItalic, FaListOl, FaListUl, FaQuoteLeft, FaRedo, FaStrikethrough, FaUnderline, FaUndo} from  "react-icons/fa"
 import Placeholder from '@tiptap/extension-placeholder'
 
 import './../styles/tiptap.css'

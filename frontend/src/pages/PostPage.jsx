@@ -66,7 +66,7 @@ const PostPage = () => {
 
   // !isLoading && console.log(data)
 
-  const { mutate: mutateNewComment, isLoading: isLoadingNewComment } =
+  const { mutate: mutateNewComment } =
     useMutation({
       mutationFn: ({ token, desc, slug, parent, replyUser }) => {
         return newComment({ token, desc, slug, parent, replyUser });

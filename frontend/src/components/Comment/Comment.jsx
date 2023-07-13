@@ -3,7 +3,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { newComment } from "../../services/index/comments";
 
@@ -74,7 +74,7 @@ const Comment = ({
     },
   });
 
-  const { mutate: mutateNewComment, isLoading: isLoadingNewComment } =
+  const { mutate: mutateNewComment } =
     useMutation({
       mutationFn: ({ token, desc, slug, parent, replyUser }) => {
         return newComment({ token, desc, slug, parent, replyUser });
@@ -110,7 +110,7 @@ const Comment = ({
     // console.log(text);
   };
 
-  const { mutate: mutateEditComment, isLoading: isLoadingEditComment } =
+  const { mutate: mutateEditComment } =
     useMutation({
       mutationFn: ({ token, desc, id }) => {
         return editComment({ token, desc, id });
@@ -143,7 +143,7 @@ const Comment = ({
     });
   };
 
-  const { mutate: mutateDeleteComment, isLoading: isLoadingDeleteComment } =
+  const { mutate: mutateDeleteComment } =
     useMutation({
       mutationFn: ({ token, id }) => {
         return deleteComment({ token, id });
