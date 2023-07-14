@@ -44,7 +44,7 @@ export const AddReview = ({revieweeName, transactionId, reviewerId, revieweeId, 
 
     const handleSubmit= ()=>{
         if(review.length<1){
-            toast.error("Write provide some review.")
+            toast.error("Write some review.")
         }
         else{
             mutate();
@@ -70,7 +70,7 @@ export const AddReview = ({revieweeName, transactionId, reviewerId, revieweeId, 
                             {[...Array(5)].map((star,index)=>{
                                 index+=1;
                                 return (
-                                    <button key={index} className={index <= ((rating && hoverRating) || hoverRating) ? "text-yellow-300" : "text-gray-300"}
+                                    <button data-testid="StarButton" key={index} className={index <= ((rating && hoverRating) || hoverRating) ? "text-yellow-300" : "text-gray-300"}
                                         onClick={()=>clickHandler(index)}
                                         onMouseEnter={()=>setHoverRating(index)}
                                         onMouseLeave={()=> setHoverRating(rating)}>
