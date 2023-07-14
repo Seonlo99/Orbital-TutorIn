@@ -1,20 +1,26 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from "react-dom/test-utils";
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { BrowserRouter, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import RegisterPage from '../../pages/RegisterPage';
+import LoginPage from '../../pages/LoginPage';
 import { userRegister } from '../../services/index/users';
 import { userActions } from '../../store/reducers/userReducers';
+import { GoogleLogin } from '@react-oauth/google'
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useDispatch: jest.fn(),
   useSelector: jest.fn(),
 }));
+
+jest.mock('@react-oauth/google', () => ({
+    ...jest.requireActual('@react-oauth/google'),
+    GoogleLogin: jest.fn(),
+  }));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -40,7 +46,7 @@ jest.mock('../../services/index/users', () => ({
   userRegister: jest.fn(),
 }));
 
-describe('RegisterPage', () => {
+describe('LoginPage', () => {
   const mockMutate = jest.fn();
   const mockDispatch = jest.fn();
   const mockNavigate = jest.fn();
@@ -61,7 +67,7 @@ describe('RegisterPage', () => {
         watch: jest.fn(),
     });
     useMutation.mockReturnValue({ mutate: mockMutate, isLoading: false });
-    toast.error.mockReturnValue();
+    toast.error.mockImplementation(() => {});
     useNavigate.mockReturnValue(mockNavigate);
   });
 
@@ -70,70 +76,58 @@ describe('RegisterPage', () => {
     capturedFormValues = {};
   });
 
-  it('renders registration form', () => {
-    render(<RegisterPage />, { wrapper: BrowserRouter });
+  it('renders login form', () => {
+    render(<LoginPage />, { wrapper: BrowserRouter });
+    // render(<BrowserRouter><LoginPage /></BrowserRouter>);
   
     // Assert
     expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Full Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-    expect(screen.getByTestId("RegisterPassword")).toBeInTheDocument();
-    expect(screen.getByTestId("RegisterCfmPassword")).toBeInTheDocument();
+    expect(screen.getByTestId("LoginPassword")).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
-    expect(screen.getByText(/Already have account?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Forget Password?/i)).toBeInTheDocument();
   });
 
-  it('submits register form with valid data', async () => {
+  it('submits login form with valid data', async () => {
 
-    render(<RegisterPage />, { wrapper: BrowserRouter });
+    render(<LoginPage />, { wrapper: BrowserRouter });
   
     // Fill in the form
     await act(async()=>{
         fireEvent.change(screen.getByPlaceholderText("Enter Username"), { target: { value: 'testuser' } });
-        fireEvent.change(screen.getByPlaceholderText("Enter Name"), { target: { value: 'Test User' } });
-        fireEvent.change(screen.getByPlaceholderText("Enter Email"), { target: { value: 'test@example.com' } });
         fireEvent.change(screen.getByPlaceholderText("Enter Password"), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText("Enter Password again"), { target: { value: 'password123' } });
 
-        fireEvent.submit(screen.getByTestId('register-form'));
+        fireEvent.submit(screen.getByTestId('login-form'));
     })
 
     // Assert
     expect(mockMutate).toHaveBeenCalledWith({
         username: capturedFormValues.username,
-        fullname: capturedFormValues.fullname,
-        email: capturedFormValues.email,
         password: capturedFormValues.password,
-        isTutor: false,
     });
   });
 
-//   test('displays error message if form submission fails', async () => {
-//     const errorMessage = 'Failed to register user';
+//   it('displays error message if login form submission fails', async () => {
+//     const errorMessage = 'Failed to login user';
 //     mockMutate.mockRejectedValueOnce(new Error(errorMessage));
   
-//     render(<RegisterPage />, { wrapper: BrowserRouter });
+//     render(<LoginPage />, { wrapper: BrowserRouter });
   
 //     // Fill in the form
 //     await act(async()=>{
 //         fireEvent.change(screen.getByPlaceholderText("Enter Username"), { target: { value: 'testuser' } });
-//         fireEvent.change(screen.getByPlaceholderText("Enter Name"), { target: { value: 'Test User' } });
-//         fireEvent.change(screen.getByPlaceholderText("Enter Email"), { target: { value: 'test@example.com' } });
 //         fireEvent.change(screen.getByPlaceholderText("Enter Password"), { target: { value: 'password123' } });
-//         fireEvent.change(screen.getByPlaceholderText("Enter Password again"), { target: { value: 'password123' } });
 
-//         fireEvent.submit(screen.getByTestId('register-form'));
+//         fireEvent.submit(screen.getByTestId('login-form'));
 //     })
   
 //     // Assert
-//     expect(mockDispatch).not.toHaveBeenCalled();
 //     expect(toast.error).toHaveBeenCalledWith(errorMessage);
 //   });
 
-  test('navigates to home page if user is already logged in', () => {
+  it('navigates to home page if user is already logged in', () => {
     useSelector.mockReturnValue({ userInfo: { id: 1, username: 'testuser' } });
   
-    render(<RegisterPage />, { wrapper: BrowserRouter });
+    render(<LoginPage />, { wrapper: BrowserRouter });
   
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });

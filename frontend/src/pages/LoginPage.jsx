@@ -81,7 +81,7 @@ const LoginPage = () => {
             <h1 className='font-bold text-2xl text-center text-black'>
               Login
             </h1>
-            <form onSubmit={handleSubmit(submitHandler)}>
+            <form data-testid="login-form" onSubmit={handleSubmit(submitHandler)}>
               <div className='flex flex-col w-full'>
                 <label htmlFor="username" className='text-gray-500 font-semibold block mt-5'>
                   Username:
@@ -109,7 +109,7 @@ const LoginPage = () => {
                 <label htmlFor="password" className='text-gray-500 font-semibold block mt-5'>
                   Password:
                 </label>
-                <input type="password" id="password" {...register("password",
+                <input data-testid="LoginPassword" type="password" id="password" {...register("password",
                    {
                     minLength:
                     {
