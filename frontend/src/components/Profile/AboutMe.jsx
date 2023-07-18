@@ -9,6 +9,7 @@ import stables from "../../constants/stables";
 import { Service } from "./Service";
 
 export const AboutMe = ({ viewedUser }) => {
+  console.log(viewedUser);
   const userState = useSelector((state) => state.user);
   const [bioExtend, setBioExtend] = useState(false);
   const profilePic =

@@ -44,7 +44,10 @@ const TutorCard = ({ tutor, className }) => {
             {tutor.name}
           </div>
           {tutor.verified ? (
-            <span className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full">
+            <span
+              className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full"
+              data-testid="bsCheckLg"
+            >
               <BsCheckLg className="w-2 h-2 text-blue-500" />
             </span>
           ) : (

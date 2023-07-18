@@ -1,11 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
-export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
-  const userState = useSelector((state) => state.user);
- 
+export const CommunityStats = ({ postCount, commentCount, voteCount }) => {
   return (
     <>
       <div className="font-bold text-xl">Community Stats</div>
@@ -20,7 +15,7 @@ export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
         </div>
         <div>
           <div className="font-extralight text-sm">Upvote Count:</div>
-          <div className="mt-0">{VoteCount}</div>
+          <div className="mt-0">{voteCount}</div>
         </div>
       </div>
     </>
