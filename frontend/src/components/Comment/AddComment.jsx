@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import toast from 'react-hot-toast'
 
 const AddComment = ({label, formHandler, initialText="",loading=false, cancelHandler=null}) => {
   

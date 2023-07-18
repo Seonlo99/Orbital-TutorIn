@@ -27,7 +27,7 @@ const AllComments = ({uuid,reload,userVotes,setUserVotes, voteCount, setVoteCoun
                   voteCount[comment._id]=comment.voteCount
                 })
                 setVoteCount(voteCount)
-                setNewReload(cur=>{return !cur})
+                setNewReload(!newReload)
               }
         },
         onError: (error) =>{

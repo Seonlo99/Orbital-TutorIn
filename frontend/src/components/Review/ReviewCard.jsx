@@ -26,7 +26,7 @@ const ReviewCard = ({ review, activeItem, displayArray }) => {
               onError={(e) => {
                 e.currentTarget.src = defaultPic;
               }}
-              alt="Reviewer Profile Picture"
+              alt="Reviewer Profile"
               className="mr-3 h-8 w-8 transition-all duration-300 rounded-full"
             />
           </div>

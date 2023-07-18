@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { BiUpvote } from "react-icons/bi";
 import { AiOutlineComment } from "react-icons/ai";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import defaultPic from "../../assets/images/default.png";
 import stables from "../../constants/stables";
@@ -33,7 +33,7 @@ const DisplayPost = ({ post }) => {
             onError={(e) => {
               e.currentTarget.src = defaultPic;
             }}
-            alt="Author Profile Picture"
+            alt="Author"
             className="h-10 w-10 transition-all duration-300 rounded-full"
           />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTags } from "../services/index/tags";

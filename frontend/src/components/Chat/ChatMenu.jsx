@@ -16,7 +16,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
   const [arrivalConvo, setArrivalConvo] = useState(null);
-  const { data, isLoading, isError } = useQuery({
+  const { isLoading, isError } = useQuery({
     queryKey: ["findUsers", search],
     queryFn: () => findUsers({ search }),
     onSuccess: (data) => {
@@ -80,7 +80,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
                   onError={(e) => {
                     e.currentTarget.src = defaultPic;
                   }}
-                  alt="profile picture"
+                  alt="profile"
                   className="w-10 h-10 rounded-full object-cover border mr-3"
                 />
                 <span>{user.name}</span>

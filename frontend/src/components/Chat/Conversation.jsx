@@ -55,7 +55,7 @@ const Conversation = ({
           onError={(e) => {
             e.currentTarget.src = defaultPic;
           }}
-          alt="profile picture"
+          alt="profile"
           className="w-10 h-10 rounded-full object-cover border mr-3"
         />
         <span>{recipient?.name}</span>

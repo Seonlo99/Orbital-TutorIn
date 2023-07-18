@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RecentCreatedPosts = ({ recentPosts }) => {
-  const recentCreatedPosts = recentPosts.length == 0 ? null : recentPosts;
+  const recentCreatedPosts = recentPosts.length === 0 ? null : recentPosts;
   const navigate = useNavigate();
   const handlePostClick = (slug) => {
     navigate(`/post/${slug}`);

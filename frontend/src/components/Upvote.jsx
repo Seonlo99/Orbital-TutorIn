@@ -9,7 +9,7 @@ export const Upvote = ({userVotes, setUserVotes, id, voteCount, setVoteCount, po
 
     const userState = useSelector((state) => state.user);
 
-    const { mutate: mutateAddVote, isLoading: isLoadingAddUpvote } =
+    const { mutate: mutateAddVote } =
     useMutation({
       mutationFn: ({ token, action }) => {
         return addVote({ token, action, postSlug,commentSlug });
@@ -24,7 +24,7 @@ export const Upvote = ({userVotes, setUserVotes, id, voteCount, setVoteCount, po
     });
 
 
-    const { mutate: mutateEditVote, isLoading: isLoadingEditUpvote } =
+    const { mutate: mutateEditVote } =
     useMutation({
       mutationFn: ({ token, action }) => {
         return editVote({ token, action, postSlug,commentSlug });
@@ -39,7 +39,7 @@ export const Upvote = ({userVotes, setUserVotes, id, voteCount, setVoteCount, po
     });
 
 
-    const { mutate: mutateDeleteVote, isLoading: isLoadingdeleteUpvote } =
+    const { mutate: mutateDeleteVote } =
     useMutation({
       mutationFn: ({ token }) => {
         return deleteVote({ token, postSlug,commentSlug });

@@ -40,6 +40,7 @@ export const VerifyTutor = ({ closeHandler }) => {
     const modulesName = [];
     modulesList.map((module) => {
       modulesName.push(module.module);
+      return module;
     });
     formData.append("moduleName", modulesName);
     mutate({ formData: formData });

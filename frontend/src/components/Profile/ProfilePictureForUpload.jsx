@@ -18,7 +18,7 @@ export const ProfilePictureForUpload = (avatar) => {
 
   const [openCrop, setOpenCrop] = useState(false);
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ formData }) => {
       return UpdateProfilePicture({
         formData,
@@ -77,7 +77,7 @@ export const ProfilePictureForUpload = (avatar) => {
             {isAvatar ? (
               <img
                 src={stables.UPLOAD_FOLDER_BASE_URL + avatar.avatar}
-                alt="Profile Picture"
+                alt="Profile"
               />
             ) : (
               <div className="w-full h-full bg-blue-50/50 flex justify-center items-center">
