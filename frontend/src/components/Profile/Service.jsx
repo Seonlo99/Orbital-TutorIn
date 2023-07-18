@@ -11,7 +11,7 @@ import {
   deleteTransaction,
 } from "../../services/index/transactions";
 
-export const Service = ({ viewedUser, userId, token }) => {
+export const Service = ({ viewedUser, userId, token, userIsTutor }) => {
   const [transaction, setTransaction] = useState({});
 
   const { data, isLoading, isError } = useQuery({
@@ -103,7 +103,7 @@ export const Service = ({ viewedUser, userId, token }) => {
     !isLoading &&
     !isError && (
       <div className="flex flex-col gap-y-1 justify-end">
-        {viewedUser.tutor &&
+        {viewedUser.tutor && !userIsTutor &&
           data === null && ( //only display for tutor, and when there is no pending transaction
             <button
               onClick={engageHandler}

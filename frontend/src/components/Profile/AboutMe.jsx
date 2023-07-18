@@ -47,6 +47,7 @@ export const AboutMe = ({ viewedUser }) => {
             <Service
               viewedUser={viewedUser}
               userId={userState.userInfo._id}
+              userIsTutor={userState.userInfo.tutor}
               token={userState.userInfo.token}
             />
           </section>
