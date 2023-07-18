@@ -51,7 +51,7 @@ const ProfilePage = () => {
                 <CommunityStats
                   postCount={data.postCount}
                   commentCount={data.commentCount}
-                  VoteCount={data.VoteCount}
+                  voteCount={data.VoteCount}
                 />
               </section>
               {data.user?.tutor ? (
