@@ -72,7 +72,7 @@ const RegisterPage = () => {
             <h1 className='font-bold text-2xl text-center text-black'>
               Registration
             </h1>
-            <form onSubmit={handleSubmit(submitHandler)}>
+            <form data-testid="register-form" onSubmit={handleSubmit(submitHandler)}>
               <div className='flex flex-col w-full'>
                 <div className='flex flex-row mt-10 gap-x-20 justify-center'>
                   <div className="flex items-center">
@@ -156,7 +156,7 @@ const RegisterPage = () => {
                 <label htmlFor="password" className='text-gray-500 font-semibold block mt-5'>
                   Password:
                 </label>
-                <input type="password" id="password" {...register("password",
+                <input data-testid="RegisterPassword" type="password" id="password" {...register("password",
                    {
                     minLength:
                     {
@@ -178,7 +178,7 @@ const RegisterPage = () => {
                 <label htmlFor="cfmPassword" className='text-gray-500 font-semibold block mt-5'>
                   Confirm Password:
                 </label>
-                <input type="password" id="cfmPassword" {...register("cfmPassword",
+                <input data-testid="RegisterCfmPassword" type="password" id="cfmPassword" {...register("cfmPassword",
                    {
                     validate: (value)=>
                     {
