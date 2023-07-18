@@ -1,8 +1,7 @@
 import React from "react";
 
 
-export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
- 
+export const CommunityStats = ({ postCount, commentCount, voteCount }) => {
   return (
     <>
       <div className="font-bold text-xl">Community Stats</div>
@@ -17,7 +16,7 @@ export const CommunityStats = ({postCount,commentCount,VoteCount}) => {
         </div>
         <div>
           <div className="font-extralight text-sm">Upvote Count:</div>
-          <div className="mt-0">{VoteCount}</div>
+          <div className="mt-0">{voteCount}</div>
         </div>
       </div>
     </>
