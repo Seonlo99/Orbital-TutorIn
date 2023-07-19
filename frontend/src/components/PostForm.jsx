@@ -5,13 +5,13 @@ import toast from 'react-hot-toast'
 import Tiptap from '../components/TipTap'
 import { TagSelector } from './TagSelector'
 
-const PostForm = ({handleMutate, btnName, initialContent={}, defaultTags=[]}) => {
+const PostForm = ({handleMutate, btnName, initialContent={}, defaultTags}) => {
     const navigate = useNavigate();
     const [title, setTitle] = useState(initialContent.title || "")
     
     const [content, setContent] = useState(initialContent.contents || "")
-    const [selectedTags, setSelectedTags] = useState(defaultTags)
-
+    const [selectedTags, setSelectedTags] = useState(defaultTags || [])
+    // console.log(defaultTags)
     const selectTagHandler = (selectedTags)=>{
       setSelectedTags(selectedTags)
     }
