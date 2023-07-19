@@ -394,10 +394,10 @@ const getTopTutors = async (req, res) => {
   try {
     const selection = req.query.selected.selected;
     const search = req.query.selected.search;
-    const nameRegex = new RegExp(search, "i");
+    const searchRegex = new RegExp(search, "i");
     const filter = {
       tutor: true,
-      name: { $regex: nameRegex },
+      name: { $regex: searchRegex },
     };
     let sortOrder = {};
     if (selection == "Highest Rating") {
@@ -409,9 +409,27 @@ const getTopTutors = async (req, res) => {
       sortOrder = { verified: -1, rating: -1, tutoringCount: -1 };
     }
 
-    const topTutors = await User.find(filter)
-      .sort(sortOrder)
-      .select("-password");
+    const topTutors = await User.aggregate([
+      {
+        $lookup: {
+          from: "qualifications",
+          localField: "_id",
+          foreignField: "tutorId",
+          as: "qualifications",
+        },
+      },
+      {
+        $match: {
+          $or: [filter, { "qualifications.modules": { $regex: searchRegex } }],
+        },
+      },
+      {
+        $sort: sortOrder,
+      },
+      {
+        $project: { password: 0 },
+      },
+    ]);
 
     return res.json({
       topTutors: topTutors,

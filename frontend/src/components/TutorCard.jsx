@@ -19,7 +19,7 @@ const TutorCard = ({ tutor, className }) => {
 
   return (
     <div
-      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className} `}
+      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]  ${className} `}
     >
       <div
         onClick={() => handleUserClick(`${tutor._id}`)}
@@ -54,22 +54,21 @@ const TutorCard = ({ tutor, className }) => {
             ""
           )}
         </div>
-        <p className="text-dark-light mt-3 text-sm md:text-base break-words">
-          {tutor.about.substring(0, 80) ||
-            "This fellow did not leave anything behind"}
-          {tutor.about.length > 80 && (
-            <p
-              onClick={() => handleUserClick(`${tutor._id}`)}
-              className="inline-block px-2 text-blue-500 font-bold hover:cursor-pointer hover:underline"
-            >
-              . . .
-            </p>
-          )}
-        </p>
-        <p className="text-dark-light mt-3 text-sm md:text-base italic">
+        <div className="flex flex-wrap gap-1 mt-2">
+          {tutor.qualifications.length > 0 &&
+            tutor.qualifications[0].modules.map(
+              (module) =>
+                module !== "" && (
+                  <div className="border rounded-lg p-2 text-blue-500 border-blue-500 w-fit">
+                    {module}
+                  </div>
+                )
+            )}
+        </div>
+        <div className="text-dark-light mt-2 text-sm md:text-base italic">
           Teach {tutor.tutoringCount}{" "}
           {tutor.tutoringCount > 1 ? "times" : "time"}
-        </p>
+        </div>
         <div className="flex flex-row gap-x-1 items-center overflow-x-auto">
           <div className="mr-2">
             <Rating
