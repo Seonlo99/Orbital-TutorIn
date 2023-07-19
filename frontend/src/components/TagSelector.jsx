@@ -23,6 +23,7 @@ export const TagSelector = ({ selectTagHandler, defaultTags = [] }) => {
     !isTagError &&
     !isTagLoading && (
       <Select
+        key={defaultTags}
         defaultValue={defaultTags}
         isMulti
         name="tags"
