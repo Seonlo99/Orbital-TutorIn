@@ -5,7 +5,7 @@ import defaultPic from "../../assets/images/default.png";
 
 const Message = ({ message, isSelf }) => {
   return (
-    <div className={`flex flex-col ${isSelf ? "items-end" : ""}`}>
+    <div className={`mb-3 flex flex-col ${isSelf ? "items-end" : ""}`}>
       <div className="flex flex-row items-center">
         <img
           src={defaultPic}
@@ -20,7 +20,7 @@ const Message = ({ message, isSelf }) => {
           {message.message}
         </div>
       </div>
-      <div className="mt-3 text-sm">{format(message.createdAt)}</div>
+      <div className="text-sm">{format(message.createdAt)}</div>
     </div>
   );
 };

@@ -94,7 +94,7 @@ const ChatBox = ({ currentChat }) => {
     return () => socket.current.disconnect();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     socket.current.on("getMessage", (data) => {
       // console.log("received msg")
       setArrivalMessage({
@@ -102,9 +102,8 @@ const ChatBox = ({ currentChat }) => {
         message: data.message,
         createdAt: Date.now(),
       });
-    }
-    );
-  })
+    });
+  });
 
   useEffect(() => {
     socket.current.emit("addUser", userState.userInfo._id);
@@ -125,7 +124,7 @@ const ChatBox = ({ currentChat }) => {
   return (
     !isLoading &&
     !isError && (
-      <div className="flex-1 px-5 py-5">
+      <div className="flex-1 p-5 z-0">
         <div className="flex flex-col h-[85%] overflow-y-auto pr-4">
           {messages.map((message) => (
             <div ref={scrollRef}>
