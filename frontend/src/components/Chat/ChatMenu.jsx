@@ -50,6 +50,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
       !conversations.some((convo) => convo._id === arrivalConvo._id) &&
       setConversations([arrivalConvo, ...conversations]);
   }, [arrivalConvo]);
+  console.log(result);
 
   return (
     <div className="relative w-auto min-w-3.5 p-5 border-r-2">
@@ -65,28 +66,30 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
           search ? "visible" : "invisible"
         } absolute flex flex-col bg-white w-[calc(100%-40px)] z-[10] border-r-2 border-l-2`}
       >
-        {!isLoading && !isError && result
-          ? result.map((user) => (
-              <div
-                onClick={() => mutateConvo(user._id)}
-                className="flex items-center z-[10] p-5 hover:bg-gray-200 hover:cursor-pointer border-b-2"
-              >
-                <img
-                  src={
-                    user?.avatar
-                      ? stables.UPLOAD_FOLDER_BASE_URL + user?.avatar
-                      : defaultPic
-                  }
-                  onError={(e) => {
-                    e.currentTarget.src = defaultPic;
-                  }}
-                  alt="profile"
-                  className="w-10 h-10 rounded-full object-cover border mr-3"
-                />
-                <span>{user.name}</span>
-              </div>
-            ))
-          : "No results found"}
+        {!isLoading && !isError && result.length !== 0 ? (
+          result.map((user) => (
+            <div
+              onClick={() => mutateConvo(user._id)}
+              className="flex items-center z-[10] p-5 hover:bg-gray-200 hover:cursor-pointer border-b-2"
+            >
+              <img
+                src={
+                  user?.avatar
+                    ? stables.UPLOAD_FOLDER_BASE_URL + user?.avatar
+                    : defaultPic
+                }
+                onError={(e) => {
+                  e.currentTarget.src = defaultPic;
+                }}
+                alt="profile"
+                className="w-10 h-10 rounded-full object-cover border mr-3"
+              />
+              <span>{user.name}</span>
+            </div>
+          ))
+        ) : (
+          <div className="p-2">No results found</div>
+        )}
       </div>
       <div className="mt-2 h-[100%] overflow-y-auto">
         {conversations?.map((convo) => (
