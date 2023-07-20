@@ -37,12 +37,13 @@ const ChatPage = () => {
     !isError && (
       <MainLayout>
         <div className="container mx-auto max-w-8xl mt-5">
-          <div className="flex flex-col divide-y h-[100vh] lg:flex-row  lg:h-[calc(100vh-250px)]">
-            <ChatMenu
-              conversations={conversations}
-              setConversations={setConversations}
-              setCurrentChat={setCurrentChat}
-            />
+          <div className="flex flex-col divide-y lg:divide-y-0 h-[100vh] lg:flex-row  lg:h-[calc(100vh-250px)]">
+              <ChatMenu
+                conversations={conversations}
+                setConversations={setConversations}
+                setCurrentChat={setCurrentChat}
+              />
+            
             {currentChat ? (
               <div className="overflow-y-auto w-full flex h-[100vh] lg:h-[calc(100vh-250px)]">
                 <ChatBox currentChat={currentChat} />
