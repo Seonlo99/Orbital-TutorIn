@@ -37,18 +37,21 @@ const ChatPage = () => {
     !isError && (
       <MainLayout>
         <div className="container mx-auto max-w-8xl mt-5">
-          <div className="flex h-[calc(100vh-250px)]">
+          <div className="flex flex-col divide-y h-[100vh] lg:flex-row  lg:h-[calc(100vh-250px)]">
             <ChatMenu
               conversations={conversations}
               setConversations={setConversations}
               setCurrentChat={setCurrentChat}
             />
             {currentChat ? (
-              <ChatBox currentChat={currentChat} />
+              <div className="overflow-y-auto">
+                <ChatBox currentChat={currentChat} />
+              </div>
+              
             ) : (
-              <span className="text-gray-300 text-9xl text-center">
+              <div className="text-gray-300 pt-10 text-xl lg:text-9xl lg:pt-0 text-center">
                 Click on conversation to view
-              </span>
+              </div>
             )}
           </div>
         </div>
