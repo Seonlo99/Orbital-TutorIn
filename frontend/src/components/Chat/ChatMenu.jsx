@@ -53,7 +53,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
   console.log(result);
 
   return (
-    <div className="relative w-auto min-w-3.5 p-5 border-r-2">
+    <div className="mb-8 lg:mb-0 w-auto min-w-3.5 p-5 border-r-2 max-h-[35%] lg:max-h-full">
       <input
         type="text"
         placeholder="Search user"
@@ -91,7 +91,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
           <div className="p-2">No results found</div>
         )}
       </div>
-      <div className="mt-2 h-[100%] overflow-y-auto">
+      <div className="pt-5 pb-5  h-[100%] overflow-y-auto">
         {conversations?.map((convo) => (
           <Conversation
             conversations={conversations}
