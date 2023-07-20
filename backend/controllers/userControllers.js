@@ -42,6 +42,7 @@ const registerUser = async (req, res) => {
       token: await user.generateJWT(),
       isAdmin: user.isAdmin,
       about: user.about,
+      hourlyRate:user.hourlyRate
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -70,6 +71,7 @@ const userLogin = async (req, res) => {
         token: await user.generateJWT(),
         isAdmin: user.isAdmin,
         about: user.about,
+        hourlyRate:user.hourlyRate
       });
     } else {
       return res
@@ -165,7 +167,7 @@ const googleAuth = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { _id, fullname, about, email, password } = req.body;
+    const { _id, fullname, about, email, password, rate } = req.body;
     const user = await User.findById({ _id });
     let changes;
     if (password) {
@@ -174,12 +176,14 @@ const updateProfile = async (req, res) => {
         about: about,
         email: email,
         password: password,
+        hourlyRate: rate
       };
     } else {
       changes = {
         name: fullname,
         about: about,
         email: email,
+        hourlyRate: rate
       };
     }
     const updatedUser = await User.findByIdAndUpdate({ _id }, changes, {
@@ -196,6 +200,7 @@ const updateProfile = async (req, res) => {
       tutor: updatedUser.tutor,
       token: await updatedUser.generateJWT(),
       isAdmin: updatedUser.isAdmin,
+      hourlyRate: updatedUser.hourlyRate
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

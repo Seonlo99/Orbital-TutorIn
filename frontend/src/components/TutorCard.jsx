@@ -54,19 +54,25 @@ const TutorCard = ({ tutor, className }) => {
             ""
           )}
         </div>
+        <div className="font-semibold text-lg">
+          ${tutor.hourlyRate? tutor.hourlyRate : 0}/h
+        </div>
         <div className="flex flex-wrap gap-1 mt-2">
-          {tutor.qualifications.length > 0 &&
+          {tutor.qualifications.length>0? 
             tutor.qualifications[0].modules.map(
               (module) =>
                 module !== "" && (
-                  <div className="border rounded-lg p-2 text-blue-500 border-blue-500 w-fit">
+                  <div className="border rounded-lg p-1 text-blue-500 border-blue-500 w-fit">
                     {module}
                   </div>
                 )
-            )}
+            )
+            :
+            <div className="italic font-light">Tutor has not verified any module</div>
+            }
         </div>
         <div className="text-dark-light mt-2 text-sm md:text-base italic">
-          Teach {tutor.tutoringCount}{" "}
+          Taught {tutor.tutoringCount}{" "}
           {tutor.tutoringCount > 1 ? "times" : "time"}
         </div>
         <div className="flex flex-row gap-x-1 items-center overflow-x-auto">

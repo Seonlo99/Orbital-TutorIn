@@ -80,10 +80,12 @@ export const AboutMe = ({ viewedUser }) => {
           <div className="font-extralight text-sm">Role</div>
           <div className="mt-0">{viewedUser.tutor ? "Tutor" : "Student"}</div>
         </div>
+        {viewedUser.tutor &&
         <div>
-          <div className="font-extralight text-sm">Year of study</div>
-          <div className="mt-0">First</div>
+          <div className="font-extralight text-sm">Rate</div>
+          <div className="mt-0">${viewedUser.hourlyRate}/h</div>
         </div>
+        }
         <div>
           <div className="font-extralight text-sm">Email Address</div>
           <div className="mt-0">{viewedUser.email}</div>
