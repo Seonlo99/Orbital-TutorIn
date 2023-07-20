@@ -16,13 +16,14 @@ const RegisterPage = () => {
   const userState = useSelector((state) => state.user);
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: ({ _id, fullname, about, email, password }) => {
+    mutationFn: ({ _id, fullname, about, email, password, rate }) => {
       return editProfile({
         _id,
         fullname,
         about,
         email,
         password,
+        rate
       });
     },
     onSuccess: (data) => {
@@ -55,14 +56,15 @@ const RegisterPage = () => {
       fullname: userState.userInfo.name,
       about: userState.userInfo.about,
       email: userState.userInfo.email,
+      rate: userState.userInfo.hourlyRate,
       password: "",
       cfmPassword: "",
     },
     mode: "onChange",
   });
   const submitHandler = (data) => {
-    const { _id, fullname, about, email, password } = data;
-    mutate({ _id, fullname, about, email, password });
+    const { _id, fullname, about, email, password, rate } = data;
+    mutate({ _id, fullname, about, email, password, rate });
   };
 
   const password = watch("password");
@@ -108,6 +110,40 @@ const RegisterPage = () => {
                   {errors.fullname?.message}
                 </p>
               )}
+
+              {userState.userInfo.tutor && <>
+              <label
+                  htmlFor="rate"
+                  className="text-gray-500 font-semibold block mt-5"
+                >
+                  Hourly Rate ($):
+                </label>
+                <input
+                  type="text"
+                  id="rate"
+                  {...register("rate", {
+                    pattern: {
+                      value:
+                      /^\s*-?\d+(\.\d{1,2})?\s*$/,
+                      message: "Enter a number up to 2 decimal places",
+                    },
+                    required: {
+                      value: true,
+                      message: "Rate is required",
+                    },
+                  })}
+                  placeholder="Enter rate"
+                  className={`placeholder:text-gray-400 text-black mt-1 rounded-lg font-semibold block px-3 py-2 outline-none border  ${
+                    errors.rate ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.rate?.message && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.rate?.message}
+                </p>
+              )}
+              </>
+              }
 
               <label
                 htmlFor="about"

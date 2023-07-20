@@ -61,6 +61,7 @@ export const editProfile = async ({
   about,
   email,
   password,
+  rate
 }) => {
   try {
     const { data } = await axios.put(`${rootUrl}/api/users/updateProfile`, {
@@ -69,6 +70,7 @@ export const editProfile = async ({
       about,
       email,
       password,
+      rate
     });
     return data;
   } catch (error) {

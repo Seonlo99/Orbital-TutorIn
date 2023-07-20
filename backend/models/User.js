@@ -20,7 +20,8 @@ const UserSchema = new Schema(
     about: {type:String, default: ""},
     isAdmin: {type:Boolean, default:false},
     isGoogleSignUp: {type:Boolean, default:false},
-    googleSub: {type:String, default: ""}
+    googleSub: {type:String, default: ""},
+    hourlyRate: {type:Number, default:0}
   },
   { timestamps: true }
 );
