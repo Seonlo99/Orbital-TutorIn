@@ -44,7 +44,7 @@ const ChatPage = () => {
               setCurrentChat={setCurrentChat}
             />
             {currentChat ? (
-              <div className="overflow-y-auto">
+              <div className="overflow-y-auto w-full flex h-[100vh] lg:h-[calc(100vh-250px)]">
                 <ChatBox currentChat={currentChat} />
               </div>
               
