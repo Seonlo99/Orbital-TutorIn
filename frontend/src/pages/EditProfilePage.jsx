@@ -10,7 +10,7 @@ import { userActions } from "../store/reducers/userReducers";
 import { editProfile } from "../services/index/users";
 import { ProfilePictureForUpload } from "../components/Profile/ProfilePictureForUpload";
 
-const RegisterPage = () => {
+const EditProfilePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
@@ -23,7 +23,7 @@ const RegisterPage = () => {
         about,
         email,
         password,
-        rate
+        rate,
       });
     },
     onSuccess: (data) => {
@@ -111,39 +111,39 @@ const RegisterPage = () => {
                 </p>
               )}
 
-              {userState.userInfo.tutor && <>
-              <label
-                  htmlFor="rate"
-                  className="text-gray-500 font-semibold block mt-5"
-                >
-                  Hourly Rate ($):
-                </label>
-                <input
-                  type="text"
-                  id="rate"
-                  {...register("rate", {
-                    pattern: {
-                      value:
-                      /^\s*-?\d+(\.\d{1,2})?\s*$/,
-                      message: "Enter a number up to 2 decimal places",
-                    },
-                    required: {
-                      value: true,
-                      message: "Rate is required",
-                    },
-                  })}
-                  placeholder="Enter rate"
-                  className={`placeholder:text-gray-400 text-black mt-1 rounded-lg font-semibold block px-3 py-2 outline-none border  ${
-                    errors.rate ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-                {errors.rate?.message && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.rate?.message}
-                </p>
+              {userState.userInfo.tutor && (
+                <>
+                  <label
+                    htmlFor="rate"
+                    className="text-gray-500 font-semibold block mt-5"
+                  >
+                    Hourly Rate ($):
+                  </label>
+                  <input
+                    type="text"
+                    id="rate"
+                    {...register("rate", {
+                      pattern: {
+                        value: /^\s*-?\d+(\.\d{1,2})?\s*$/,
+                        message: "Enter a number up to 2 decimal places",
+                      },
+                      required: {
+                        value: true,
+                        message: "Rate is required",
+                      },
+                    })}
+                    placeholder="Enter rate"
+                    className={`placeholder:text-gray-400 text-black mt-1 rounded-lg font-semibold block px-3 py-2 outline-none border  ${
+                      errors.rate ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.rate?.message && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.rate?.message}
+                    </p>
+                  )}
+                </>
               )}
-              </>
-              }
 
               <label
                 htmlFor="about"
@@ -264,4 +264,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default EditProfilePage;
