@@ -113,7 +113,7 @@ const AdminPage = () => {
                 return (
                   <div key={application._id}>
                     <div className="flex flex-row px-5 py-2 gap-x-2 w-full">
-                      <div className="w-[20%]">
+                      <div className="w-[20%] overflow-auto">
                         {application.tutorId.username}
                       </div>
                       <div className="w-[15%]">
@@ -128,7 +128,7 @@ const AdminPage = () => {
                         Proposed module: {application.requestModule}
                         <button
                           onClick={handleAddModule}
-                          className="border rounded-lg p-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                          className="border rounded-lg p-2 border-black text-black hover:bg-gray-700 hover:text-white"
                         >
                           Add module
                         </button>
@@ -156,7 +156,7 @@ const AdminPage = () => {
                         ))}
                       </div>
                       <div className="w-[25%] flex flex-col gap-y-2">
-                        <div className="flex flex-row gap-x-10 justify-center">
+                        <div className="flex flex-col gap-y-2 lg:gap-y-0 lg:flex-row gap-x-10 justify-center">
                           <button
                             onClick={() => {
                               handleMutate({

@@ -197,7 +197,7 @@ const getAllPosts = async (req, res) => {
       const totalCount = await Post.countDocuments({
         isDeleted: false,
         title: searchFilter,
-        tags: { $in: filteredSelectedTags },
+        $or: tagFilter
       });
 
       const postsWithPic = await Promise.all(

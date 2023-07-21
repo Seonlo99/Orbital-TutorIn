@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
+  // console.log(recentCommentedPostsData)
   const recentPostsAndComments =
-    recentCommentedPostsData === 0 ? null : recentCommentedPostsData;
+    recentCommentedPostsData.length === 0 ? null : recentCommentedPostsData;
   const navigate = useNavigate();
   const handlePostClick = (slug) => {
     navigate(`/post/${slug}`);
@@ -14,7 +15,7 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
       <div className="font-bold text-xl">Recent Comments</div>
       {recentPostsAndComments ? (
         recentPostsAndComments.map((curr) => (
-          <div
+          <div key={curr._id}
             onClick={() => handlePostClick(`${curr.postId.slug}`)}
             className="border rounded-lg border-black my-2 px-3 hover:cursor-pointer"
           >
@@ -30,7 +31,7 @@ export const RecentCommentedPosts = ({ recentCommentedPostsData }) => {
         ))
       ) : (
         <div className="italic font-light">
-          You have yet to leave any comments
+          No comment available!
         </div>
       )}
     </>

@@ -99,7 +99,9 @@ const ProfilePage = () => {
                 {data.recentReviews.length > 0 ? (
                   <Review reviews={data.recentReviews} />
                 ) : (
-                  "No review to display"
+                  <div className="italic font-light">
+                    No review available!
+                  </div>
                 )}
               </section>
             </div>

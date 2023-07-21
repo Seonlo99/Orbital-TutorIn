@@ -26,7 +26,7 @@ export const AboutTutor = ({ profileId, userId, modulesOffer }) => {
       {showUpload && <VerifyTutor closeHandler={closeHandler} />}
       <ul className="list-disc p-4">
         {modulesOffer ? (
-          modulesOffer.map((module) => module && <li>{module}</li>)
+          modulesOffer.map((module) => module && <li key={module}>{module}</li>)
         ) : (
           <p className="italic">
             This tutor does not have any verified modules

@@ -50,7 +50,7 @@ const ChatPage = () => {
               </div>
               
             ) : (
-              <div className="text-gray-300 pt-10 text-xl lg:text-9xl lg:pt-0 text-center">
+              <div className="w-full text-gray-300 pt-10 text-xl lg:text-4xl lg:pt-0 text-center ">
                 Click on conversation to view
               </div>
             )}
