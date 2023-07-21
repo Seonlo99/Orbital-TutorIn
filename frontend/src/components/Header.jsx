@@ -48,7 +48,7 @@ const Header = () => {
     <section>
       <header className="container mx-auto w-full max-w-screen-2xl px-5 flex justify-between py-4 items-center">
         <div>
-          <span className="text-blue-800">TutorIn</span>
+          <div onClick={() => handleNav("/")} className="text-blue-800 hover:cursor-pointer">TutorIn</div>
         </div>
         <div className="z-50 lg:hidden">
           {navVisible ? (
@@ -140,6 +140,16 @@ const Header = () => {
                   >
                     View Profile
                   </button>
+                  {userState.userInfo.isAdmin && (
+                      <button
+                        onClick={() => {
+                          navigate(`/admin`);
+                        }}
+                        className="hover:bg-blue-900 hover:text-white px-3 py-3"
+                      >
+                        Admin Page
+                      </button>
+                    )}
                   <button onClick={logoutHandler}>Logout</button>
                 </div>
               </li>

@@ -8,7 +8,7 @@ import stables from "../../constants/stables";
 import { Service } from "./Service";
 
 export const AboutMe = ({ viewedUser }) => {
-  console.log(viewedUser);
+  // console.log(viewedUser);
   const userState = useSelector((state) => state.user);
   const [bioExtend, setBioExtend] = useState(false);
   const profilePic =
@@ -32,10 +32,10 @@ export const AboutMe = ({ viewedUser }) => {
           }}
           alt="Img"
         ></img>
-        <div className="flex flex-col mt-5 ml-10">
+        <div className="flex flex-col mt-4 ml-10">
           {userState.userInfo && viewedUser._id === userState.userInfo._id && (
             <Link to="edit-profile">
-              <button className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white">
+              <button className="border border-black rounded-lg px-4 py-2 hover:bg-gray-700 hover:text-white">
                 Edit Profile
               </button>
             </Link>
@@ -43,7 +43,7 @@ export const AboutMe = ({ viewedUser }) => {
         </div>
         {/* <section className="rounded-md border shadow-md bg-gray-100 px-7 py-5"> */}
         {userState.userInfo && viewedUser._id !== userState.userInfo._id && (
-          <section className="">
+          <section className="mb-2">
             <Service
               viewedUser={viewedUser}
               userId={userState.userInfo._id}
@@ -58,23 +58,32 @@ export const AboutMe = ({ viewedUser }) => {
           <div className="font-bold mr-2">{viewedUser.name}</div>
           {viewedUser.verified ? (
             <span className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full">
-              <BsCheckLg className="w-2 h-2 text-blue-500" />
+              <BsCheckLg className="w-3 h-3 text-blue-500" />
             </span>
           ) : (
             ""
           )}
         </div>
-        <div className="break-words">
-          {viewedUser.about.substring(0, 200)}{" "}
-          {bioExtend && viewedUser.about.substring(200)}
-          {viewedUser.about.length > 200 && (
-            <p
-              onClick={handleBioExtend}
-              className="inline-block px-2 italic text-blue-500 hover:cursor-pointer hover:underline"
-            >
-              {bioExtend ? "Collapse" : "Expand bio"}
-            </p>
-          )}
+        <div>
+          <div className="font-extralight text-sm">Bio</div>
+          {viewedUser.about?
+          <div className="break-words">
+            {viewedUser.about.substring(0, 200)}{" "}
+            {bioExtend && viewedUser.about.substring(200)}
+            {viewedUser.about.length > 200 && (
+              <p
+                onClick={handleBioExtend}
+                className="inline-block px-2 italic text-blue-500 hover:cursor-pointer hover:underline"
+              >
+                {bioExtend ? "Collapse" : "Expand bio"}
+              </p>
+            )}
+          </div>
+          : 
+          <div className=" italic font-light text-sm">
+              Empty Bio
+          </div>
+          }
         </div>
         <div>
           <div className="font-extralight text-sm">Role</div>

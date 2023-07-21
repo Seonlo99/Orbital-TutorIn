@@ -16,11 +16,11 @@ const HomePage = () => {
       <div className="flex flex-col mb-6 justify-center items-center md:flex-row lg:flew-row">
         <div className="flex flex-col gap-y-2.5 w-2/3 md:w-1/3 mr-6 mt-10 lg:mt-6 xl:mt-10 relative">
           <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-blue-500" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-500" />
             <input
-              className="placeholder:font-bold fond font-semibold placeholder:text-blue-500 rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4"
+              className="placeholder:font-bold fond font-semibold placeholder:text-gray-500 rounded-lg pl-12 pr-3 w-full py-3 focus:outline-none shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] md:py-4"
               type="text"
-              placeholder="Search Tutor"
+              placeholder="Search Tutor / Module"
               defaultValue={search}
               onChange={(e) => setSearch(e.target.value)}
             />

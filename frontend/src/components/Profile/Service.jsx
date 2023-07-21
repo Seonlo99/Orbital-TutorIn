@@ -102,13 +102,13 @@ export const Service = ({ viewedUser, userId, token, userIsTutor }) => {
   return (
     !isLoading &&
     !isError && (
-      <div className="flex flex-col gap-y-1 justify-end">
+      <div className="flex flex-col gap-y-3 justify-end">
         {viewedUser.tutor && !userIsTutor &&
           data === null && ( //only display for tutor, and when there is no pending transaction
             <button
               onClick={engageHandler}
               disabled={isMutateLoading}
-              className="border border-black rounded-lg p-2 hover:bg-black hover:text-white"
+              className="border border-black rounded-lg p-2 hover:bg-gray-700 hover:text-white"
             >
               Engage Tutor
             </button>
@@ -130,7 +130,7 @@ export const Service = ({ viewedUser, userId, token, userIsTutor }) => {
           )}
         <button
           onClick={chatHandler}
-          className="border border-black rounded-lg px-4 py-2 hover:bg-black hover:text-white"
+          className="border border-black rounded-lg px-4 py-2 hover:bg-gray-700 hover:text-white"
         >
           Chat Now
         </button>

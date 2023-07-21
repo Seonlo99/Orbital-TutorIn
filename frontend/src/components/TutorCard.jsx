@@ -18,8 +18,8 @@ const TutorCard = ({ tutor, className }) => {
   };
 
   return (
-    <div
-      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]  ${className} `}
+    <div key={tutor._id} onClick={() => handleUserClick(`${tutor._id}`)}
+      className={`rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]  ${className} hover:cursor-pointer`}
     >
       <div
         onClick={() => handleUserClick(`${tutor._id}`)}
@@ -48,7 +48,7 @@ const TutorCard = ({ tutor, className }) => {
               className="bg-blue-500 w-fit bg-opacity-20 p-1.5 rounded-full"
               data-testid="bsCheckLg"
             >
-              <BsCheckLg className="w-2 h-2 text-blue-500" />
+              <BsCheckLg className="w-3 h-3 text-blue-500" />
             </span>
           ) : (
             ""
@@ -62,7 +62,7 @@ const TutorCard = ({ tutor, className }) => {
             tutor.qualifications[0].modules.map(
               (module) =>
                 module !== "" && (
-                  <div className="border rounded-lg p-1 text-blue-500 border-blue-500 w-fit">
+                  <div key={module} className="border rounded-lg p-1 text-gray-500 border-gray-500 w-fit">
                     {module}
                   </div>
                 )

@@ -50,7 +50,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
       !conversations.some((convo) => convo._id === arrivalConvo._id) &&
       setConversations([arrivalConvo, ...conversations]);
   }, [arrivalConvo]);
-  console.log(result);
+  // console.log(result);
 
   return (
     <div className="mb-8 lg:mb-0 w-auto min-w-3.5 p-5 border-r-2 max-h-[35%] lg:max-h-full">
@@ -68,7 +68,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
       >
         {!isLoading && !isError && result.length !== 0 ? (
           result.map((user) => (
-            <div
+            <div key={user._id}
               onClick={() => mutateConvo(user._id)}
               className="flex items-center z-[10] p-5 hover:bg-gray-200 hover:cursor-pointer border-b-2"
             >
@@ -94,6 +94,7 @@ const ChatMenu = ({ conversations, setConversations, setCurrentChat }) => {
       <div className="pt-5 pb-5  h-[100%] overflow-y-auto">
         {conversations?.map((convo) => (
           <Conversation
+            key={convo}
             conversations={conversations}
             setConversations={setConversations}
             convo={convo}

@@ -14,7 +14,7 @@ export const RecentCreatedPosts = ({ recentPosts }) => {
         <div className="ml-5 font-extralight text-m">
           <ul className="list-disc">
             {recentCreatedPosts.map((post) => (
-              <li>
+              <li key={post._id}>
                 <button
                   onClick={() => handlePostClick(`${post.slug}`)}
                   className="hover:underline hover:cursor-pointer"
