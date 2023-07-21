@@ -174,6 +174,7 @@ const AdminPage = () => {
                               handleMutate({
                                 applicationId: application._id,
                                 accept: false,
+                                modulesList: modulesList,
                               });
                             }}
                             className="border border-red-600 rounded-lg px-1 lg:px-4 py-2 hover:bg-red-600 hover:text-white"
