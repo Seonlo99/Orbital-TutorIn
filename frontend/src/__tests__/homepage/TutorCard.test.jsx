@@ -20,6 +20,7 @@ describe("TutorCard", () => {
     tutoringCount: 3,
     rating: 4.5,
     ratingCount: 10,
+    qualifications: []
   };
 
   test("renders tutor information correctly", () => {
@@ -27,7 +28,7 @@ describe("TutorCard", () => {
 
     // Assert the rendered tutor information
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Teach 3 times")).toBeInTheDocument();
+    expect(screen.getByText("Taught 3 times")).toBeInTheDocument();
     expect(screen.getByText("4.5 (10)")).toBeInTheDocument();
   });
 

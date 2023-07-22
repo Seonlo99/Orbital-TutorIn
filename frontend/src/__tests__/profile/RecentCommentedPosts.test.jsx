@@ -66,7 +66,7 @@ describe("RecentCommentedPosts", () => {
 
     // Assert the "no comments" message
     expect(
-      screen.getByText("You have yet to leave any comments")
+      screen.getByText("No comment available!")
     ).toBeInTheDocument();
   });
 });
