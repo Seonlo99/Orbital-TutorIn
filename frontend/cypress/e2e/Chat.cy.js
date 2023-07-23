@@ -64,6 +64,7 @@ describe("Profile", () => {
     cy.get(
       "#root > div > div:nth-child(1) > div > div > div:nth-child(1) > div:nth-child(3) > div"
     ).click();
+    cy.get("textarea").type("sent message 1");
     cy.findByRole("button", { name: /send/i });
     cy.get(
       "#root > div > div:nth-child(1) > div > div > div:nth-child(1) > div:nth-child(3) > div > svg"
