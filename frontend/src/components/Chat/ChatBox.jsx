@@ -127,7 +127,10 @@ const ChatBox = ({ currentChat }) => {
       <div className="flex-1 p-5 z-0">
         <div className="flex flex-col h-[85%] overflow-y-auto pr-4">
           {messages.map((message) => (
-            <div key={message._id} ref={scrollRef}>
+            <div
+              key={message._id}
+              ref={scrollRef}
+            >
               <Message
                 message={message}
                 isSelf={message.senderId === userState.userInfo._id}
