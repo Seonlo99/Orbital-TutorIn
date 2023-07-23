@@ -11,6 +11,7 @@ import {
 import { fileRemover } from "../utils/fileRemover.js";
 import { OAuth2Client } from "google-auth-library";
 import { v4 as uuid } from "uuid";
+import mongoose from "mongoose";
 
 const client = new OAuth2Client(process.env.GOOGLE_PUBLIC_API_TOKEN);
 
@@ -292,7 +293,7 @@ const getUserProfile = async (req, res) => {
       userId
     );
     const { recentPosts } = await getRecentCreatedPosts(userId);
-    const { recentComments } = await getRecentComments(userId);
+    const { recentComments } = await getRecentComments({userId});
     const { recentReviews } = await getRecentReview(userId);
     // console.log({user, postCount,commentCount,VoteCount,recentPosts,recentPostsAndComments})
     return res.json({
@@ -323,16 +324,105 @@ const getCommunityStats = async (id) => {
     userId: id,
     isDeleted: false,
   };
+  let userId = mongoose.Types.ObjectId(id._id);
   const postCount = await Post.countDocuments(filter);
-  const commentCount = await Comment.countDocuments(filter);
-  const UpVoteCount = await Upvote.countDocuments({
-    authorId: id,
-    value: "1",
-  });
-  const DownVoteCount = await Upvote.countDocuments({
-    authorId: id,
-    value: "-1",
-  });
+  // const commentCount = await Comment.countDocuments(filter);
+
+  const countCommentsQuery = [
+    {
+      $match: {
+        userId: userId,
+        isDeleted: false,
+      }
+    },
+    {
+      $lookup: {
+        from: 'posts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'post'
+      }
+    },
+    {
+      $unwind: '$post'
+    },
+    {
+      $match: {
+        'post.isDeleted': false
+      }
+    },
+    {
+      $count: 'commentCount'
+    }
+  ];
+  
+  // Execute the aggregate query
+  let commentRes = await Comment.aggregate(countCommentsQuery).exec()
+  const commentCount = commentRes.length > 0 ? commentRes[0].commentCount : 0;
+
+  const countUpvoteQuery = [
+    {
+      $match: {
+        authorId: userId,
+        value: 1,
+      }
+    },
+    {
+      $lookup: {
+        from: 'posts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'post'
+      }
+    },
+    {
+      $unwind: '$post'
+    },
+    {
+      $match: {
+        'post.isDeleted': false
+      }
+    },
+    {
+      $count: 'upvoteCount'
+    }
+  ];
+
+  const countDownvoteQuery = [
+    {
+      $match: {
+        authorId: userId,
+        value: -1,
+      }
+    },
+    {
+      $lookup: {
+        from: 'posts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'post'
+      }
+    },
+    {
+      $unwind: '$post'
+    },
+    {
+      $match: {
+        'post.isDeleted': false
+      }
+    },
+    {
+      $count: 'downvoteCount'
+    }
+  ];
+
+  let res;
+  res = await Upvote.aggregate(countUpvoteQuery).exec()
+  const UpVoteCount = res.length > 0 ? res[0].upvoteCount : 0;
+
+  res = await Upvote.aggregate(countDownvoteQuery).exec()
+  const DownVoteCount = res.length > 0 ? res[0].downvoteCount : 0;
+
   const voteCount = UpVoteCount - DownVoteCount;
   return {
     postCount: postCount,
@@ -359,23 +449,71 @@ const getRecentCreatedPosts = async (id) => {
   };
 };
 
-const getRecentComments = async (id) => {
+const getRecentComments = async ({userId}) => {
   const RECENTCOUNT = 5;
-  // const _id = req.body._id;
-  const filter = {
-    userId: id,
-    isDeleted: false,
-  };
+  
+  let id = mongoose.Types.ObjectId(userId._id);
 
-  // Find recent comment
-  const recentComments = await Comment.find(filter)
-    .sort({
-      updatedAt: -1,
-    })
-    .populate("postId", "title body slug")
-    .limit(RECENTCOUNT);
+  const aggregate = [
+    {
+      $match: {
+        isDeleted: false,
+        userId:id
+      }
+    },
+    {
+      $lookup: {
+        from: 'posts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'post'
+      }
+    },
+    {
+      $unwind: '$post'
+    },
+    {
+      $match: {
+        'post.isDeleted': false,
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        userId: 1,
+        body: 1,
+        postId: {
+          _id: '$post._id',
+          title: '$post.title',
+          body: '$post.body',
+          slug: '$post.slug'
+        },
+        commentSlug: 1,
+        parent: 1,
+        replyUser: 1,
+        isDeleted: 1,
+        createdAt: 1,
+        updatedAt: 1
+      }
+    },
+    {
+      $sort: {
+        updatedAt: -1
+      }
+    },
+    {
+      $limit: RECENTCOUNT
+    }
+  ];
 
-  return { recentComments };
+  try {
+    const recentComments = await Comment.aggregate(aggregate).exec();
+    return { recentComments };
+  } catch (err) {
+    console.error(err);
+    return { recentComments: [] }; // Return an empty array
+  }
+
 };
 
 const getRecentReview = async (id) => {
