@@ -81,7 +81,7 @@ describe('Header', () => {
     expect(screen.getByText(/testuser/i)).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /User dropdown/i })).toBeInTheDocument();
     expect(screen.getAllByText(/View Profile/i)).toHaveLength(2);
-    expect(screen.queryByText(/Admin Page/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Admin Page/i)).toHaveLength(2);
     expect(screen.getAllByText(/Logout/i)).toHaveLength(2);
   });
 
